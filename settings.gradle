@@ -1,0 +1,6 @@
+rootProject.name = 'tify'
+include 'Api'
+include 'Domain'
+include 'Core'
+include 'Infrastructure'
+
