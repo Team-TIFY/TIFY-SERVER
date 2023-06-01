@@ -1,11 +1,11 @@
 package tify.server.api.auth.model;
 
 
+import lombok.Builder;
+import lombok.Getter;
 import tify.server.domain.domains.user.domain.OauthInfo;
 import tify.server.domain.domains.user.domain.OauthProvider;
 import tify.server.domain.domains.user.domain.Profile;
-import lombok.Builder;
-import lombok.Getter;
 
 @Getter
 @Builder

@@ -1,7 +1,6 @@
 package tify.server.api.config;
 
 
-import tify.server.core.dto.SuccessResponse;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import tify.server.core.dto.SuccessResponse;
 
 @RestControllerAdvice(basePackages = "tify.server")
 public class SuccessResponseAdvice implements ResponseBodyAdvice {

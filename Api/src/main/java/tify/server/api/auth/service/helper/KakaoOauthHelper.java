@@ -2,6 +2,7 @@ package tify.server.api.auth.service.helper;
 
 import static tify.server.core.consts.StaticVal.BEARER;
 
+import lombok.RequiredArgsConstructor;
 import tify.server.api.auth.model.KakaoUserInfoDto;
 import tify.server.core.annotation.Helper;
 import tify.server.core.dto.OIDCDto;
@@ -13,7 +14,6 @@ import tify.server.infrastructure.outer.api.oauth.client.KakaoOauthClient;
 import tify.server.infrastructure.outer.api.oauth.dto.KakaoInfoResponse;
 import tify.server.infrastructure.outer.api.oauth.dto.KakaoTokenResponse;
 import tify.server.infrastructure.outer.api.oauth.dto.OIDCResponse;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Helper
@@ -79,13 +79,14 @@ public class KakaoOauthHelper {
 
     public OIDCDto getOIDCDecodePayload(String token) {
         OIDCResponse oidcResponse = kakaoOauthClient.getKakaoOIDCOpenKeys();
-        System.out.println("oidcPublicKeysResponse.getOidcPublicKeyDtos().toString() = "
-            + oidcResponse.getKeys().toString());
+        System.out.println(
+                "oidcPublicKeysResponse.getOidcPublicKeyDtos().toString() = "
+                        + oidcResponse.getKeys().toString());
         return oidcHelper.getPayloadFromIdToken(
                 token,
                 oauthProperties.getKakaoBaseUrl(),
                 oauthProperties.getKakaoAppId(),
-            oidcResponse);
+                oidcResponse);
     }
 
     public OauthInfo getOauthInfoByIdToken(String idToken) {

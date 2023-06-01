@@ -1,14 +1,14 @@
 package tify.server.api.example;
 
 
-import tify.server.api.example.dto.HealthCheckResponse;
-import tify.server.core.exception.ExampleException;
 import io.swagger.v3.oas.annotations.Operation;
 import java.util.Objects;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tify.server.api.example.dto.HealthCheckResponse;
+import tify.server.core.exception.ExampleException;
 
 @RestController
 @RequestMapping(value = "/health")

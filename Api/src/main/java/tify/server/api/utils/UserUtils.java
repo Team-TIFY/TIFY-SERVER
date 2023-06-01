@@ -1,11 +1,11 @@
 package tify.server.api.utils;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.User;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor

@@ -1,10 +1,10 @@
 package tify.server.api.auth.model.request;
 
 
-import tify.server.domain.domains.user.domain.Profile;
 import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.domain.domains.user.domain.Profile;
 
 @Getter
 @NoArgsConstructor

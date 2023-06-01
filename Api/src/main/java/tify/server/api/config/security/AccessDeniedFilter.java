@@ -3,11 +3,6 @@ package tify.server.api.config.security;
 import static tify.server.core.consts.StaticVal.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import tify.server.core.dto.ErrorDetail;
-import tify.server.core.dto.ErrorResponse;
-import tify.server.core.exception.BaseErrorCode;
-import tify.server.core.exception.BaseException;
-import tify.server.core.exception.GlobalException;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -19,6 +14,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import tify.server.core.dto.ErrorDetail;
+import tify.server.core.dto.ErrorResponse;
+import tify.server.core.exception.BaseErrorCode;
+import tify.server.core.exception.BaseException;
+import tify.server.core.exception.GlobalException;
 
 @RequiredArgsConstructor
 @Component

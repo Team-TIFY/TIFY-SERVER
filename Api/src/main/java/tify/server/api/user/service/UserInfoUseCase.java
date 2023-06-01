@@ -1,10 +1,10 @@
 package tify.server.api.user.service;
 
 
+import lombok.RequiredArgsConstructor;
 import tify.server.api.user.model.response.UserInfoResponse;
 import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
-import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor

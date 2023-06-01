@@ -1,6 +1,8 @@
 package tify.server.domain.domains.user.service;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.annotation.DomainService;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.OauthInfo;
@@ -9,8 +11,6 @@ import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.exception.UserNotFoundException;
 import tify.server.domain.domains.user.repository.UserRepository;
 import tify.server.domain.domains.user.validator.UserValidator;
-import lombok.RequiredArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 
 @DomainService
 @RequiredArgsConstructor
@@ -43,7 +43,8 @@ public class UserDomainService {
 
     @Transactional(readOnly = true)
     public User loginUser(OauthInfo oauthInfo) {
-        return userRepository.findByOauthInfo(oauthInfo)
-            .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+        return userRepository
+                .findByOauthInfo(oauthInfo)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 }

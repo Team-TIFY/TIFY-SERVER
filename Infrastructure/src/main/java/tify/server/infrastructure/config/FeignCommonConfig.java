@@ -8,10 +8,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import feign.Logger.Level;
 import feign.codec.Decoder;
 import feign.jackson.JacksonDecoder;
-import tify.server.infrastructure.outer.BaseFeignClientPackage;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tify.server.infrastructure.outer.BaseFeignClientPackage;
 
 @Configuration
 @EnableFeignClients(basePackageClasses = BaseFeignClientPackage.class)

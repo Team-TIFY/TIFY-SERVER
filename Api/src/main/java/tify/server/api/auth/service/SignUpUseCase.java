@@ -1,6 +1,8 @@
 package tify.server.api.auth.service;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tify.server.api.auth.model.KakaoUserInfoDto;
 import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
@@ -13,8 +15,6 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.domain.OauthInfo;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.service.UserDomainService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @UseCase
 @RequiredArgsConstructor
