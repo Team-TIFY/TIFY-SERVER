@@ -1,13 +1,14 @@
 package tify.server.domain.domains.user.domain;
 
+
 import com.esotericsoftware.kryo.serializers.FieldSerializer.NotNull;
+import java.sql.Timestamp;
+import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.domain.domains.AbstractTimeStamp;
-
-import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Getter
 @Entity
@@ -27,4 +28,10 @@ public class DailyQuestion extends AbstractTimeStamp {
 
     @NotNull private Timestamp loadingDate;
 
+    @Builder
+    public DailyQuestion(Category category, String content, Timestamp loadingDate) {
+        this.category = category;
+        this.content = content;
+        this.loadingDate = loadingDate;
+    }
 }
