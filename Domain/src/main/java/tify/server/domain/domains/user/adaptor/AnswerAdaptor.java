@@ -18,4 +18,6 @@ public class AnswerAdaptor {
                 .findById(answerId)
                 .orElseThrow(() -> AnswerNotFoundException.EXCEPTION);
     }
+
+    public Answer save(Answer answer) { return answerRepository.save(answer); }
 }
