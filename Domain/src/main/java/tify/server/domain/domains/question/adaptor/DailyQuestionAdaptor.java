@@ -1,11 +1,11 @@
-package tify.server.domain.domains.user.adaptor;
+package tify.server.domain.domains.question.adaptor;
 
 
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
-import tify.server.domain.domains.user.domain.DailyQuestion;
-import tify.server.domain.domains.user.exception.DailyQuestionNotFoundException;
-import tify.server.domain.domains.user.repository.DailyQuestionRepository;
+import tify.server.domain.domains.question.domain.DailyQuestion;
+import tify.server.domain.domains.question.exception.DailyQuestionNotFoundException;
+import tify.server.domain.domains.question.repository.DailyQuestionRepository;
 
 @Adaptor
 @RequiredArgsConstructor

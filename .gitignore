@@ -40,3 +40,5 @@ out/
 
 
 Domain/src/main/generated/**/*.java
+
+.DS_Store

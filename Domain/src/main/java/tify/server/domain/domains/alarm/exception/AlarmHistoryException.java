@@ -1,4 +1,4 @@
-package tify.server.domain.domains.user.exception;
+package tify.server.domain.domains.alarm.exception;
 
 import static tify.server.core.consts.StaticVal.NOT_FOUND;
 
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import tify.server.core.dto.ErrorDetail;
 import tify.server.core.exception.BaseErrorCode;
-
 
 @Getter
 @AllArgsConstructor
@@ -18,5 +17,7 @@ public enum AlarmHistoryException implements BaseErrorCode {
     private final String reason;
 
     @Override
-    public ErrorDetail getErrorDetail() { return null; }
+    public ErrorDetail getErrorDetail() {
+        return null;
+    }
 }

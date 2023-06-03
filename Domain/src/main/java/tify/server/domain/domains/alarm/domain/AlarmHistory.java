@@ -1,12 +1,13 @@
-package tify.server.domain.domains.user.domain;
+package tify.server.domain.domains.alarm.domain;
+
 
 import com.esotericsoftware.kryo.serializers.FieldSerializer.NotNull;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import tify.server.core.consts.Status;
 
 @Getter
 @Entity
@@ -24,8 +25,11 @@ public class AlarmHistory {
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
 
+    @NotNull private String content;
+
     @NotNull
-    private String content;
+    @Enumerated(EnumType.STRING)
+    private Status isRead;
 
     @Builder
     public AlarmHistory(Long id, Long userId, AlarmType alarmType, String content) {
@@ -33,5 +37,6 @@ public class AlarmHistory {
         this.userId = userId;
         this.alarmType = alarmType;
         this.content = content;
+        this.isRead = Status.N;
     }
 }

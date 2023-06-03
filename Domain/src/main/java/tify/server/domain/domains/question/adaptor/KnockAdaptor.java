@@ -1,10 +1,11 @@
-package tify.server.domain.domains.user.adaptor;
+package tify.server.domain.domains.question.adaptor;
+
 
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
-import tify.server.domain.domains.user.domain.Knock;
-import tify.server.domain.domains.user.exception.KnockNotFoundException;
-import tify.server.domain.domains.user.repository.KnockRepository;
+import tify.server.domain.domains.question.domain.Knock;
+import tify.server.domain.domains.question.exception.KnockNotFoundException;
+import tify.server.domain.domains.question.repository.KnockRepository;
 
 @Adaptor
 @RequiredArgsConstructor

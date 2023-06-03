@@ -1,4 +1,4 @@
-package tify.server.domain.domains.user.exception;
+package tify.server.domain.domains.question.exception;
 
 
 import tify.server.core.exception.BaseException;
