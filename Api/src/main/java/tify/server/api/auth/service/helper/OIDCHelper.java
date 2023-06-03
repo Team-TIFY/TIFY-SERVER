@@ -1,12 +1,12 @@
 package tify.server.api.auth.service.helper;
 
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tify.server.core.dto.OIDCDto;
 import tify.server.core.jwt.JwtOIDCProvider;
 import tify.server.infrastructure.outer.api.oauth.dto.OIDCPublicKeyDto;
 import tify.server.infrastructure.outer.api.oauth.dto.OIDCResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component

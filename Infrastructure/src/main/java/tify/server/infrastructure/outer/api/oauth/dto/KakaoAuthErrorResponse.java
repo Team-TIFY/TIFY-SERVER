@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import feign.Response;
-import tify.server.infrastructure.exception.FeignException;
 import java.io.IOException;
 import java.io.InputStream;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.infrastructure.exception.FeignException;
 
 @Getter
 @NoArgsConstructor

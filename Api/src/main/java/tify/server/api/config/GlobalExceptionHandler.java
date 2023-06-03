@@ -1,11 +1,6 @@
 package tify.server.api.config;
 
 
-import tify.server.core.dto.ErrorDetail;
-import tify.server.core.dto.ErrorResponse;
-import tify.server.core.exception.BaseErrorCode;
-import tify.server.core.exception.BaseException;
-import tify.server.core.exception.GlobalException;
 import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +15,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.UriComponentsBuilder;
+import tify.server.core.dto.ErrorDetail;
+import tify.server.core.dto.ErrorResponse;
+import tify.server.core.exception.BaseErrorCode;
+import tify.server.core.exception.BaseException;
+import tify.server.core.exception.GlobalException;
 
 @RestControllerAdvice
 @Slf4j

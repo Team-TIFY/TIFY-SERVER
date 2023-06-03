@@ -1,12 +1,6 @@
 package tify.server.api.auth.controller;
 
 
-import tify.server.api.auth.model.request.RegisterRequest;
-import tify.server.api.auth.model.response.AuthResponse;
-import tify.server.api.auth.model.response.OauthLoginLinkResponse;
-import tify.server.api.auth.model.response.OauthTokenResponse;
-import tify.server.api.auth.service.LoginUseCase;
-import tify.server.api.auth.service.SignUpUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
@@ -19,6 +13,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import tify.server.api.auth.model.request.RegisterRequest;
+import tify.server.api.auth.model.response.AuthResponse;
+import tify.server.api.auth.model.response.OauthLoginLinkResponse;
+import tify.server.api.auth.model.response.OauthTokenResponse;
+import tify.server.api.auth.service.LoginUseCase;
+import tify.server.api.auth.service.SignUpUseCase;
 
 @RestController
 @Slf4j

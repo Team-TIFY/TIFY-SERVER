@@ -2,11 +2,6 @@ package tify.server.core.jwt;
 
 import static tify.server.core.consts.StaticVal.*;
 
-import tify.server.core.dto.AccessTokenDetail;
-import tify.server.core.exception.ExpiredRefreshTokenException;
-import tify.server.core.exception.ExpiredTokenException;
-import tify.server.core.exception.InvalidTokenException;
-import tify.server.core.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -17,6 +12,11 @@ import java.security.Key;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import tify.server.core.dto.AccessTokenDetail;
+import tify.server.core.exception.ExpiredRefreshTokenException;
+import tify.server.core.exception.ExpiredTokenException;
+import tify.server.core.exception.InvalidTokenException;
+import tify.server.core.properties.JwtProperties;
 
 @RequiredArgsConstructor
 @Component

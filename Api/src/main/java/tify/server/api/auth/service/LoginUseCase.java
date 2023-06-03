@@ -1,12 +1,13 @@
 package tify.server.api.auth.service;
 
+
+import lombok.RequiredArgsConstructor;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.service.helper.KakaoOauthHelper;
 import tify.server.api.auth.service.helper.TokenGenerateHelper;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.service.UserDomainService;
-import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor

@@ -1,9 +1,9 @@
 package tify.server.api.auth.model.response;
 
 
-import tify.server.infrastructure.outer.api.oauth.dto.KakaoTokenResponse;
 import lombok.Builder;
 import lombok.Getter;
+import tify.server.infrastructure.outer.api.oauth.dto.KakaoTokenResponse;
 
 @Getter
 @Builder

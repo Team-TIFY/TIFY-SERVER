@@ -1,11 +1,11 @@
 package tify.server.infrastructure.outer.api.oauth.client;
 
 
-import tify.server.infrastructure.outer.api.oauth.config.KakaoInfoClientConfig;
-import tify.server.infrastructure.outer.api.oauth.dto.KakaoInfoResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
+import tify.server.infrastructure.outer.api.oauth.config.KakaoInfoClientConfig;
+import tify.server.infrastructure.outer.api.oauth.dto.KakaoInfoResponse;
 
 @FeignClient(
         name = "KakaoInfoClient",

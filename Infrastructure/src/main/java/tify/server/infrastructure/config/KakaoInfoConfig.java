@@ -3,10 +3,10 @@ package tify.server.infrastructure.config;
 
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;
-import tify.server.infrastructure.outer.api.oauth.config.KakaoInfoErrorDecoder;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import tify.server.infrastructure.outer.api.oauth.config.KakaoInfoErrorDecoder;
 
 @Import(KakaoInfoErrorDecoder.class)
 public class KakaoInfoConfig {

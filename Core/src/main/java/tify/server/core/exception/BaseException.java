@@ -1,9 +1,9 @@
 package tify.server.core.exception;
 
 
-import tify.server.core.dto.ErrorDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import tify.server.core.dto.ErrorDetail;
 
 @Getter
 @AllArgsConstructor
