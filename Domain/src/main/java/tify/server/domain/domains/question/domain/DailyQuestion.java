@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.domain.domains.AbstractTimeStamp;
-import tify.server.domain.domains.user.domain.Category;
 
 @Getter
 @Entity

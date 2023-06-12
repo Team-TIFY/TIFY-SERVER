@@ -1,4 +1,4 @@
-package tify.server.domain.domains.user.domain;
+package tify.server.domain.domains.question.domain;
 
 
 import lombok.AllArgsConstructor;
