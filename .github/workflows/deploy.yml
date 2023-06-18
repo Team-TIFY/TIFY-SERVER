@@ -69,8 +69,3 @@ jobs:
             sudo docker-compose up -d
             sudo docker logs -f backend &> concal.log &
             sudo docker image prune -f
-
-      # REMOVE Github IP FROM security group
-      - name: Remove IP FROM security group
-        run: |
-          aws ec2 revoke-security-group-ingress --group-id ${{ secrets.AWS_SG_ID }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
