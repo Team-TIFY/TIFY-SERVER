@@ -55,9 +55,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.AWS_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          password: ${{ secrets.EC2_PASSWORD }}
-          port: ${{ secrets.EC2_SSH_PORT }}
+          username: ubuntu
+          key: ${{ secrets.AWS_KEY }}
           timeout: 60s
           # 도커 작업
           script: |
