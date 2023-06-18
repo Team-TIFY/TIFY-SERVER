@@ -2,7 +2,7 @@ name: TIFY CI/CD
 
 on:
   push:
-    branches: [ "dev", "main", "feat/2-cicd" ]
+    branches: [ "dev", "main" ]
 
 permissions:
   contents: read
