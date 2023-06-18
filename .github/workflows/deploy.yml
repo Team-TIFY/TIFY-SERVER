@@ -61,10 +61,11 @@ jobs:
           timeout: 60s
           # 도커 작업
           script: |
-            cd ~/srv/ubuntu/tify
+            cd ~/srv
+            sh ~/srv/ubuntu/config/scripts/docker-init.sh
             sudo rm concal.log
             sudo docker rm - f $(docker ps -qa)
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+            sudo docker-compose pull
             docker stop $(docker ps -a -q)
             docker-compose up -d
             sudo docker logs -f backend &> concal.log &
