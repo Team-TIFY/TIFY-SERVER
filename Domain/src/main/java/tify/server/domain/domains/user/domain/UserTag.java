@@ -1,21 +1,19 @@
 package tify.server.domain.domains.user.domain;
 
 
-import com.esotericsoftware.kryo.serializers.FieldSerializer.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.domain.domains.AbstractTimeStamp;
@@ -32,11 +30,18 @@ public class UserTag extends AbstractTimeStamp {
 
     @NotNull private Long userId;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Tag tag;
+    @NotNull private Long largeCategoryId;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_tag_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserFavor> favors = new ArrayList<>();
+
+    @Builder
+    public UserTag(Long userId, Long largeCategoryId) {
+        this.userId = userId;
+        this.largeCategoryId = largeCategoryId;
+    }
+
+    public void updateUserFavors(List<UserFavor> favors) {
+        this.favors.addAll(favors);
+    }
 }

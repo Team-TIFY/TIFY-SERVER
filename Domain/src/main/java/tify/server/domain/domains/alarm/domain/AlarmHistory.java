@@ -1,8 +1,8 @@
 package tify.server.domain.domains.alarm.domain;
 
 
-import com.esotericsoftware.kryo.serializers.FieldSerializer.NotNull;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question.domain;
+package tify.server.domain.domains.tag.domain;
 
 
 import javax.persistence.*;
@@ -11,21 +11,21 @@ import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
 @Entity
-@Table(name = "tbl_answer")
+@Table(name = "tbl_small_category")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Answer extends AbstractTimeStamp {
+public class SmallCategory extends AbstractTimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull private Long userId;
+    @NotNull private String value;
 
-    @NotNull private String content;
+    @NotNull private Long largeCategoryId;
 
     @Builder
-    public Answer(Long userId, String content) {
-        this.userId = userId;
-        this.content = content;
+    public SmallCategory(String value, Long largeCategoryId) {
+        this.value = value;
+        this.largeCategoryId = largeCategoryId;
     }
 }
