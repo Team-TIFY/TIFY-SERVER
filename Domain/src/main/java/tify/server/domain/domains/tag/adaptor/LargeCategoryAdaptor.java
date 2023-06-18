@@ -1,5 +1,6 @@
 package tify.server.domain.domains.tag.adaptor;
 
+
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.tag.domain.LargeCategory;
@@ -10,16 +11,15 @@ import tify.server.domain.domains.tag.repository.LargeCategoryRepository;
 @RequiredArgsConstructor
 public class LargeCategoryAdaptor {
 
-  private final LargeCategoryRepository largeCategoryRepository;
+    private final LargeCategoryRepository largeCategoryRepository;
 
-  public LargeCategory query(Long largeCategoryId) {
-    return largeCategoryRepository
-            .findById(largeCategoryId)
-            .orElseThrow(() -> LargeCategoryNotFoundException.EXCEPTION);
-  }
+    public LargeCategory query(Long largeCategoryId) {
+        return largeCategoryRepository
+                .findById(largeCategoryId)
+                .orElseThrow(() -> LargeCategoryNotFoundException.EXCEPTION);
+    }
 
-  public LargeCategory save(LargeCategory largeCategory) {
-    return largeCategory;
-  }
-
+    public LargeCategory save(LargeCategory largeCategory) {
+        return largeCategory;
+    }
 }

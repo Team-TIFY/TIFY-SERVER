@@ -3,7 +3,6 @@ package tify.server.domain.domains.question.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +19,7 @@ public class Answer extends AbstractTimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private Long userId;
-
+    @NotNull private Long userId;
 
     @NotNull private String content;
 
