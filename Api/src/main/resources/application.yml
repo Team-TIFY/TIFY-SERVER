@@ -10,3 +10,7 @@ spring:
 swagger:
   user: ${SWAGGER_USER:user}
   password: ${SWAGGER_PASSWORD:password}
+
+slack:
+  webhook:
+    id: ${SLACK_WEBHOOK_ID}

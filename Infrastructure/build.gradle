@@ -2,6 +2,7 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
+    api("com.slack.api:slack-api-client:1.27.2")
     api('com.fasterxml.jackson.datatype:jackson-datatype-jdk8')
     api('com.fasterxml.jackson.datatype:jackson-datatype-jsr310')
     api 'io.github.openfeign:feign-httpclient:12.1'
