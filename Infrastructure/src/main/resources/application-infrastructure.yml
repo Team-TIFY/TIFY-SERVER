@@ -5,3 +5,11 @@ spring:
 
 logging:
   level:
+
+slack:
+  webhook:
+    token: ${slack_webhook_token:}
+    id: ${slack_webhook_id:}
+    service-alarm-channel: ${slack_service_channel_id:}
+    username: ${slack_webhook_username:TIFY_WebHook}
+    icon-url: ${slack_webhook_icon_url:}

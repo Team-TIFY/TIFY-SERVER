@@ -23,14 +23,13 @@ import tify.server.core.dto.ErrorDetail;
 import tify.server.core.dto.ErrorResponse;
 import tify.server.core.exception.BaseErrorCode;
 import tify.server.core.exception.BaseException;
-import tify.server.core.exception.ExampleException;
 import tify.server.core.exception.GlobalException;
 
 @RestControllerAdvice
 @Slf4j
 @RequiredArgsConstructor
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    
+
     private final SlackApiProvider slackApiProvider;
     private final SlackInternalErrorSender slackInternalErrorSender;
 
@@ -77,10 +76,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.valueOf(errorDetail.getStatusCode()))
                 .body(errorResponse);
     }
-    
+
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<ErrorResponse> handleException(Exception e, HttpServletRequest request) throws Exception {
-        final ContentCachingRequestWrapper cachingRequestWrapper = (ContentCachingRequestWrapper) request;
+    protected ResponseEntity<ErrorResponse> handleException(Exception e, HttpServletRequest request)
+            throws Exception {
+        final ContentCachingRequestWrapper cachingRequestWrapper =
+                (ContentCachingRequestWrapper) request;
         final Long userId = SecurityUtils.getCurrentUserId();
         String url =
                 UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(request))
@@ -88,21 +89,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .toUriString();
         log.error("INTERNAL_SERVER_ERROR", e);
         GlobalException internalServerError = GlobalException.INTERNAL_SERVER_ERROR;
-        
-        ErrorDetail errorDetail = ErrorDetail.builder()
-                .statusCode(internalServerError.getStatusCode())
-                .errorCode(internalServerError.getErrorCode())
-                .reason(internalServerError.getReason())
-                .build();
-        
-        ErrorResponse errorResponse =
-                new ErrorResponse(errorDetail);
-        
-//        slackApiProvider.sendError(cachingRequestWrapper, e, userId); // provider로 mocking?
-        
+
+        ErrorDetail errorDetail =
+                ErrorDetail.builder()
+                        .statusCode(internalServerError.getStatusCode())
+                        .errorCode(internalServerError.getErrorCode())
+                        .reason(internalServerError.getReason())
+                        .build();
+
+        ErrorResponse errorResponse = new ErrorResponse(errorDetail);
+
+        //        slackApiProvider.sendError(cachingRequestWrapper, e, userId); // provider로
+        // mocking?
+
         slackInternalErrorSender.execute(cachingRequestWrapper, e, userId);
         return ResponseEntity.status(HttpStatus.valueOf(errorDetail.getStatusCode()))
                 .body(errorResponse);
     }
-    
 }

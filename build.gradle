@@ -31,7 +31,7 @@ subprojects {
 		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testCompileOnly 'org.projectlombok:lombok'
-		testAnnotationProcessor 'org.projectlombok:lombok'
+		testAnnotationProcessor 'org.proj ectlombok:lombok'
 	}
 
 	configurations {

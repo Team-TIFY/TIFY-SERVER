@@ -15,7 +15,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.12'
 //    implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'com.slack.api:slack-api-client:1.27.2'
+//    implementation 'com.slack.api:slack-api-client:1.27.2'
     implementation project(':Domain')
     implementation project(':Core')
     implementation project(':Infrastructure')
