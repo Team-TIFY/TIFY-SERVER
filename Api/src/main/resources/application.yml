@@ -13,4 +13,4 @@ swagger:
 
 slack:
   webhook:
-    id: ${SLACK_WEBHOOK_ID}
+    id: ${SLACK_CHANNEL_ID:}

@@ -1,15 +1,13 @@
-spring:
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
+#spring:
+#  redis:
+#    host: ${REDIS_HOST:localhost}
+#    port: ${REDIS_PORT:6379}
 
 logging:
   level:
 
 slack:
   webhook:
-    token: ${slack_webhook_token:}
-    id: ${slack_webhook_id:}
-    service-alarm-channel: ${slack_service_channel_id:}
-    username: ${slack_webhook_username:TIFY_WebHook}
-    icon-url: ${slack_webhook_icon_url:}
+    token: ${SLACK_TOKEN:}
+    id: ${SLACK_CHANNEL_ID:}
+    service-alarm-channel: ${SLACK_CHANNEL_ID:}

@@ -35,7 +35,7 @@ public class SlackApiProvider {
     @Value("${spring.profiles.active}")
     private String ACTIVE_PROFILE;
 
-    @Value("${slack.webhook.id}")
+    @Value("${SLACK_CHANNEL_ID}")
     private String CHANNEL_ID;
 
     private final int MAX_LEN = 500;

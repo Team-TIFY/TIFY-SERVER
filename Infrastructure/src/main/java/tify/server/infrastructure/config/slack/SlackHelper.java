@@ -10,21 +10,21 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import tify.server.core.helper.SpringEnvironmentHelper;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class SlackHelper {
 
-    //  private final SpringEnvironmentHelper springEnvironmentHelper;
+    private final SpringEnvironmentHelper springEnvironmentHelper;
 
     private final MethodsClient methodsClient;
 
     public void sendNotification(String CHANNEL_ID, List<LayoutBlock> layoutBlocks) {
-        //    if (!springEnvironmentHelper.isProdAndStagingProfile()) { // 작업상황에 대한건 확실치 않아서 만들지
-        // 않았음.
-        //      return;
-        //    }
+        //            if (!springEnvironmentHelper.isProdProfile()) {
+        //              return;
+        //            }
         ChatPostMessageRequest chatPostMessageRequest =
                 ChatPostMessageRequest.builder()
                         .channel(CHANNEL_ID)

@@ -10,12 +10,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SlackApiConfig {
 
-    @Value("${slack.webhook.token}")
+    @Value("${SLACK_TOKEN}")
     private String token;
 
     @Bean
     public MethodsClient getClient() {
         Slack slackClient = Slack.getInstance();
+        System.out.println("token = " + token);
         return slackClient.methods(token);
     }
 }

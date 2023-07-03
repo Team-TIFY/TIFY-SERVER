@@ -19,7 +19,7 @@ public class SlackErrorNotificationProvider {
 
     private final int MAX_LEN = 500;
 
-    @Value("${slack_webhook_id:}")
+    @Value("${SLACK_CHANNEL_ID}")
     private String CHANNEL_ID;
 
     public String getErrorStack(Throwable throwable) {
@@ -30,6 +30,8 @@ public class SlackErrorNotificationProvider {
 
     @Async
     public void sendNotification(List<LayoutBlock> layoutBlocks) {
+        System.out.println(CHANNEL_ID);
+
         slackHelper.sendNotification(CHANNEL_ID, layoutBlocks);
     }
 }
