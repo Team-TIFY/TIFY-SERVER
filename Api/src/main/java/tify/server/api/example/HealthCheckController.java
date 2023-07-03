@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.example.dto.HealthCheckResponse;
-import tify.server.core.exception.ExampleException;
 
 @RestController
 @RequestMapping(value = "/health")
@@ -18,7 +17,7 @@ public class HealthCheckController {
     @GetMapping
     public HealthCheckResponse healthCheck(@RequestParam(required = false) String check) {
         if (Objects.equals(check, "error")) {
-            throw ExampleException.EXCEPTION;
+            throw new RuntimeException();
         }
         return HealthCheckResponse.from("health");
     }

@@ -1,7 +1,13 @@
-spring:
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
+#spring:
+#  redis:
+#    host: ${REDIS_HOST:localhost}
+#    port: ${REDIS_PORT:6379}
 
 logging:
   level:
+
+slack:
+  webhook:
+    token: ${SLACK_TOKEN:}
+    id: ${SLACK_CHANNEL_ID:}
+    service-alarm-channel: ${SLACK_CHANNEL_ID:}

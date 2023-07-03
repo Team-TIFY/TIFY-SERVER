@@ -23,7 +23,9 @@ public class SecurityUtils {
         if (authentication.isAuthenticated()
                 && !CollectionUtils.containsAny(
                         authentication.getAuthorities(), notUserAuthority)) {
-            return Long.valueOf(authentication.getName());
+            return authentication.getName().equals("anonymousUser")
+                    ? 0L
+                    : Long.valueOf(authentication.getName());
         }
         // 스웨거 유저일시 유저 아이디 0 반환
         return 0L;
