@@ -30,15 +30,14 @@ public class AuthController {
     private final SignUpUseCase signUpUseCase;
     private final LoginUseCase loginUseCase;
 
+    @Deprecated
     @Operation(summary = "kakao oauth 링크발급 (백엔드용)", description = "kakao 링크를 받아볼수 있습니다.")
-    @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao/link/dev")
     public OauthLoginLinkResponse getKakaoLoginLinkForDev() {
         return signUpUseCase.getKaKaoOauthLinkTest();
     }
 
     @Operation(summary = "kakao oauth 링크발급 (프론트용)", description = "kakao 링크를 받아볼수 있습니다.")
-    @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao/link")
     public OauthLoginLinkResponse getKakaoLoginLink(
             @RequestHeader(required = false) String referer,
@@ -54,7 +53,6 @@ public class AuthController {
     }
 
     @Operation(summary = "kakao code를 통해 token 발급")
-    @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao")
     public OauthTokenResponse getKakaoCredentialInfo(
             @RequestParam String code,
@@ -71,7 +69,6 @@ public class AuthController {
     }
 
     @Operation(summary = "발급받은 idToken을 통해 회원가입")
-    @Tag(name = "1-2. [카카오]")
     @PostMapping("/oauth/kakao/register")
     public AuthResponse registerUser(
             @RequestParam("id_token") String token,
@@ -79,6 +76,7 @@ public class AuthController {
         return signUpUseCase.registerUserByOICDToken(token, registerRequest);
     }
 
+    @Deprecated
     @Operation(summary = "개발용 회원가입 및 로그인")
     @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao/develop")
@@ -87,7 +85,6 @@ public class AuthController {
     }
 
     @Operation(summary = "id token 이용해서 로그인")
-    @Tag(name = "1-2. [카카오]")
     @PostMapping("/oauth/kakao/login")
     public AuthResponse loginUser(@RequestParam String idToken) {
         return loginUseCase.execute(idToken);
