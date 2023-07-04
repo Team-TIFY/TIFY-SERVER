@@ -18,6 +18,7 @@ public class KakaoAuthErrorDecoder implements ErrorDecoder {
             KakaoAuthErrorCode kakaoKauthErrorCode =
                     KakaoAuthErrorCode.valueOf(body.getErrorCode());
             ErrorDetail errorDetail = kakaoKauthErrorCode.getErrorDetail();
+            System.out.println("errorDetail.getStatusCode() = " + errorDetail.getErrorCode());
             throw new OuterServerException(
                     errorDetail.getStatusCode(),
                     errorDetail.getErrorCode(),

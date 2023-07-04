@@ -29,22 +29,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final SlackApiProvider slackApiProvider;
     private final SlackInternalErrorSender slackInternalErrorSender;
 
-    //    protected ResponseEntity<Object> handleExceptionInternal(
-    //            Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest
-    // request) {
-    //        ServletWebRequest servletWebRequest = (ServletWebRequest) request;
-    //        String url =
-    //                UriComponentsBuilder.fromHttpRequest(
-    //                                new ServletServerHttpRequest(servletWebRequest.getRequest()))
-    //                        .build()
-    //                        .toUriString();
-    //
-    //        ErrorResponse errorResponse =
-    //                new ErrorResponse(ErrorDetail.of(status.value(), status.name(),
-    // ex.getMessage()));
-    //        return super.handleExceptionInternal(ex, errorResponse, headers, status, request);
-    //    }
-
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> internalServerExceptionHandle(
             Exception e, HttpServletRequest req) throws Exception {
@@ -54,8 +38,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(req))
                         .build()
                         .toUriString();
-
-        log.info("INTERNAL_SERVER_ERROR {}", e.getMessage());
+        log.error(
+                "서버 내부 오류 발생: {} {} errMessage={} \n detail={}\n",
+                req.getMethod(),
+                req.getRequestURI(),
+                e.getMessage(),
+                e.getCause());
         GlobalException internalServerError = GlobalException.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = new ErrorResponse(internalServerError.getErrorDetail());
 
