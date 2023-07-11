@@ -8,21 +8,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tify.server.api.user.model.response.UserInfoResponse;
 import tify.server.api.user.service.UserInfoUseCase;
+import tify.server.domain.common.vo.UserInfoVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Tag(name = "1.3 [유저]")
+@Tag(name = "1 [유저]")
 public class UserController {
 
     private final UserInfoUseCase userInfoUseCase;
-
+    
     @Operation(summary = "내 정보 조회")
-    @GetMapping(produces = "application/json; charset=utf-8")
-    public UserInfoResponse getUserInfo() {
+    @GetMapping("/me")
+    public UserInfoVo getMyUserInfo() {
         return userInfoUseCase.execute();
     }
 }

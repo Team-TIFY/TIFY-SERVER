@@ -21,6 +21,8 @@ public class Profile {
     private String thumbNail;
 
     private String birth;
+    
+    private String job;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

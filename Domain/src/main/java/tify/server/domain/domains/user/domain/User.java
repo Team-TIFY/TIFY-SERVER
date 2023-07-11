@@ -19,6 +19,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.domain.common.vo.UserInfoVo;
+import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
@@ -43,6 +45,14 @@ public class User extends AbstractTimeStamp {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Neighbor> neighbors = new ArrayList<>();
+    
+    public UserInfoVo toUserInfoVo() {
+        return UserInfoVo.from(this);
+    }
+    
+    public UserProfileVo toUserProfileVo() {
+        return UserProfileVo.from(this);
+    }
 
     @Builder
     public User(Profile profile, OauthInfo oauthInfo, String expoToken) {
