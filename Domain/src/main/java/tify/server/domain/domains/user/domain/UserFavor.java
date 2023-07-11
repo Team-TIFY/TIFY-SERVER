@@ -1,17 +1,12 @@
 package tify.server.domain.domains.user.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
@@ -26,22 +21,20 @@ public class UserFavor extends AbstractTimeStamp {
 
     @NotNull private Long userTagId;
 
-    private Long largeCategoryId;
+    @Enumerated(EnumType.STRING)
+    private SmallCategory smallCategory;
 
-    @NotNull private Long smallCategoryId;
-
-    private String thumbNailImageUrl;
-
-    public UserFavorVo toUserFavorVo() {
-        return UserFavorVo.from(new UserTag(0L, this.largeCategoryId));
-    }
+    //    public UserTagVo toUserFavorVo() {
+    //        return UserTagVo.from(new UserTag(0L, this.largeCategoryId));
+    //    }
 
     @Builder
     public UserFavor(
-            Long userTagId, Long largeCategoryId, Long smallCategoryId, String thumbNailImageUrl) {
+            Long userTagId,
+            Long largeCategoryId,
+            SmallCategory smallCategory,
+            String thumbNailImageUrl) {
         this.userTagId = userTagId;
-        this.largeCategoryId = largeCategoryId;
-        this.smallCategoryId = smallCategoryId;
-        this.thumbNailImageUrl = thumbNailImageUrl;
+        this.smallCategory = smallCategory;
     }
 }

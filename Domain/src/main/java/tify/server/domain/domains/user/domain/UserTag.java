@@ -3,15 +3,7 @@ package tify.server.domain.domains.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,9 +20,12 @@ public class UserTag extends AbstractTimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "tbl_user_id")
+    private User user;
 
-    @NotNull private Long largeCategoryId;
+    @Enumerated(EnumType.STRING)
+    private LargeCategory largeCategory;
 
     @OneToMany(
             mappedBy = "userTagId",
@@ -40,9 +35,9 @@ public class UserTag extends AbstractTimeStamp {
     private List<UserFavor> favors = new ArrayList<>();
 
     @Builder
-    public UserTag(Long userId, Long largeCategoryId) {
-        this.userId = userId;
-        this.largeCategoryId = largeCategoryId;
+    public UserTag(User user, LargeCategory largeCategory) {
+        this.user = user;
+        this.largeCategory = largeCategory;
     }
 
     public void updateUserFavors(List<UserFavor> favors) {

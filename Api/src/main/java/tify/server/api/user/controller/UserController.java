@@ -4,6 +4,7 @@ package tify.server.api.user.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.user.service.UserFavorUseCase;
 import tify.server.api.user.service.UserInfoUseCase;
 import tify.server.domain.common.vo.UserProfileVo;
+import tify.server.domain.common.vo.UserTagVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -36,9 +38,9 @@ public class UserController {
     //        return userFavorUseCase.execute();
     //    }
 
-    //    @Operation(summary = "내 취향 태그 조회")
-    //    @GetMapping("/me/tags")
-    //    public UserTagVo getMyTags() {
-    //        return
-    //    }
+    @Operation(summary = "내 취향 태그 조회")
+    @GetMapping("/{userId}/tags")
+    public List<UserTagVo> getUserTags(@PathVariable Long userId) {
+        return userFavorUseCase.execute(userId);
+    }
 }
