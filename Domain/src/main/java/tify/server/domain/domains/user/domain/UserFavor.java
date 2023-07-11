@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
@@ -25,13 +26,21 @@ public class UserFavor extends AbstractTimeStamp {
 
     @NotNull private Long userTagId;
 
+    private Long largeCategoryId;
+
     @NotNull private Long smallCategoryId;
 
     private String thumbNailImageUrl;
 
+    public UserFavorVo toUserFavorVo() {
+        return UserFavorVo.from(new UserTag(0L, this.largeCategoryId));
+    }
+
     @Builder
-    public UserFavor(Long userTagId, Long smallCategoryId, String thumbNailImageUrl) {
+    public UserFavor(
+            Long userTagId, Long largeCategoryId, Long smallCategoryId, String thumbNailImageUrl) {
         this.userTagId = userTagId;
+        this.largeCategoryId = largeCategoryId;
         this.smallCategoryId = smallCategoryId;
         this.thumbNailImageUrl = thumbNailImageUrl;
     }

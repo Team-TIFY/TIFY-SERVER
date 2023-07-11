@@ -32,7 +32,11 @@ public class UserTag extends AbstractTimeStamp {
 
     @NotNull private Long largeCategoryId;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "userTagId",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<UserFavor> favors = new ArrayList<>();
 
     @Builder

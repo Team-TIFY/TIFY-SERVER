@@ -45,11 +45,11 @@ public class User extends AbstractTimeStamp {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private List<Neighbor> neighbors = new ArrayList<>();
-    
+
     public UserInfoVo toUserInfoVo() {
         return UserInfoVo.from(this);
     }
-    
+
     public UserProfileVo toUserProfileVo() {
         return UserProfileVo.from(this);
     }
