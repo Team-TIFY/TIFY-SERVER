@@ -10,6 +10,7 @@ import tify.server.core.dto.ErrorDetail;
 @AllArgsConstructor
 public enum GlobalException implements BaseErrorCode {
     EXAMPLE_ERROR(BAD_REQUEST, "400-0", "에러 예시 입니다."),
+    METHOD_ARGUMENT_ERROR(BAD_REQUEST, "400-1", ""),
     INTERNAL_SERVER_ERROR(SERVER_ERROR, "500-1", "서버 내부 오류입니다."),
     EXPIRED_TOKEN_ERROR(UNAUTHORIZED, "401-1", "토큰이 만료되었습니다."),
     INVALID_TOKEN_ERROR(UNAUTHORIZED, "401-2", "올바르지 않은 토큰입니다."),

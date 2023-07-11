@@ -19,6 +19,8 @@ public class UserProfileVo {
 
     private final String job;
 
+    private final String gender;
+
     public static UserProfileVo from(User user) {
         return UserProfileVo.builder()
                 .userName(user.getProfile().getUserName())
@@ -26,6 +28,7 @@ public class UserProfileVo {
                 .thumbnail(user.getProfile().getThumbNail())
                 .birth(user.getProfile().getBirth())
                 .job(user.getProfile().getJob())
+                .gender(user.getProfile().getGender().getValue())
                 .build();
     }
 }
