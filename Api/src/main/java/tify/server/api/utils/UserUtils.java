@@ -16,8 +16,6 @@ public class UserUtils {
     private final UserAdaptor userAdaptor;
     private final UserTagAdaptor userTagAdaptor;
 
-    private Long UserTagId = 1L;
-
     public Long getUserId() {
         return SecurityUtils.getCurrentUserId();
     }
@@ -26,11 +24,4 @@ public class UserUtils {
         return userAdaptor.query(SecurityUtils.getCurrentUserId());
     }
 
-    //    public Long getUserTagId() {
-    //        return ??
-    //    }
-
-    public UserTag getUserTag() {
-        return userTagAdaptor.query(UserTagId);
-    }
 }

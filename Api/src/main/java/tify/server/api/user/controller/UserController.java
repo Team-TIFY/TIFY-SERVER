@@ -33,12 +33,6 @@ public class UserController {
         return userInfoUseCase.execute(userId);
     }
 
-    //    @Operation(summary = "내 취향 조회")
-    //    @GetMapping("/me/favor")
-    //    public UserFavorVo getMyUserFavor() {
-    //        return userFavorUseCase.execute();
-    //    }
-
     @Operation(summary = "내 취향 태그 조회")
     @GetMapping("/{userId}/tags")
     public List<UserTagVo> getUserTags(@PathVariable Long userId) {
