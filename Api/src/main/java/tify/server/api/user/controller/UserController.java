@@ -19,7 +19,7 @@ import tify.server.domain.common.vo.UserTagVo;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-@Tag(name = "1 [유저]")
+@Tag(name = "2. [유저]")
 public class UserController {
 
     private final UserInfoUseCase userInfoUseCase;
