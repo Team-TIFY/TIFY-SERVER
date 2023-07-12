@@ -7,7 +7,6 @@ import tify.server.api.config.security.SecurityUtils;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserTagAdaptor;
 import tify.server.domain.domains.user.domain.User;
-import tify.server.domain.domains.user.domain.UserTag;
 
 @Component
 @RequiredArgsConstructor
@@ -23,5 +22,4 @@ public class UserUtils {
     public User getUser() {
         return userAdaptor.query(SecurityUtils.getCurrentUserId());
     }
-
 }
