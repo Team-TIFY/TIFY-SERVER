@@ -24,7 +24,7 @@ import tify.server.api.auth.service.SignUpUseCase;
 @Slf4j
 @RequestMapping(value = "/auth")
 @RequiredArgsConstructor
-@Tag(name = "1-1. [인증]")
+@Tag(name = "1. [인증]")
 public class AuthController {
 
     private final SignUpUseCase signUpUseCase;

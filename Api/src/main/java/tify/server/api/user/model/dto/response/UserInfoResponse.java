@@ -1,4 +1,4 @@
-package tify.server.api.user.model.response;
+package tify.server.api.user.model.dto.response;
 
 
 import lombok.Builder;

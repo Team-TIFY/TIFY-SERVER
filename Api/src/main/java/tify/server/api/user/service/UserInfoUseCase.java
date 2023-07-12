@@ -2,17 +2,21 @@ package tify.server.api.user.service;
 
 
 import lombok.RequiredArgsConstructor;
-import tify.server.api.user.model.response.UserInfoResponse;
-import tify.server.api.utils.UserUtils;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.annotation.UseCase;
+import tify.server.domain.common.vo.UserProfileVo;
+import tify.server.domain.domains.user.adaptor.UserAdaptor;
+import tify.server.domain.domains.user.domain.User;
 
 @UseCase
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserInfoUseCase {
 
-    private final UserUtils userUtils;
+    private final UserAdaptor userAdaptor;
 
-    public UserInfoResponse execute() {
-        return UserInfoResponse.from(userUtils.getUser());
+    public UserProfileVo execute(Long userId) {
+        User user = userAdaptor.query(userId);
+        return user.toUserProfileVo();
     }
 }

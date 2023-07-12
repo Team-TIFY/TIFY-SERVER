@@ -22,13 +22,33 @@ public class Profile {
 
     private String birth;
 
+    private String job;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    public void updateProfile(
+            String userName, String thumbNail, String birth, String job, Gender gender) {
+        this.userName = userName;
+        this.thumbNail = thumbNail;
+        this.birth = birth;
+        this.job = job;
+        this.gender = gender;
+    }
+
     @Builder
-    public Profile(String userName, String email, String thumbNail) {
+    public Profile(
+            String userName,
+            String email,
+            String thumbNail,
+            String birth,
+            String job,
+            Gender gender) {
         this.userName = userName;
         this.email = email;
         this.thumbNail = thumbNail;
+        this.birth = birth;
+        this.job = job;
+        this.gender = gender;
     }
 }

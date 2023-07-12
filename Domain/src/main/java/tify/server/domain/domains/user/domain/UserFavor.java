@@ -1,11 +1,7 @@
 package tify.server.domain.domains.user.domain;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,14 +21,20 @@ public class UserFavor extends AbstractTimeStamp {
 
     @NotNull private Long userTagId;
 
-    @NotNull private Long smallCategoryId;
+    @Enumerated(EnumType.STRING)
+    private SmallCategory smallCategory;
 
-    private String thumbNailImageUrl;
+    //    public UserTagVo toUserFavorVo() {
+    //        return UserTagVo.from(new UserTag(0L, this.largeCategoryId));
+    //    }
 
     @Builder
-    public UserFavor(Long userTagId, Long smallCategoryId, String thumbNailImageUrl) {
+    public UserFavor(
+            Long userTagId,
+            Long largeCategoryId,
+            SmallCategory smallCategory,
+            String thumbNailImageUrl) {
         this.userTagId = userTagId;
-        this.smallCategoryId = smallCategoryId;
-        this.thumbNailImageUrl = thumbNailImageUrl;
+        this.smallCategory = smallCategory;
     }
 }

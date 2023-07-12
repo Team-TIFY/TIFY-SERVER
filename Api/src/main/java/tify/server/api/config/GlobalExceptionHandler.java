@@ -1,5 +1,6 @@
 package tify.server.api.config;
 
+import static tify.server.core.exception.GlobalException.METHOD_ARGUMENT_ERROR;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -7,9 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.UriComponentsBuilder;
 import tify.server.api.config.security.SecurityUtils;
@@ -24,7 +25,7 @@ import tify.server.core.exception.GlobalException;
 @RestControllerAdvice
 @Slf4j
 @RequiredArgsConstructor
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     private final SlackApiProvider slackApiProvider;
     private final SlackInternalErrorSender slackInternalErrorSender;
@@ -60,5 +61,23 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(errorDetail);
         return ResponseEntity.status(HttpStatus.valueOf(errorDetail.getStatusCode()))
                 .body(errorResponse);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> ArgumentNotValidHandle(
+            MethodArgumentNotValidException exception, HttpServletRequest req) {
+        ErrorDetail reason =
+                ErrorDetail.builder()
+                        .statusCode(METHOD_ARGUMENT_ERROR.getStatusCode())
+                        .errorCode(METHOD_ARGUMENT_ERROR.getErrorCode())
+                        .reason(
+                                exception
+                                        .getBindingResult()
+                                        .getAllErrors()
+                                        .get(0)
+                                        .getDefaultMessage())
+                        .build();
+        ErrorResponse errorResponse = new ErrorResponse(reason);
+        return ResponseEntity.status(errorResponse.getStatusCode()).body(errorResponse);
     }
 }
