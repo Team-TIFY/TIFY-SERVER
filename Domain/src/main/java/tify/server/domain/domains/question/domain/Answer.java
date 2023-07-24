@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.domain;
 
 
+import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -25,10 +26,15 @@ public class Answer extends AbstractTimeStamp {
 
     @NotNull private String content;
 
+    @NotNull
+    @Column(unique = true)
+    private LocalDate localDate;
+
     @Builder
-    public Answer(Long userId, Long questionId, String content) {
+    public Answer(Long userId, Long questionId, String content, LocalDate localDate) {
         this.userId = userId;
         this.questionId = questionId;
         this.content = content;
+        this.localDate = localDate;
     }
 }
