@@ -2,7 +2,9 @@ package tify.server.api.auth.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
 import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.service.LoginUseCase;
+import tify.server.api.auth.service.LogoutUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
 @RestController
@@ -30,6 +33,7 @@ public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
     private final LoginUseCase loginUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     @Deprecated
     @Operation(summary = "kakao oauth 링크발급 (백엔드용)", description = "kakao 링크를 받아볼수 있습니다.")
@@ -100,5 +104,12 @@ public class AuthController {
     @GetMapping("/token/refresh")
     public AuthResponse reissue(@RequestHeader(value = "refresh-token") String refreshToken) {
         return loginUseCase.reissue(refreshToken);
+    }
+
+    @SecurityRequirement(name = "access-token")
+    @Operation(summary = "로그아웃")
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest req) {
+        logoutUseCase.execute(req.getHeader("Authorization"));
     }
 }
