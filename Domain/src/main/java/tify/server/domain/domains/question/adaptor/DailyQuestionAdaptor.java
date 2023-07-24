@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.DailyQuestion;
@@ -21,5 +22,11 @@ public class DailyQuestionAdaptor {
 
     public DailyQuestion save(DailyQuestion dailyQuestion) {
         return dailyQuestionRepository.save(dailyQuestion);
+    }
+
+    public DailyQuestion queryByLoadingDate(LocalDate loadingDate) {
+        return dailyQuestionRepository
+                .findByLoadingDate(loadingDate)
+                .orElseThrow(() -> DailyQuestionNotFoundException.EXCEPTION);
     }
 }

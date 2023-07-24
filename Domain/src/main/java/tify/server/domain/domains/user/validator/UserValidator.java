@@ -19,8 +19,4 @@ public class UserValidator {
             throw new BaseException(ALREADY_EXIST_USER_ERROR);
         }
     }
-
-    public boolean canRegister(OauthInfo oauthInfo) {
-        return userAdaptor.existByOauthInfo(oauthInfo);
-    }
 }

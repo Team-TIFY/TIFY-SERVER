@@ -17,6 +17,7 @@ public enum GlobalException implements BaseErrorCode {
     EXPIRED_REFRESH_TOKEN_ERROR(UNAUTHORIZED, "401-3", "리프레시 토큰이 만료되었습니다."),
     NOT_VALID_ACCESS_TOKEN_ERROR(UNAUTHORIZED, "401-4", "알맞은 accessToken을 넣어주세요."),
     SECURITY_CONTEXT_NOT_FOUND_ERROR(SERVER_ERROR, "500-2", "Security Context 에러입니다."),
+    DATE_FORMAT_ERROR(BAD_REQUEST, "400-2", "날짜 형식을 확인해주세요."),
     FEIGN_SERVER_ERROR(BAD_REQUEST, "400-0", "Feign 요청 시 외부 서버 오류입니다."),
     OUTER_SERVER_UNAUTHORIZED_EXCEPTION(UNAUTHORIZED, "Feign-401-1", "외부 서버 401 오류입니다."),
     OUTER_SERVER_FORBIDDEN_EXCEPTION(FORBIDDEN, "Feign-403-1", "외부 서버 403 오류입니다."),

@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
@@ -21,5 +22,9 @@ public class AnswerAdaptor {
 
     public Answer save(Answer answer) {
         return answerRepository.save(answer);
+    }
+
+    public Optional<Answer> optionalQueryByQuestionAndUser(Long questionId, Long userId) {
+        return answerRepository.findByQuestionIdAndUserId(questionId, userId);
     }
 }
