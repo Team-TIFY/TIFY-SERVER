@@ -12,6 +12,9 @@ import tify.server.domain.domains.user.domain.LargeCategory;
 @Builder
 public class DailyQuestionInfoVo {
 
+    @Schema(description = "데일리 질문 id", example = "1")
+    private final Long questionId;
+
     @Schema(description = "데일리 질문 내용", example = "점심 먹고 난 뒤 가장 자주 마시는 음료는?")
     private final String content;
 
@@ -23,6 +26,7 @@ public class DailyQuestionInfoVo {
 
     public static DailyQuestionInfoVo from(DailyQuestion dailyQuestion) {
         return DailyQuestionInfoVo.builder()
+                .questionId(dailyQuestion.getId())
                 .content(dailyQuestion.getContent())
                 .category(dailyQuestion.getCategory())
                 .loadingData(dailyQuestion.getLoadingDate())
