@@ -49,6 +49,6 @@ public class UserDomainService {
     }
 
     public boolean userCanRegister(OauthInfo oauthInfo) {
-        return userValidator.canRegister(oauthInfo);
+        return !userAdaptor.existByOauthInfo(oauthInfo);
     }
 }
