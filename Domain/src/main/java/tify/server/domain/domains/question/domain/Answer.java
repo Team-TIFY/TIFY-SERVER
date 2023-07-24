@@ -19,13 +19,16 @@ public class Answer extends AbstractTimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull private Long questionId;
+
     @NotNull private Long userId;
 
     @NotNull private String content;
 
     @Builder
-    public Answer(Long userId, String content) {
+    public Answer(Long userId, Long questionId, String content) {
         this.userId = userId;
+        this.questionId = questionId;
         this.content = content;
     }
 }
