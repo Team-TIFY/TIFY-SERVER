@@ -112,4 +112,6 @@ public class AuthController {
     public void logout(HttpServletRequest req) {
         logoutUseCase.execute(req.getHeader("Authorization"));
     }
+
+    // Todo: 회원 탈퇴 구현
 }
