@@ -95,4 +95,10 @@ public class AuthController {
     public UserCanRegisterResponse getUserCanRegister(@RequestParam String idToken) {
         return signUpUseCase.retrieveUserCanRegister(idToken);
     }
+
+    @Operation(summary = "리프레시 토큰으로 accessToken 재발급")
+    @GetMapping("/token/refresh")
+    public AuthResponse reissue(@RequestHeader(value = "refresh-token") String refreshToken) {
+        return loginUseCase.reissue(refreshToken);
+    }
 }
