@@ -2,7 +2,7 @@ package tify.server.api.question.model.vo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.question.domain.DailyQuestion;
@@ -19,7 +19,7 @@ public class DailyQuestionInfoVo {
     private final LargeCategory category;
 
     @Schema(description = "데일리 질문 활성화 날짜")
-    private final Timestamp loadingData;
+    private final LocalDate loadingData;
 
     public static DailyQuestionInfoVo from(DailyQuestion dailyQuestion) {
         return DailyQuestionInfoVo.builder()
