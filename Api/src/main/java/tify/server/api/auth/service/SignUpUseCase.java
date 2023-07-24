@@ -8,6 +8,7 @@ import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
+import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.service.helper.KakaoOauthHelper;
 import tify.server.api.auth.service.helper.OIDCHelper;
 import tify.server.api.auth.service.helper.TokenGenerateHelper;
@@ -64,5 +65,10 @@ public class SignUpUseCase {
     public OauthTokenResponse getCredentialFromKaKaoTest(String code) {
 
         return OauthTokenResponse.from(kakaoOauthHelper.getOauthTokenTest(code));
+    }
+
+    public UserCanRegisterResponse retrieveUserCanRegister(String idToken) {
+        OauthInfo oauthInfo = kakaoOauthHelper.getOauthInfoByIdToken(idToken);
+        return UserCanRegisterResponse.from(userDomainService.userCanRegister(oauthInfo));
     }
 }

@@ -14,6 +14,7 @@ import tify.server.domain.domains.user.validator.UserValidator;
 
 @DomainService
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserDomainService {
 
     private final UserAdaptor userAdaptor;
@@ -41,10 +42,13 @@ public class UserDomainService {
                                                 .build()));
     }
 
-    @Transactional(readOnly = true)
     public User loginUser(OauthInfo oauthInfo) {
         return userRepository
                 .findByOauthInfo(oauthInfo)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    public boolean userCanRegister(OauthInfo oauthInfo) {
+        return userValidator.canRegister(oauthInfo);
     }
 }

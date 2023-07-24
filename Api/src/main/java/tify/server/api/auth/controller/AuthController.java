@@ -2,7 +2,9 @@ package tify.server.api.auth.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +19,9 @@ import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
+import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.service.LoginUseCase;
+import tify.server.api.auth.service.LogoutUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
 @RestController
@@ -29,6 +33,7 @@ public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
     private final LoginUseCase loginUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     @Deprecated
     @Operation(summary = "kakao oauth 링크발급 (백엔드용)", description = "kakao 링크를 받아볼수 있습니다.")
@@ -78,7 +83,6 @@ public class AuthController {
 
     @Deprecated
     @Operation(summary = "개발용 회원가입 및 로그인")
-    @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao/develop")
     public AuthResponse registerUserForTest(@RequestParam String code) {
         return signUpUseCase.registerUserByKakaoCode(code);
@@ -89,4 +93,25 @@ public class AuthController {
     public AuthResponse loginUser(@RequestParam String idToken) {
         return loginUseCase.execute(idToken);
     }
+
+    @Operation(summary = "유저가 회원가입 되어있는지 여부 조회")
+    @GetMapping("/oauth/register/valid")
+    public UserCanRegisterResponse getUserCanRegister(@RequestParam String idToken) {
+        return signUpUseCase.retrieveUserCanRegister(idToken);
+    }
+
+    @Operation(summary = "리프레시 토큰으로 accessToken 재발급")
+    @GetMapping("/token/refresh")
+    public AuthResponse reissue(@RequestHeader(value = "refresh-token") String refreshToken) {
+        return loginUseCase.reissue(refreshToken);
+    }
+
+    @SecurityRequirement(name = "access-token")
+    @Operation(summary = "로그아웃")
+    @PostMapping("/logout")
+    public void logout(HttpServletRequest req) {
+        logoutUseCase.execute(req.getHeader("Authorization"));
+    }
+
+    // Todo: 회원 탈퇴 구현
 }

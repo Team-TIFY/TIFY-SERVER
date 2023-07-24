@@ -33,23 +33,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }} .
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
 
-      - name: create remote directory
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.AWS_HOST }}
-          username: ubuntu
-          key: ${{ secrets.AWS_KEY }}
-          script: mkdir -p ~/srv/ubuntu/tify
-
-      - name: copy source via ssh key
-        uses: burnett01/rsync-deployments@4.1
-        with:
-          switches: -avzr --delete
-          remote_path: ~/srv/ubuntu/
-          remote_host: ${{ secrets.AWS_HOST }}
-          remote_user: ubuntu
-          remote_key: ${{ secrets.AWS_KEY }}
-
       # AWS EC2 Server Connect & Docker 명령어 실행
       - name: Deploy
         uses: appleboy/ssh-action@master
