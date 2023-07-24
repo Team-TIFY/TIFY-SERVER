@@ -17,6 +17,7 @@ import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
+import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.service.LoginUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
@@ -78,7 +79,6 @@ public class AuthController {
 
     @Deprecated
     @Operation(summary = "개발용 회원가입 및 로그인")
-    @Tag(name = "1-2. [카카오]")
     @GetMapping("/oauth/kakao/develop")
     public AuthResponse registerUserForTest(@RequestParam String code) {
         return signUpUseCase.registerUserByKakaoCode(code);
@@ -88,5 +88,11 @@ public class AuthController {
     @PostMapping("/oauth/kakao/login")
     public AuthResponse loginUser(@RequestParam String idToken) {
         return loginUseCase.execute(idToken);
+    }
+
+    @Operation(summary = "유저가 회원가입 되어있는지 여부 조회")
+    @GetMapping("/oauth/register/valid")
+    public UserCanRegisterResponse getUserCanRegister(@RequestParam String idToken) {
+        return signUpUseCase.retrieveUserCanRegister(idToken);
     }
 }
