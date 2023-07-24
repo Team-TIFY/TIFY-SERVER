@@ -23,6 +23,6 @@ public enum DailyQuestionException implements BaseErrorCode {
 
     @Override
     public ErrorDetail getErrorDetail() {
-        return null;
+        return ErrorDetail.of(statusCode, errorCode, reason);
     }
 }
