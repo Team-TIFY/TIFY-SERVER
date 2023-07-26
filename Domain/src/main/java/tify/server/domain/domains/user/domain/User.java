@@ -39,10 +39,6 @@ public class User extends AbstractTimeStamp {
             orphanRemoval = true)
     private List<UserTag> userTags = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private List<Neighbor> neighbors = new ArrayList<>();
-
     public UserInfoVo toUserInfoVo() {
         return UserInfoVo.from(this);
     }

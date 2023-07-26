@@ -1,14 +1,16 @@
 package tify.server.domain.domains.question.domain;
 
 
-import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.core.consts.Status;
 import tify.server.domain.domains.AbstractTimeStamp;
+
+import static tify.server.core.consts.Status.*;
 
 @Getter
 @Entity
@@ -25,16 +27,19 @@ public class Answer extends AbstractTimeStamp {
     @NotNull private Long userId;
 
     @NotNull private String content;
-
-    @NotNull
-    @Column(unique = true)
-    private LocalDate localDate;
-
+    
+    @Enumerated(EnumType.STRING)
+    private Status isDeleted;
+    
     @Builder
-    public Answer(Long userId, Long questionId, String content, LocalDate localDate) {
+    public Answer(Long userId, Long questionId, String content) {
         this.userId = userId;
         this.questionId = questionId;
         this.content = content;
-        this.localDate = localDate;
+        this.isDeleted = N;
+    }
+    
+    public void delete() {
+        this.isDeleted = Y;
     }
 }

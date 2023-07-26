@@ -3,7 +3,6 @@ package tify.server.api.answer.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.answer.mapper.AnswerMapper;
 import tify.server.api.answer.model.response.RetrieveAnswerCountResponse;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
@@ -16,12 +15,11 @@ public class RetrieveDailyAnswerCountUseCase {
 
     private final AnswerAdaptor answerAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
-    private final AnswerMapper answerMapper;
 
     @Transactional(readOnly = true)
     public RetrieveAnswerCountResponse execute(Long questionId) {
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.query(questionId);
         Long answerCount = answerAdaptor.queryAnswerCount(questionId);
-        return answerMapper.toRetrieveAnswerCountResponse(answerCount);
+        return RetrieveAnswerCountResponse.of(answerCount);
     }
 }

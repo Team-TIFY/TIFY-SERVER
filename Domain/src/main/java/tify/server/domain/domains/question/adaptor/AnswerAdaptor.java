@@ -30,14 +30,9 @@ public class AnswerAdaptor {
     public Optional<Answer> optionalQueryByQuestionAndUser(Long questionId, Long userId) {
         return answerRepository.findByQuestionIdAndUserId(questionId, userId);
     }
-
+    
     public Long queryAnswerCount(Long questionId) {
         return answerRepository.countAnswer(questionId);
-    }
-
-    public List<Answer> queryAllAnswer(Long questionId) {
-        Long countAnswer = queryAnswerCount(questionId);
-        return answerRepository.findAllAnswer(questionId);
     }
 
     public Slice<Answer> searchAnswer(AnswerCondition answerCondition) {
