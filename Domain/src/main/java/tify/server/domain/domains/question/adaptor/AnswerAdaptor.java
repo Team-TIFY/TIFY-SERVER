@@ -1,7 +1,6 @@
 package tify.server.domain.domains.question.adaptor;
 
 
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -30,7 +29,7 @@ public class AnswerAdaptor {
     public Optional<Answer> optionalQueryByQuestionAndUser(Long questionId, Long userId) {
         return answerRepository.findByQuestionIdAndUserId(questionId, userId);
     }
-    
+
     public Long queryAnswerCount(Long questionId) {
         return answerRepository.countAnswer(questionId);
     }
