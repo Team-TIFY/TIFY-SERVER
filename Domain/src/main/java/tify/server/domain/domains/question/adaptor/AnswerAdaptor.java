@@ -3,8 +3,11 @@ package tify.server.domain.domains.question.adaptor;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
+import tify.server.domain.domains.question.dto.condition.AnswerCondition;
+import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.question.exception.AnswerNotFoundException;
 import tify.server.domain.domains.question.repository.AnswerRepository;
 
@@ -26,5 +29,13 @@ public class AnswerAdaptor {
 
     public Optional<Answer> optionalQueryByQuestionAndUser(Long questionId, Long userId) {
         return answerRepository.findByQuestionIdAndUserId(questionId, userId);
+    }
+
+    public Long queryAnswerCount(Long questionId) {
+        return answerRepository.countAnswer(questionId);
+    }
+
+    public Slice<AnswerVo> searchAnswer(AnswerCondition answerCondition) {
+        return answerRepository.searchToPage(answerCondition);
     }
 }
