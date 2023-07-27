@@ -25,7 +25,7 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
                         .select(Projections.constructor(AnswerVo.class, answer, user))
                         .from(answer)
                         .join(user)
-                        .on(user.id.in(answerCondition.getNeighbors()))
+                        .on(user.id.eq(answer.userId))
                         .where(
                                 questionIdEq(answerCondition.getQuestionId()),
                                 answer.userId.in(answerCondition.getNeighbors()),
