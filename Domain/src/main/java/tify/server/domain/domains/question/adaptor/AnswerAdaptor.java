@@ -7,6 +7,7 @@ import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
+import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.question.exception.AnswerNotFoundException;
 import tify.server.domain.domains.question.repository.AnswerRepository;
 
@@ -34,7 +35,7 @@ public class AnswerAdaptor {
         return answerRepository.countAnswer(questionId);
     }
 
-    public Slice<Answer> searchAnswer(AnswerCondition answerCondition) {
+    public Slice<AnswerVo> searchAnswer(AnswerCondition answerCondition) {
         return answerRepository.searchToPage(answerCondition);
     }
 }

@@ -13,9 +13,9 @@ import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.DailyQuestionAdaptor;
-import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
+import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 
@@ -40,7 +40,7 @@ public class RetrieveDailyAnswerUseCase {
         neighbors.add(currentUserId);
         AnswerCondition answerCondition =
                 new AnswerCondition(dailyQuestion.getId(), neighbors, pageable);
-        Slice<Answer> answers = answerAdaptor.searchAnswer(answerCondition);
+        Slice<AnswerVo> answers = answerAdaptor.searchAnswer(answerCondition);
         return SliceResponse.of(answers.map(answer -> RetrieveAnswerDTO.of(answer, currentUserId)));
     }
 }

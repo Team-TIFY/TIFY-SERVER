@@ -4,7 +4,7 @@ package tify.server.api.answer.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import tify.server.domain.domains.question.domain.Answer;
+import tify.server.domain.domains.question.dto.model.AnswerVo;
 
 @Getter
 @Builder
@@ -22,12 +22,12 @@ public class AnswerInfoVo {
     @Schema(description = "답변 내용", example = "content")
     private String content;
 
-    public static AnswerInfoVo from(Answer answer) {
+    public static AnswerInfoVo from(AnswerVo answer) {
         return AnswerInfoVo.builder()
-                .id(answer.getId())
-                .questionId(answer.getQuestionId())
-                .userId(answer.getUserId())
-                .content(answer.getContent())
+                .id(answer.getAnswer().getId())
+                .questionId(answer.getAnswer().getQuestionId())
+                .userId(answer.getUser().getId())
+                .content(answer.getAnswer().getContent())
                 .build();
     }
 }

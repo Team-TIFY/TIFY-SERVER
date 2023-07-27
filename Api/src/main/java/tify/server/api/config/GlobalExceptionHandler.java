@@ -39,12 +39,12 @@ public class GlobalExceptionHandler {
                 UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(req))
                         .build()
                         .toUriString();
-        log.error("asdf", e);
-        //                "서버 내부 오류 발생: {} {} errMessage={} \n detail={}\n",
-        //                req.getMethod(),
-        //                req.getRequestURI(),
-        //                e.getMessage(),
-        //                e.getCause());
+        log.error(
+                "서버 내부 오류 발생: {} {} errMessage={} \n detail={}\n",
+                req.getMethod(),
+                req.getRequestURI(),
+                e.getMessage(),
+                e.getCause());
         GlobalException internalServerError = GlobalException.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = new ErrorResponse(internalServerError.getErrorDetail());
 
