@@ -12,6 +12,7 @@ import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.service.UpdateUserProfileUseCase;
 import tify.server.api.user.service.UserFavorUseCase;
 import tify.server.api.user.service.UserInfoUseCase;
+import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 
@@ -43,5 +44,11 @@ public class UserController {
     @PutMapping("/profile")
     public void putUserProfile(@RequestBody @Valid PutUserProfileRequest body) {
         updateUserProfileUseCase.execute(body);
+    }
+
+    @Operation(summary = "유저 정보 조회 (토큰)")
+    @GetMapping
+    public UserInfoVo getUserProfileInfoByToken() {
+        return userInfoUseCase.executeByToken();
     }
 }

@@ -20,4 +20,8 @@ public enum Gender {
                 .findFirst()
                 .orElseThrow(() -> UserGenderNotFoundException.Exception);
     }
+
+    public static String toValue(Gender gender) {
+        return (gender != null) ? gender.getValue() : null;
+    }
 }

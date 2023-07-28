@@ -3,6 +3,7 @@ package tify.server.domain.common.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import tify.server.domain.domains.user.domain.Gender;
 import tify.server.domain.domains.user.domain.User;
 
 @Getter
@@ -28,7 +29,7 @@ public class UserProfileVo {
                 .thumbnail(user.getProfile().getThumbNail())
                 .birth(user.getProfile().getBirth())
                 .job(user.getProfile().getJob())
-                .gender(user.getProfile().getGender().getValue())
+                .gender(Gender.toValue(user.getProfile().getGender()))
                 .build();
     }
 }

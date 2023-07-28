@@ -4,6 +4,7 @@ package tify.server.domain.common.vo;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import tify.server.domain.domains.user.domain.Gender;
 import tify.server.domain.domains.user.domain.User;
 
 @Getter
@@ -33,7 +34,7 @@ public class UserInfoVo {
                 .birth(user.getProfile().getBirth())
                 .job(user.getProfile().getJob())
                 .createdAt(user.getCreatedAt().toLocalDateTime())
-                .gender(user.getProfile().getGender().getValue())
+                .gender(Gender.toValue(user.getProfile().getGender()))
                 .build();
     }
 }
