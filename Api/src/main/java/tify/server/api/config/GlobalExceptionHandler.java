@@ -21,6 +21,7 @@ import tify.server.core.dto.ErrorResponse;
 import tify.server.core.exception.BaseErrorCode;
 import tify.server.core.exception.BaseException;
 import tify.server.core.exception.GlobalException;
+import tify.server.core.exception.OuterServerException;
 
 @RestControllerAdvice
 @Slf4j
@@ -39,17 +40,27 @@ public class GlobalExceptionHandler {
                 UriComponentsBuilder.fromHttpRequest(new ServletServerHttpRequest(req))
                         .build()
                         .toUriString();
-        log.error(
-                "서버 내부 오류 발생: {} {} errMessage={} \n detail={}\n",
-                req.getMethod(),
-                req.getRequestURI(),
-                e.getMessage(),
-                e.getCause());
+        //        log.error(
+        //                "서버 내부 오류 발생: {} {} errMessage={} \n detail={}\n",
+        //                req.getMethod(),
+        //                req.getRequestURI(),
+        //                e.getMessage(),
+        //                e.getCause());
+        log.error(String.valueOf(e));
         GlobalException internalServerError = GlobalException.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = new ErrorResponse(internalServerError.getErrorDetail());
 
         slackInternalErrorSender.execute(cachingRequest, e, userId);
         return ResponseEntity.status(HttpStatus.valueOf(internalServerError.getStatusCode()))
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(OuterServerException.class)
+    protected ResponseEntity<ErrorResponse> outerServerExceptionHandle(OuterServerException e) {
+        ErrorDetail errorDetail =
+                ErrorDetail.of(e.getStatusCode(), e.getErrorCode(), e.getReason());
+        ErrorResponse errorResponse = new ErrorResponse(errorDetail);
+        return ResponseEntity.status(HttpStatus.valueOf(errorDetail.getStatusCode()))
                 .body(errorResponse);
     }
 
