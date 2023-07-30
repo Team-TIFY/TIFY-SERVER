@@ -8,7 +8,6 @@ import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.UserFavor;
 import tify.server.domain.domains.user.exception.UserFavorNotFoundException;
-import tify.server.domain.domains.user.repository.UserFavorCustomRepository;
 import tify.server.domain.domains.user.repository.UserFavorRepository;
 
 @Adaptor
