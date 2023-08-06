@@ -23,6 +23,9 @@ public class User extends AbstractTimeStamp {
     @Column(name = "tbl_user_id")
     private Long id;
 
+    @Column(unique = true)
+    private String userId;
+
     @Embedded private Profile profile;
 
     @Embedded private OauthInfo oauthInfo;
@@ -53,5 +56,15 @@ public class User extends AbstractTimeStamp {
         this.oauthInfo = oauthInfo;
         this.accountRole = AccountRole.USER;
         this.expoToken = expoToken;
+    }
+
+    public void onBoarding(
+            String username,
+            String userId,
+            String birth,
+            Gender gender,
+            OnBoardingState onBoardingState) {
+        this.profile.onBoardingProfile(username, birth, gender, onBoardingState);
+        this.userId = userId;
     }
 }
