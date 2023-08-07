@@ -9,4 +9,6 @@ import tify.server.domain.domains.user.domain.User;
 public interface UserRepository extends JpaRepository<User, Long>, UserCustomRepository {
 
     Optional<User> findByOauthInfo(OauthInfo oauthInfo);
+
+    Optional<User> findByUserId(String userId);
 }

@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.adaptor;
 
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.OauthInfo;
@@ -24,5 +25,9 @@ public class UserAdaptor {
 
     public User query(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    public Optional<User> queryByUserId(String userId) {
+        return userRepository.findByUserId(userId);
     }
 }

@@ -9,10 +9,12 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
+import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.service.UpdateUserProfileUseCase;
 import tify.server.api.user.service.UserFavorFilterUseCase;
 import tify.server.api.user.service.UserFavorUseCase;
 import tify.server.api.user.service.UserInfoUseCase;
+import tify.server.api.user.service.UserOnBoardingUseCase;
 import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
@@ -30,6 +32,7 @@ public class UserController {
     private final UserFavorUseCase userFavorUseCase;
     private final UpdateUserProfileUseCase updateUserProfileUseCase;
     private final UserFavorFilterUseCase userFavorFilterUseCase;
+    private final UserOnBoardingUseCase userOnBoardingUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -44,6 +47,7 @@ public class UserController {
         return userFavorUseCase.execute(userId);
     }
 
+    @Deprecated
     @Operation(summary = "유저 정보 수정")
     @PutMapping("/profile")
     public void putUserProfile(@RequestBody @Valid PutUserProfileRequest body) {
@@ -61,5 +65,18 @@ public class UserController {
     public List<UserFavorVo> getUserTagsByLargeCategory(
             @PathVariable Long userId, @RequestParam LargeCategory largeCategory) {
         return userFavorFilterUseCase.execute(userId, largeCategory);
+    }
+
+    @Operation(summary = "온보딩")
+    @PutMapping("/{userId}")
+    public void userOnBoarding(
+            @RequestBody @Valid UserOnBoardingRequest body, @PathVariable Long userId) {
+        userOnBoardingUseCase.execute(body, userId);
+    }
+
+    @Operation(summary = "유저 id 중복 검사")
+    @GetMapping("/id/check")
+    public boolean getValidUserId(@RequestParam String id) {
+        return userOnBoardingUseCase.checkUserId(id);
     }
 }

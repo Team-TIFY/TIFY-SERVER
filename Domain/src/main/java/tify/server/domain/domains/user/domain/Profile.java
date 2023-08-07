@@ -27,6 +27,9 @@ public class Profile {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
+    private OnBoardingState onBoardingState;
+
     public void updateProfile(
             String userName, String thumbNail, String birth, String job, Gender gender) {
         this.userName = userName;
@@ -34,6 +37,14 @@ public class Profile {
         this.birth = birth;
         this.job = job;
         this.gender = gender;
+    }
+
+    public void onBoardingProfile(
+            String username, String birth, Gender gender, OnBoardingState onBoardingState) {
+        this.userName = username;
+        this.birth = birth;
+        this.gender = gender;
+        this.onBoardingState = onBoardingState;
     }
 
     @Builder
