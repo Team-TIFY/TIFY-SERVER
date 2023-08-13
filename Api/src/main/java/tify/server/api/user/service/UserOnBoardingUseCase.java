@@ -8,7 +8,6 @@ import tify.server.core.annotation.UseCase;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.Gender;
-import tify.server.domain.domains.user.domain.OnBoardingState;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.exception.UserException;
 
@@ -24,12 +23,13 @@ public class UserOnBoardingUseCase {
             throw new BaseException(UserException.ALREADY_EXIST_USER_ERROR);
         }
         User user = userAdaptor.query(userId);
+        System.out.println(" = " + body.getOnBoardingState());
         user.onBoarding(
                 body.getUsername(),
                 body.getId(),
                 body.getBirth(),
                 Gender.toGender(body.getGender()),
-                OnBoardingState.toEnum(body.getOnBoardingState()));
+                userAdaptor.queryOnBoardingStatusByName(body.getOnBoardingState()));
     }
 
     public boolean checkUserId(String userId) {

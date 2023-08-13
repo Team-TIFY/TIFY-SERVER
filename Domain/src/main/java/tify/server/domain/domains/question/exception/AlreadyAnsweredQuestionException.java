@@ -8,6 +8,6 @@ public class AlreadyAnsweredQuestionException extends BaseException {
     public static final BaseException EXCEPTION = new AlreadyAnsweredQuestionException();
 
     private AlreadyAnsweredQuestionException() {
-        super(DailyQuestionException.ALREADY_ANSWERED_QUESTION_ERROR);
+        super(QuestionException.ALREADY_ANSWERED_QUESTION_ERROR);
     }
 }

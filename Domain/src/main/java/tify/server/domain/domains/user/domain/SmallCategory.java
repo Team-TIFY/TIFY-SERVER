@@ -1,5 +1,8 @@
 package tify.server.domain.domains.user.domain;
 
+import static tify.server.domain.domains.user.domain.LargeCategory.BEAUTY;
+import static tify.server.domain.domains.user.domain.LargeCategory.FASHION;
+import static tify.server.domain.domains.user.domain.LargeCategory.HOBBY;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,13 +10,18 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum SmallCategory {
-    SPICY("spicy", "PERFUME"),
-    WOODY("woody", "PERFUME"), // FRAGRANCE로 업데이트 시 향수, 보습겸용, 공간향으로 업데이트 예정
-    SUMMERCOOL("summercool", "MAEKUP"),
-    PERIPERA("peripera", "MAKEUP"),
-    CASUAL("casual", "CLOTHES"),
-    FORMAL("formal", "CLOTHES");
+    MAKEUP("메이크업", BEAUTY),
+    FRAGRANCE("프레그런스", BEAUTY),
+    CLOTHES("의류", FASHION),
+    FASHION_PRODUCT("패션 소품", FASHION),
+    BAG("가방", FASHION),
+    ACCESSORY("악세서리", FASHION),
+    COOKING("요리", HOBBY),
+    EXERCISE("운동", HOBBY),
+    TRAVEL("여행", HOBBY),
+    CULTURE_LIFE("문화생활", HOBBY),
+    ;
 
     final String value;
-    final String largeCategory;
+    final LargeCategory largeCategory;
 }
