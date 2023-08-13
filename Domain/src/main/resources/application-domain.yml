@@ -4,7 +4,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:3306/${DB_NAME}?useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&tinyInt1isBit=false
+    url: jdbc:mysql://${MYSQL_HOST}:3306/${DB_NAME}?useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&tinyInt1isBit=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maxLifetime: 580000

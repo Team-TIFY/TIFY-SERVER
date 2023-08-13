@@ -42,6 +42,8 @@ public class User extends AbstractTimeStamp {
             orphanRemoval = true)
     private List<UserTag> userTags = new ArrayList<>();
 
+    private Long onBoardingStatusId;
+
     public UserInfoVo toUserInfoVo() {
         return UserInfoVo.from(this);
     }
@@ -63,8 +65,9 @@ public class User extends AbstractTimeStamp {
             String userId,
             String birth,
             Gender gender,
-            OnBoardingState onBoardingState) {
-        this.profile.onBoardingProfile(username, birth, gender, onBoardingState);
+            UserOnBoardingStatus onBoardingStatus) {
+        this.profile.onBoardingProfile(username, birth, gender);
         this.userId = userId;
+        this.onBoardingStatusId = onBoardingStatus.getId();
     }
 }
