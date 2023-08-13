@@ -6,5 +6,6 @@ import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 
 public interface FavorAnswerRepository extends JpaRepository<FavorAnswer, Long> {
-  boolean existByFavorQuestionCategoryAndUserId(FavorQuestionCategory favorQuestionCategory, Long userId);
+    boolean existsByFavorQuestion_FavorQuestionCategoryAndUserId(
+            FavorQuestionCategory favorQuestionCategory, Long userId);
 }

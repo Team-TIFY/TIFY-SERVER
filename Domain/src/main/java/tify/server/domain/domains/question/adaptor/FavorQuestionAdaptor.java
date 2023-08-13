@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
@@ -12,8 +13,6 @@ import tify.server.domain.domains.question.exception.FavorQuestionNotFoundExcept
 import tify.server.domain.domains.question.repository.FavorAnswerRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionCategoryRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionRepository;
-
-import java.util.List;
 
 @Adaptor
 @RequiredArgsConstructor
@@ -28,17 +27,21 @@ public class FavorQuestionAdaptor {
                 .findById(favorAnswerId)
                 .orElseThrow(() -> FavorAnswerNotFoundException.EXCEPTION);
     }
-    
-    public FavorAnswer save(FavorAnswer favorAnswer) { return favorAnswerRepository.save(favorAnswer);}
-    
+
+    public FavorAnswer save(FavorAnswer favorAnswer) {
+        return favorAnswerRepository.save(favorAnswer);
+    }
+
     public void favorAnswerSaveAll(List<FavorAnswer> favorAnswers) {
         favorAnswerRepository.saveAll(favorAnswers);
     }
-    
-    public boolean existQueryByFavorQuestionAndUser(FavorQuestionCategory favorQuestionCategory, Long userId) {
-        return favorAnswerRepository.existByFavorQuestionCategoryAndUserId(favorQuestionCategory, userId);
+
+    public boolean existQueryByFavorQuestionCategoryAndUser(
+            FavorQuestionCategory favorQuestionCategory, Long userId) {
+        return favorAnswerRepository.existsByFavorQuestion_FavorQuestionCategoryAndUserId(
+                favorQuestionCategory, userId);
     }
-    
+
     public FavorQuestionCategory queryFavorQuestionCategory(Long favorQuestionCategoryId) {
         return favorQuestionCategoryRepository
                 .findById(favorQuestionCategoryId)
@@ -49,6 +52,11 @@ public class FavorQuestionAdaptor {
         return favorQuestionRepository
                 .findById(favorQuestionId)
                 .orElseThrow(() -> FavorQuestionNotFoundException.EXCEPTION);
+    }
+
+    public List<FavorQuestion> queryFavorQuestionByCategoryName(String categoryName) {
+        return favorQuestionRepository.findAllByFavorQuestionCategory_NameOrderByNumber(
+                categoryName);
     }
 
     public FavorQuestion queryFavorQuestionByCategoryNameAndNumber(
