@@ -24,10 +24,10 @@ import tify.server.core.converter.DateTimeConverter;
 
 @RestController
 @Slf4j
-@RequestMapping(value = "/questions")
+@RequestMapping(value = "/daily-questions")
 @SecurityRequirement(name = "access-token")
 @RequiredArgsConstructor
-@Tag(name = "3. [질문]")
+@Tag(name = "3. [데일리 질문]")
 public class QuestionController {
 
     private final RetrieveDailyQuestionUseCase retrieveDailyQuestionUseCase;
