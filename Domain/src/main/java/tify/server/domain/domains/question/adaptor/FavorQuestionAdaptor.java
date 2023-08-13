@@ -38,4 +38,20 @@ public class FavorQuestionAdaptor {
                 .findById(favorQuestionId)
                 .orElseThrow(() -> FavorQuestionNotFoundException.EXCEPTION);
     }
+
+    public FavorQuestion queryFavorQuestionByCategoryNameAndNumber(
+            String favorQuestionCategoryName, Long number) {
+        return favorQuestionRepository
+                .findByFavorQuestionCategory_NameAndNumber(
+                        queryFavorQuestionCategoryByName(favorQuestionCategoryName).getName(),
+                        number)
+                .orElseThrow(() -> FavorQuestionNotFoundException.EXCEPTION);
+    }
+
+    public FavorQuestionCategory queryFavorQuestionCategoryByName(
+            String favorQuestionCategoryName) {
+        return favorQuestionCategoryRepository
+                .findByName(favorQuestionCategoryName)
+                .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
+    }
 }
