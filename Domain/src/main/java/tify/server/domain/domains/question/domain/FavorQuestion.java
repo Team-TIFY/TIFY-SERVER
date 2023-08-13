@@ -1,6 +1,8 @@
 package tify.server.domain.domains.question.domain;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,6 +33,9 @@ public class FavorQuestion extends AbstractTimeStamp {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "favorQuestionCategoryId")
     private FavorQuestionCategory favorQuestionCategory;
+
+    @OneToMany(mappedBy = "favorQuestion", orphanRemoval = true)
+    private final List<FavorAnswer> favorAnswers = new ArrayList<>();
 
     private Long number;
 

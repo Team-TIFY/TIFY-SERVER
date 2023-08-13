@@ -22,6 +22,8 @@ public class UserProfileVo {
 
     private final String gender;
 
+    private final String onBoardingStatus;
+
     public static UserProfileVo from(User user) {
         return UserProfileVo.builder()
                 .userName(user.getProfile().getUserName())
@@ -30,6 +32,7 @@ public class UserProfileVo {
                 .birth(user.getProfile().getBirth())
                 .job(user.getProfile().getJob())
                 .gender(Gender.toValue(user.getProfile().getGender()))
+                .onBoardingStatus(user.getOnBoardingStatus().getName())
                 .build();
     }
 }

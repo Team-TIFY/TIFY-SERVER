@@ -42,7 +42,9 @@ public class User extends AbstractTimeStamp {
             orphanRemoval = true)
     private List<UserTag> userTags = new ArrayList<>();
 
-    private Long onBoardingStatusId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "onBoardingStatusId")
+    private UserOnBoardingStatus onBoardingStatus;
 
     public UserInfoVo toUserInfoVo() {
         return UserInfoVo.from(this);
@@ -68,6 +70,6 @@ public class User extends AbstractTimeStamp {
             UserOnBoardingStatus onBoardingStatus) {
         this.profile.onBoardingProfile(username, birth, gender);
         this.userId = userId;
-        this.onBoardingStatusId = onBoardingStatus.getId();
+        this.onBoardingStatus = onBoardingStatus;
     }
 }

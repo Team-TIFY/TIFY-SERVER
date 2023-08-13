@@ -26,6 +26,8 @@ public class UserInfoVo {
 
     private final String gender;
 
+    private final String onBoardingStatus;
+
     public static UserInfoVo from(User user) {
         return UserInfoVo.builder()
                 .userId(user.getId())
@@ -35,6 +37,7 @@ public class UserInfoVo {
                 .job(user.getProfile().getJob())
                 .createdAt(user.getCreatedAt().toLocalDateTime())
                 .gender(Gender.toValue(user.getProfile().getGender()))
+                .onBoardingStatus(user.getOnBoardingStatus().getName())
                 .build();
     }
 }

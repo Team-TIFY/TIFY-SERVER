@@ -41,7 +41,7 @@ public class FavorQuestionCategory extends AbstractTimeStamp {
     @Enumerated(EnumType.STRING)
     private DetailCategory detailCategory;
 
-    @OneToMany(mappedBy = "favorQuestionCategory")
+    @OneToMany(mappedBy = "favorQuestionCategory", orphanRemoval = true)
     private final List<FavorQuestion> favorQuestions = new ArrayList<>();
 
     @Builder

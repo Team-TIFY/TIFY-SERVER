@@ -8,6 +8,6 @@ public class AnswerNotFoundException extends BaseException {
     public static final BaseException EXCEPTION = new AnswerNotFoundException();
 
     private AnswerNotFoundException() {
-        super(DailyQuestionException.ANSWER_NOT_FOUND_ERROR);
+        super(QuestionException.ANSWER_NOT_FOUND_ERROR);
     }
 }

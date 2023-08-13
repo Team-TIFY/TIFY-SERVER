@@ -8,6 +8,6 @@ public class NotValidTodayQuestionException extends BaseException {
     public static final BaseException EXCEPTION = new NotValidTodayQuestionException();
 
     private NotValidTodayQuestionException() {
-        super(DailyQuestionException.NOT_VALID_TODAY_QUESTION_ERROR);
+        super(QuestionException.NOT_VALID_TODAY_QUESTION_ERROR);
     }
 }
