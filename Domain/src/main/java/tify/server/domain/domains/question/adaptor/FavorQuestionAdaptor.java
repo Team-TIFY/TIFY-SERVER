@@ -13,6 +13,8 @@ import tify.server.domain.domains.question.repository.FavorAnswerRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionCategoryRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionRepository;
 
+import java.util.List;
+
 @Adaptor
 @RequiredArgsConstructor
 public class FavorQuestionAdaptor {
@@ -26,7 +28,17 @@ public class FavorQuestionAdaptor {
                 .findById(favorAnswerId)
                 .orElseThrow(() -> FavorAnswerNotFoundException.EXCEPTION);
     }
-
+    
+    public FavorAnswer save(FavorAnswer favorAnswer) { return favorAnswerRepository.save(favorAnswer);}
+    
+    public void favorAnswerSaveAll(List<FavorAnswer> favorAnswers) {
+        favorAnswerRepository.saveAll(favorAnswers);
+    }
+    
+    public boolean existQueryByFavorQuestionAndUser(FavorQuestionCategory favorQuestionCategory, Long userId) {
+        return favorAnswerRepository.existByFavorQuestionCategoryAndUserId(favorQuestionCategory, userId);
+    }
+    
     public FavorQuestionCategory queryFavorQuestionCategory(Long favorQuestionCategoryId) {
         return favorQuestionCategoryRepository
                 .findById(favorQuestionCategoryId)

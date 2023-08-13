@@ -42,7 +42,7 @@ public class QuestionController {
         return GetDailyQuestionResponse.from(dailyQuestionInfoVo);
     }
 
-    @Operation(summary = "질문에 답변을 작성합니다.")
+    @Operation(summary = "데일리 질문에 답변을 작성합니다.")
     @PostMapping("/{questionId}/answers")
     public void postAnswer(
             @PathVariable Long questionId, @RequestBody @Valid PostAnswerRequest body) {
