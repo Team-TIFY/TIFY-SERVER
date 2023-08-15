@@ -24,10 +24,10 @@ import tify.server.core.converter.DateTimeConverter;
 
 @RestController
 @Slf4j
-@RequestMapping(value = "/questions")
+@RequestMapping(value = "/daily-questions")
 @SecurityRequirement(name = "access-token")
 @RequiredArgsConstructor
-@Tag(name = "3. [질문]")
+@Tag(name = "3. [데일리 질문]")
 public class QuestionController {
 
     private final RetrieveDailyQuestionUseCase retrieveDailyQuestionUseCase;
@@ -42,7 +42,7 @@ public class QuestionController {
         return GetDailyQuestionResponse.from(dailyQuestionInfoVo);
     }
 
-    @Operation(summary = "질문에 답변을 작성합니다.")
+    @Operation(summary = "데일리 질문에 답변을 작성합니다.")
     @PostMapping("/{questionId}/answers")
     public void postAnswer(
             @PathVariable Long questionId, @RequestBody @Valid PostAnswerRequest body) {

@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
@@ -27,6 +28,20 @@ public class FavorQuestionAdaptor {
                 .orElseThrow(() -> FavorAnswerNotFoundException.EXCEPTION);
     }
 
+    public FavorAnswer save(FavorAnswer favorAnswer) {
+        return favorAnswerRepository.save(favorAnswer);
+    }
+
+    public void favorAnswerSaveAll(List<FavorAnswer> favorAnswers) {
+        favorAnswerRepository.saveAll(favorAnswers);
+    }
+
+    public boolean existQueryByFavorQuestionCategoryAndUser(
+            FavorQuestionCategory favorQuestionCategory, Long userId) {
+        return favorAnswerRepository.existsByFavorQuestion_FavorQuestionCategoryAndUserId(
+                favorQuestionCategory, userId);
+    }
+
     public FavorQuestionCategory queryFavorQuestionCategory(Long favorQuestionCategoryId) {
         return favorQuestionCategoryRepository
                 .findById(favorQuestionCategoryId)
@@ -37,5 +52,26 @@ public class FavorQuestionAdaptor {
         return favorQuestionRepository
                 .findById(favorQuestionId)
                 .orElseThrow(() -> FavorQuestionNotFoundException.EXCEPTION);
+    }
+
+    public List<FavorQuestion> queryFavorQuestionByCategoryName(String categoryName) {
+        return favorQuestionRepository.findAllByFavorQuestionCategory_NameOrderByNumber(
+                categoryName);
+    }
+
+    public FavorQuestion queryFavorQuestionByCategoryNameAndNumber(
+            String favorQuestionCategoryName, Long number) {
+        return favorQuestionRepository
+                .findByFavorQuestionCategory_NameAndNumber(
+                        queryFavorQuestionCategoryByName(favorQuestionCategoryName).getName(),
+                        number)
+                .orElseThrow(() -> FavorQuestionNotFoundException.EXCEPTION);
+    }
+
+    public FavorQuestionCategory queryFavorQuestionCategoryByName(
+            String favorQuestionCategoryName) {
+        return favorQuestionCategoryRepository
+                .findByName(favorQuestionCategoryName)
+                .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
     }
 }
