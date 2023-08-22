@@ -23,9 +23,11 @@ public class UserValidator {
             throw new BaseException(ALREADY_EXIST_USER_ERROR);
         }
     }
-    
+
     public void isNeighbor(Long userId, Long neighborId) {
-        if (neighborAdaptor.queryAllByFromUserId(userId).stream().map(Neighbor::getToUserId).noneMatch(id -> id == neighborId)) {
+        if (neighborAdaptor.queryAllByFromUserId(userId).stream()
+                .map(Neighbor::getToUserId)
+                .noneMatch(id -> id == neighborId)) {
             throw new BaseException(NOT_EXIST_NEIGHBOR_ERROR);
         }
     }

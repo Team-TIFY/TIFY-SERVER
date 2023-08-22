@@ -37,7 +37,7 @@ public class UserController {
     public UserProfileVo getUserProfileInfo(@PathVariable Long userId) {
         return userInfoUseCase.execute(userId);
     }
-    
+
     @Operation(summary = "친구 정보 조회")
     @GetMapping("/{neighborId}")
     public UserProfileVo getNeighborProfileInfo(@PathVariable Long neighborId) {
