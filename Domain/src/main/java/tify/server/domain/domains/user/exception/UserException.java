@@ -11,7 +11,7 @@ import tify.server.core.exception.BaseErrorCode;
 @AllArgsConstructor
 public enum UserException implements BaseErrorCode {
     ALREADY_EXIST_USER_ERROR(BAD_REQUEST, "User_400_1", "이미 회원인 유저입니다."),
-    NOT_EXIST_NEIGHBOR_ERROR(BAD_REQUEST, "Neighbor_400_1", "해당 유저와 친구가 아닙니다."),
+    NOT_NEIGHBOR_ERROR(FORBIDDEN, "Neighbor_403_1", "해당 유저와 친구가 아닙니다."),
     USER_NOT_FOUND_ERROR(NOT_FOUND, "User_404_1", "유저를 찾을 수 없습니다."),
     USER_FAVOR_NOT_FOUND_ERROR(NOT_FOUND, "UserFavor_404_1", "유저 취향 정보를 찾을 수 없습니다."),
     USER_TAG_NOT_FOUND_ERROR(NOT_FOUND, "UserTag_404_1", "유저 태그 정보를 찾을 수 없습니다."),

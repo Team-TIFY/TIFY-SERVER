@@ -2,6 +2,7 @@ package tify.server.domain.domains.user.adaptor;
 
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
@@ -22,5 +23,9 @@ public class NeighborAdaptor {
 
     public List<Neighbor> queryAllByFromUserId(Long fromUserId) {
         return neighborRepository.findAllByFromUserId(fromUserId);
+    }
+
+    public Optional<Neighbor> queryByFromUserIdAndToUserId(Long userId, Long neighborId) {
+        return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 }
