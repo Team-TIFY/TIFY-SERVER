@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
+import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.service.*;
 import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.common.vo.UserInfoVo;
@@ -81,5 +82,13 @@ public class UserController {
     @GetMapping("/id/check")
     public boolean getValidUserId(@RequestParam String id) {
         return userOnBoardingUseCase.checkUserId(id);
+    }
+
+    @Operation(summary = "온보딩 상태 값 필터 조회")
+    @GetMapping("/onBoardingStatus")
+    public OnBoardingStatusResponse getOnBoardingStatus(
+            @RequestParam(required = false) String keyword) {
+        return OnBoardingStatusResponse.from(
+                userOnBoardingUseCase.retrieveOnBoardingStatuses(keyword));
     }
 }

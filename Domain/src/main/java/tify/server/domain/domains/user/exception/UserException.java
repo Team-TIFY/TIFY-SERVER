@@ -18,7 +18,9 @@ public enum UserException implements BaseErrorCode {
     NEIGHBOR_NOT_FOUND_ERROR(NOT_FOUND, "Neighbor_404_1", "친구 정보를 찾을 수 없습니다."),
     ALREADY_REGISTER_USER_ID_ERROR(BAD_REQUEST, "User_400_2", "이미 등록된 유저 아이디입니다."),
     ON_BOARDING_STATE_NOT_FOUND_ERROR(NOT_FOUND, "OnBoardingState_404_1", "온보딩 상태 값을 찾을 수 없습니다."),
-    GENDER_NOT_FOUND_ERROR(NOT_FOUND, "Gender_404_1", "성별 정보를 찾을 수 없습니다.");
+    GENDER_NOT_FOUND_ERROR(NOT_FOUND, "Gender_404_1", "성별 정보를 찾을 수 없습니다."),
+    ON_BOARDING_STATUS_FILTER_ERROR(
+            BAD_REQUEST, "UserOnBoardingStatus_400_1", ", ' '를 제외한 검색어를 입력해주세요.");
 
     private final Integer statusCode;
     private final String errorCode;

@@ -9,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.domain.domains.AbstractTimeStamp;
-import tify.server.domain.domains.user.domain.LargeCategory;
 
 @Getter
 @Entity
@@ -23,7 +22,7 @@ public class DailyQuestion extends AbstractTimeStamp {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private LargeCategory category;
+    private DailyQuestionCategory category;
 
     @NotNull private String content;
 
@@ -32,7 +31,7 @@ public class DailyQuestion extends AbstractTimeStamp {
     private LocalDate loadingDate;
 
     @Builder
-    public DailyQuestion(LargeCategory category, String content, LocalDate loadingDate) {
+    public DailyQuestion(DailyQuestionCategory category, String content, LocalDate loadingDate) {
         this.category = category;
         this.content = content;
         this.loadingDate = loadingDate;
