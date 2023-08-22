@@ -10,6 +10,7 @@ public enum LargeCategory {
     BEAUTY("뷰티"),
     FASHION("패션"),
     HOBBY("취미"),
+    FOOD("음식"),
     ;
 
     final String value;
