@@ -60,6 +60,8 @@ public class SecurityConfig {
                 .permitAll()
                 .mvcMatchers("**/health")
                 .permitAll()
+                .mvcMatchers("/products/**")
+                .permitAll()
                 .anyRequest()
                 .hasRole("USER");
         http.apply(filterConfig);
