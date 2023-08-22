@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.question.domain.DailyQuestion;
-import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 
 @Getter
 @Builder
@@ -19,7 +19,7 @@ public class DailyQuestionInfoVo {
     private final String content;
 
     @Schema(description = "데일리 질문 카테고리", example = "PERFUME")
-    private final LargeCategory category;
+    private final DailyQuestionCategory category;
 
     @Schema(description = "데일리 질문 활성화 날짜")
     private final LocalDate loadingData;
