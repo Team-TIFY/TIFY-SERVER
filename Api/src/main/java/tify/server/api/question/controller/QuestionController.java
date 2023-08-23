@@ -19,6 +19,7 @@ import tify.server.api.question.model.request.PostAnswerRequest;
 import tify.server.api.question.model.response.GetDailyQuestionResponse;
 import tify.server.api.question.model.vo.DailyQuestionInfoVo;
 import tify.server.api.question.service.CreateAnswerUseCase;
+import tify.server.api.question.service.RetrieveDailyQuestionAnswerUseCase;
 import tify.server.api.question.service.RetrieveDailyQuestionUseCase;
 import tify.server.core.converter.DateTimeConverter;
 
@@ -32,6 +33,7 @@ public class QuestionController {
 
     private final RetrieveDailyQuestionUseCase retrieveDailyQuestionUseCase;
     private final CreateAnswerUseCase createAnswerUseCase;
+    private final RetrieveDailyQuestionAnswerUseCase dailyQuestionAnswerUseCase;
 
     @Operation(summary = "날짜에 맞는 질문을 조회합니다.")
     @GetMapping
@@ -47,5 +49,11 @@ public class QuestionController {
     public void postAnswer(
             @PathVariable Long questionId, @RequestBody @Valid PostAnswerRequest body) {
         createAnswerUseCase.execute(questionId, body);
+    }
+
+    @Operation(summary = "해당 유저가 데일리 질문에 답변을 남겼는지 확인합니다.", description = "이미 답변을 남겼으면 true")
+    @GetMapping("/{questionId}/user/answers/exists")
+    public Boolean getExistDailyQuestionUserAnswer(@PathVariable Long questionId) {
+        return dailyQuestionAnswerUseCase.isAlreadyExistUserAnswer(questionId);
     }
 }
