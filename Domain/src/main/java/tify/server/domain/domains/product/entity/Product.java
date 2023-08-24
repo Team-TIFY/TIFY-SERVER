@@ -28,7 +28,7 @@ public class Product extends AbstractTimeStamp {
 
     private String name;
 
-    private String option;
+    private String productOption;
 
     private String characteristic;
 
@@ -51,7 +51,7 @@ public class Product extends AbstractTimeStamp {
         this.favorQuestionCategoryId = favorQuestionCategoryId;
         this.brand = brand;
         this.name = name;
-        this.option = option;
+        this.productOption = option;
         this.characteristic = characteristic;
         this.price = price;
         this.imageUrl = imageUrl;
