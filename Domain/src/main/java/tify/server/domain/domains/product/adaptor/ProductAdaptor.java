@@ -4,8 +4,9 @@ package tify.server.domain.domains.product.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
+import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.product.domain.Site;
 import tify.server.domain.domains.product.dto.ProductCrawlingDto;
-import tify.server.domain.domains.product.entity.Product;
 import tify.server.domain.domains.product.repository.ProductRepository;
 
 @Adaptor
@@ -20,5 +21,9 @@ public class ProductAdaptor {
 
     public List<ProductCrawlingDto> searchByName() {
         return productRepository.search();
+    }
+
+    public List<Product> queryAllBySite(Site site) {
+        return productRepository.findAllBySite(site);
     }
 }

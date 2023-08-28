@@ -3,4 +3,5 @@ include 'Api'
 include 'Domain'
 include 'Core'
 include 'Infrastructure'
+include 'Batch'
 
