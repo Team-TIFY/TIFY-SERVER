@@ -19,4 +19,8 @@ public class RetrieveNeighborDTO {
     private String neighborBirth;
 
     private String onBoardingStatus;
+
+    private Long order;
+
+    private boolean isView;
 }

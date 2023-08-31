@@ -24,6 +24,12 @@ public class NeighborAdaptor {
                 .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
     }
 
+    public Neighbor queryByUserId(Long neighborId, Long userId) {
+        return neighborRepository
+                .findByIdAndFromUserId(neighborId, userId)
+                .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
+    }
+
     public List<Neighbor> queryAllByFromUserId(Long fromUserId) {
         return neighborRepository.findAllByFromUserId(fromUserId);
     }
@@ -34,5 +40,13 @@ public class NeighborAdaptor {
 
     public Slice<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchToPage(neighborCondition);
+    }
+
+    public boolean existsNeighbor(Long userId, Long neighborId) {
+        return neighborRepository.existsByFromUserIdAndToUserId(userId, neighborId);
+    }
+
+    public void save(Neighbor neighbor) {
+        neighborRepository.save(neighbor);
     }
 }

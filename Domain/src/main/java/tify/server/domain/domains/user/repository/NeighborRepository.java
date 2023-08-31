@@ -11,4 +11,8 @@ public interface NeighborRepository
     List<Neighbor> findAllByFromUserId(Long fromUserId);
 
     Optional<Neighbor> findByFromUserIdAndToUserId(Long userId, Long neighborId);
+
+    Optional<Neighbor> findByIdAndFromUserId(Long id, Long fromUserId);
+
+    boolean existsByFromUserIdAndToUserId(Long userId, Long neighborId);
 }

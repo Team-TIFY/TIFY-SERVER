@@ -1,8 +1,6 @@
 package tify.server.api.answer.service;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -17,7 +15,6 @@ import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
-import tify.server.domain.domains.user.domain.Neighbor;
 
 @UseCase
 @RequiredArgsConstructor
@@ -32,15 +29,8 @@ public class RetrieveDailyAnswerUseCase {
     public SliceResponse<RetrieveAnswerDTO> execute(Long questionId, Pageable pageable) {
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.query(questionId);
         Long currentUserId = userUtils.getUserId();
-        List<Long> neighbors =
-                new ArrayList<>(
-                        neighborAdaptor.queryAllByFromUserId(currentUserId).stream()
-                                .map(Neighbor::getToUserId)
-                                .toList());
-        neighbors.add(currentUserId);
-        AnswerCondition answerCondition =
-                new AnswerCondition(dailyQuestion.getId(), neighbors, pageable);
-        Slice<AnswerVo> answers = answerAdaptor.searchAnswer(answerCondition);
+        AnswerCondition answerCondition = new AnswerCondition(dailyQuestion.getId(), pageable);
+        Slice<AnswerVo> answers = answerAdaptor.searchAnswer(currentUserId, answerCondition);
         return SliceResponse.of(answers.map(answer -> RetrieveAnswerDTO.of(answer, currentUserId)));
     }
 }
