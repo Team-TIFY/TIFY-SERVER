@@ -15,13 +15,13 @@ import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
-import tify.server.api.user.model.dto.response.RetrieveNeighborDTO;
 import tify.server.api.user.service.*;
 import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @SecurityRequirement(name = "access-token")
 @RestController

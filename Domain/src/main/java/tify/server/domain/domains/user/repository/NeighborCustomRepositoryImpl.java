@@ -12,23 +12,30 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
-import tify.server.domain.domains.user.dto.model.NeighborVo;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @RequiredArgsConstructor
 public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<NeighborVo> searchToPage(NeighborCondition neighborCondition) {
-        List<NeighborVo> neighbors =
+    public Slice<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition) {
+        List<RetrieveNeighborDTO> neighbors =
                 queryFactory
                         .select(
                                 Projections.constructor(
-                                        NeighborVo.class, neighbor, profile, userOnBoardingStatus))
+                                        RetrieveNeighborDTO.class,
+                                        neighbor.toUserId,
+                                        user.profile.thumbNail,
+                                        user.profile.userName,
+                                        user.profile.birth,
+                                        user.onBoardingStatus.name))
                         .from(user)
                         .join(neighbor)
                         .on(user.id.eq(neighbor.toUserId))
                         .where(user.id.in(neighborCondition.getNeighborIdList()))
+                        .offset(0)
+                        .limit(10)
                         .fetch();
 
         return SliceUtil.valueOf(neighbors, neighborCondition.getPageable());

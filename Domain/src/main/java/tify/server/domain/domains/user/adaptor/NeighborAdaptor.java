@@ -8,7 +8,7 @@ import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
-import tify.server.domain.domains.user.dto.model.NeighborVo;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 import tify.server.domain.domains.user.exception.NeighborNotFoundException;
 import tify.server.domain.domains.user.repository.NeighborRepository;
 
@@ -32,7 +32,7 @@ public class NeighborAdaptor {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 
-    public Slice<NeighborVo> searchNeighbors(NeighborCondition neighborCondition) {
+    public Slice<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchToPage(neighborCondition);
     }
 }
