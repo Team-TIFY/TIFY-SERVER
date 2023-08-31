@@ -26,16 +26,17 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                 Projections.constructor(
                                         RetrieveNeighborDTO.class,
                                         neighbor.toUserId,
+                                        user.userId,
                                         user.profile.thumbNail,
                                         user.profile.userName,
                                         user.profile.birth,
                                         user.onBoardingStatus.name))
-                        .from(user)
-                        .join(neighbor)
+                        .from(neighbor)
+                        .join(user)
                         .on(user.id.eq(neighbor.toUserId))
-                        .where(user.id.in(neighborCondition.getNeighborIdList()))
-                        .offset(0)
-                        .limit(10)
+                        .where(neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()))
+                        .offset(neighborCondition.getPageable().getOffset())
+                        .limit(neighborCondition.getPageable().getPageSize())
                         .fetch();
 
         return SliceUtil.valueOf(neighbors, neighborCondition.getPageable());

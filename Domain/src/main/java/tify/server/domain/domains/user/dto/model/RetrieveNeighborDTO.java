@@ -10,6 +10,8 @@ public class RetrieveNeighborDTO {
 
     private Long neighborId;
 
+    private String neighborUserId;
+
     private String neighborThumbnail;
 
     private String neighborName;
