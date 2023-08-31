@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
+import tify.server.api.user.model.dto.request.CreateNeighborUseCase;
+import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
@@ -37,6 +39,8 @@ public class UserController {
     private final UserOnBoardingUseCase userOnBoardingUseCase;
     private final NeighborInfoUseCase neighborInfoUseCase;
     private final RetrieveNeighborListUseCase retrieveNeighborListUseCase;
+    private final UpdateNeighborUseCase updateNeighborUseCase;
+    private final CreateNeighborUseCase createNeighborUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -103,5 +107,23 @@ public class UserController {
     public SliceResponse<RetrieveNeighborDTO> getNeighbors(
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         return retrieveNeighborListUseCase.execute(pageable);
+    }
+
+    @Operation(summary = "친구 목록 순서 수정")
+    @PatchMapping("/neighbors/orders")
+    public void patchNeighborsOrders(@RequestBody @Valid PatchNeighborsOrdersRequest body) {
+        updateNeighborUseCase.executeToOrder(body.getFromNeighborId(), body.getToNeighborId());
+    }
+
+    @Operation(summary = "친구 목록 보여짐 여부 수정")
+    @PatchMapping("/neighbors/{neighborId}/views")
+    public void patchNeighborIsViews(@PathVariable Long neighborId) {
+        updateNeighborUseCase.executeToIsView(neighborId);
+    }
+
+    @Operation(summary = "친구 신청")
+    @PostMapping("{toUserId}/neighbors")
+    public void postNeighbor(@PathVariable Long toUserId) {
+        createNeighborUseCase.execute(toUserId);
     }
 }

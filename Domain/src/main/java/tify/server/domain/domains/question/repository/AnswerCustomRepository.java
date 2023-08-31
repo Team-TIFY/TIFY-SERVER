@@ -7,7 +7,7 @@ import tify.server.domain.domains.question.dto.model.AnswerVo;
 
 public interface AnswerCustomRepository {
 
-    Slice<AnswerVo> searchToPage(AnswerCondition answerCondition);
+    Slice<AnswerVo> searchToPage(Long userId, AnswerCondition answerCondition);
 
     Long countAnswer(Long questionId);
 }

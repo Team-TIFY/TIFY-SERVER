@@ -30,13 +30,16 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                         user.profile.thumbNail,
                                         user.profile.userName,
                                         user.profile.birth,
-                                        user.onBoardingStatus.name))
+                                        user.onBoardingStatus.name,
+                                        neighbor.order,
+                                        neighbor.isView))
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
                         .where(neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()))
+                        .orderBy(neighbor.order.asc())
                         .offset(neighborCondition.getPageable().getOffset())
-                        .limit(neighborCondition.getPageable().getPageSize())
+                        .limit(neighborCondition.getPageable().getPageSize() + 1)
                         .fetch();
 
         return SliceUtil.valueOf(neighbors, neighborCondition.getPageable());

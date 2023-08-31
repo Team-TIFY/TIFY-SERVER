@@ -35,7 +35,7 @@ public class AnswerAdaptor {
         return answerRepository.countAnswer(questionId);
     }
 
-    public Slice<AnswerVo> searchAnswer(AnswerCondition answerCondition) {
-        return answerRepository.searchToPage(answerCondition);
+    public Slice<AnswerVo> searchAnswer(Long userId, AnswerCondition answerCondition) {
+        return answerRepository.searchToPage(userId, answerCondition);
     }
 }

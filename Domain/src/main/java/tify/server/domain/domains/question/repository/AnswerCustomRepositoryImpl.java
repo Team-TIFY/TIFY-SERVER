@@ -2,6 +2,7 @@ package tify.server.domain.domains.question.repository;
 
 import static tify.server.core.consts.Status.N;
 import static tify.server.domain.domains.question.domain.QAnswer.answer;
+import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
 
 import com.querydsl.core.types.Projections;
@@ -19,18 +20,24 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<AnswerVo> searchToPage(AnswerCondition answerCondition) {
+    public Slice<AnswerVo> searchToPage(Long userId, AnswerCondition answerCondition) {
+
         List<AnswerVo> answers =
                 queryFactory
                         .select(Projections.constructor(AnswerVo.class, answer, user))
-                        .from(answer)
+                        .from(neighbor)
+                        .join(answer)
+                        .on(answer.userId.eq(neighbor.toUserId))
                         .join(user)
-                        .on(user.id.eq(answer.userId))
+                        .on(user.id.eq(neighbor.toUserId))
                         .where(
+                                neighbor.fromUserId.eq(userId),
+                                neighbor.isView.eq(true),
                                 questionIdEq(answerCondition.getQuestionId()),
-                                answer.userId.in(answerCondition.getNeighbors()),
                                 answer.isDeleted.eq(N))
-                        .orderBy(answer.createdAt.desc())
+                        .orderBy(neighbor.order.asc())
+                        .offset(answerCondition.getPageable().getOffset())
+                        .limit(answerCondition.getPageable().getPageSize() + 1)
                         .fetch();
 
         return SliceUtil.valueOf(answers, answerCondition.getPageable());
