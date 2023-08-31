@@ -6,7 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import tify.server.domain.domains.user.domain.Neighbor;
 
-public interface NeighborRepository extends JpaRepository<Neighbor, Long> {
+public interface NeighborRepository
+        extends JpaRepository<Neighbor, Long>, NeighborCustomRepository {
     List<Neighbor> findAllByFromUserId(Long fromUserId);
 
     Optional<Neighbor> findByFromUserIdAndToUserId(Long userId, Long neighborId);
