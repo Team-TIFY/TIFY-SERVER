@@ -7,7 +7,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.api.annotations.ParameterObject;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
@@ -17,6 +21,7 @@ import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -31,6 +36,7 @@ public class UserController {
     private final UserFavorFilterUseCase userFavorFilterUseCase;
     private final UserOnBoardingUseCase userOnBoardingUseCase;
     private final NeighborInfoUseCase neighborInfoUseCase;
+    private final RetrieveNeighborListUseCase retrieveNeighborListUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -90,5 +96,12 @@ public class UserController {
             @RequestParam(required = false) String keyword) {
         return OnBoardingStatusResponse.from(
                 userOnBoardingUseCase.retrieveOnBoardingStatuses(keyword));
+    }
+
+    @Operation(summary = "친구 목록 조회")
+    @GetMapping("/neighbors")
+    public SliceResponse<RetrieveNeighborDTO> getNeighbors(
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        return retrieveNeighborListUseCase.execute(pageable);
     }
 }

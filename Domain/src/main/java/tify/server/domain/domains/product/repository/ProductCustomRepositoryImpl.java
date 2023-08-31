@@ -1,6 +1,6 @@
 package tify.server.domain.domains.product.repository;
 
-import static tify.server.domain.domains.product.entity.QProduct.*;
+import static tify.server.domain.domains.product.domain.QProduct.*;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;

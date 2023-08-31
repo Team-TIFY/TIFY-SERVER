@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+version 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+    implementation project(':Domain')
+    implementation project(':Core')
+    implementation project(':Infrastructure')
+}
+
+test {
+    useJUnitPlatform()
+}

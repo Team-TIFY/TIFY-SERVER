@@ -1,7 +1,9 @@
-package tify.server.domain.domains.product.entity;
+package tify.server.domain.domains.product.domain;
 
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,6 +30,9 @@ public class Product extends AbstractTimeStamp {
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Site site;
+
     private String productOption;
 
     private String characteristic;
@@ -45,12 +50,14 @@ public class Product extends AbstractTimeStamp {
             String name,
             String option,
             String characteristic,
+            Site site,
             Long price,
             String imageUrl,
             String crawlUrl) {
         this.favorQuestionCategoryId = favorQuestionCategoryId;
         this.brand = brand;
         this.name = name;
+        this.site = site;
         this.productOption = option;
         this.characteristic = characteristic;
         this.price = price;
