@@ -10,7 +10,7 @@ import tify.server.domain.domains.question.domain.FavorQuestion;
 
 @UseCase
 @RequiredArgsConstructor
-public class RetrieveAnswerOrNotUseCase {
+public class RetrieveIsAnsweredNotUseCase {
 
     private final FavorQuestionAdaptor favorQuestionAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
