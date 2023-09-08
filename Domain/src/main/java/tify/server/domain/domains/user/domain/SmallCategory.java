@@ -4,6 +4,8 @@ import static tify.server.domain.domains.user.domain.LargeCategory.BEAUTY;
 import static tify.server.domain.domains.user.domain.LargeCategory.FASHION;
 import static tify.server.domain.domains.user.domain.LargeCategory.HOBBY;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +23,10 @@ public enum SmallCategory {
     TRAVEL("여행", HOBBY),
     CULTURE_LIFE("문화생활", HOBBY),
     ;
+
+    public static List<SmallCategory> getSmallCategories() {
+        return Arrays.stream(SmallCategory.values()).toList();
+    }
 
     final String value;
     final LargeCategory largeCategory;

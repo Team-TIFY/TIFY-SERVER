@@ -5,6 +5,8 @@ import static tify.server.domain.domains.user.domain.SmallCategory.FASHION_PRODU
 import static tify.server.domain.domains.user.domain.SmallCategory.FRAGRANCE;
 import static tify.server.domain.domains.user.domain.SmallCategory.MAKEUP;
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,6 +23,10 @@ public enum DetailCategory {
     DIG_PRODUCT("디지털/테크소품", FASHION_PRODUCT),
     BAG("가방", SmallCategory.BAG),
     ;
+
+    public static List<DetailCategory> getDetailCategories() {
+        return Arrays.stream(DetailCategory.values()).toList();
+    }
 
     final String value;
     final SmallCategory smallCategory;
