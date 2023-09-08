@@ -9,6 +9,7 @@ import tify.server.api.question.model.response.RetrieveCategoryIsAnsweredDTO;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
+import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
 import tify.server.domain.domains.user.domain.DetailCategory;
 import tify.server.domain.domains.user.domain.SmallCategory;
@@ -29,6 +30,9 @@ public class RetrieveIsAnsweredUseCase {
         List<FavorAnswerCategoryDto> favorAnswerCategoryDTOs =
                 favorAnswerAdaptor.searchCategories(currentUserId);
 
+        List<FavorQuestionCategory> favorQuestionCategories =
+                favorQuestionAdaptor.queryAllFavorQuestionCategory();
+
         for (SmallCategory smallCategory : smallCategories) {
             int userAnswerCategorySize =
                     favorAnswerCategoryDTOs.stream()
@@ -37,10 +41,8 @@ public class RetrieveIsAnsweredUseCase {
                             .size(); // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의
             // 개수
             int size =
-                    detailCategories.stream()
-                            .filter(
-                                    detailCategory ->
-                                            detailCategory.getSmallCategory().equals(smallCategory))
+                    favorQuestionCategories.stream()
+                            .filter(category -> category.getSmallCategory().equals(smallCategory))
                             .toList()
                             .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
             categoryIsAnsweredDTOS.add(

@@ -74,4 +74,8 @@ public class FavorQuestionAdaptor {
                 .findByName(favorQuestionCategoryName)
                 .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
     }
+
+    public List<FavorQuestionCategory> queryAllFavorQuestionCategory() {
+        return favorQuestionCategoryRepository.findAll();
+    }
 }

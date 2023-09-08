@@ -12,6 +12,7 @@ dependencies {
     //QueryDsl 설정
     api ("com.querydsl:querydsl-core") // querydsl
     api ("com.querydsl:querydsl-jpa:5.0.0") // querydsl
+    api ("com.querydsl:querydsl-sql:5.0.0") // querydsl
     annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jpa" // querydsl JPAAnnotationProcessor 사용 지정
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")

@@ -6,12 +6,19 @@ import static tify.server.domain.domains.question.domain.QFavorQuestionCategory.
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.sql.SQLTemplates;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
 
 @RequiredArgsConstructor
 public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomRepository {
+
+    private final SQLTemplates sqlTemplates;
+
+    @PersistenceContext private EntityManager entityManager;
 
     private final JPAQueryFactory queryFactory;
 
@@ -25,13 +32,13 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
                                         FavorAnswerCategoryDto.class,
                                         favorQuestionCategory.smallCategory,
                                         favorQuestionCategory.detailCategory))
-                        .distinct()
                         .from(favorAnswer)
                         .join(favorQuestion)
                         .on(favorAnswer.favorQuestion.id.eq(favorQuestion.id))
                         .join(favorQuestionCategory)
-                        .on(favorQuestion.id.eq(favorQuestionCategory.id))
+                        .on(favorQuestion.favorQuestionCategory.id.eq(favorQuestionCategory.id))
                         .where(favorAnswer.userId.eq(currentUserId))
+                        .groupBy(favorQuestionCategory.detailCategory)
                         .fetch();
 
         return categoryDtos;
