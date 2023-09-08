@@ -27,25 +27,25 @@ public class RetrieveIsAnsweredUseCase {
         List<DetailCategory> detailCategories = DetailCategory.getDetailCategories();
 
         List<FavorAnswerCategoryDto> favorAnswerCategoryDTOs =
-                favorAnswerAdaptor.searchCategories(currentUserId);
+            favorAnswerAdaptor.searchCategories(currentUserId);
 
         for (SmallCategory smallCategory : smallCategories) {
             int userAnswerCategorySize =
-                    favorAnswerCategoryDTOs.stream()
-                            .filter(dto -> dto.getSmallCategory().equals(smallCategory))
-                            .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의
+                favorAnswerCategoryDTOs.stream()
+                    .filter(dto -> dto.getSmallCategory().equals(smallCategory))
+                    .toList()
+                    .size(); // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의
             // 개수
             int size =
-                    detailCategories.stream()
-                            .filter(
-                                    detailCategory ->
-                                            detailCategory.getSmallCategory().equals(smallCategory))
-                            .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
+                detailCategories.stream()
+                    .filter(
+                        detailCategory ->
+                            detailCategory.getSmallCategory().equals(smallCategory))
+                    .toList()
+                    .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
             categoryIsAnsweredDTOS.add(
-                    RetrieveCategoryIsAnsweredDTO.of(
-                            smallCategory, userAnswerCategorySize == size));
+                RetrieveCategoryIsAnsweredDTO.of(
+                    smallCategory, userAnswerCategorySize == size));
             // 두 size가 같으면 true, 아니면 false
         }
 
