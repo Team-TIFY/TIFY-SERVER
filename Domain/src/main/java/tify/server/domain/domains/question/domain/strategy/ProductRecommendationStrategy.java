@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question;
+package tify.server.domain.domains.question.domain.strategy;
 
 
 import java.util.List;
