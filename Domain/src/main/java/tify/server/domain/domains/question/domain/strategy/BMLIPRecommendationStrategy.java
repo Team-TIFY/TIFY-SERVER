@@ -4,6 +4,7 @@ package tify.server.domain.domains.question.domain.strategy;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -11,6 +12,7 @@ import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 import tify.server.domain.domains.question.exception.QuestionException;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BMLIPRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
