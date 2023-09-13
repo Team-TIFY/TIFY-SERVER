@@ -26,4 +26,8 @@ public class ProductAdaptor {
     public List<Product> queryAllBySite(Site site) {
         return productRepository.findAllBySite(site);
     }
+
+    public List<Product> queryAllByCategoryNameAndCharacter(String categoryName, String character) {
+        return productRepository.searchAllToRecommendation(categoryName, character);
+    }
 }
