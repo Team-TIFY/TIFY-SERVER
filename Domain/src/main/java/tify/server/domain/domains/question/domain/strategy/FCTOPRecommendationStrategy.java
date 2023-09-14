@@ -1,5 +1,6 @@
 package tify.server.domain.domains.question.domain.strategy;
 
+
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,23 +46,29 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
     // 2번째 스텝
     private List<Product> secondStep(List<Product> products, String answer) {
         List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
-        return products.stream().filter(product -> {
-            if (splitAnswer.size() == 1) {
-                return product.getCharacteristic().contains(splitAnswer.get(0));
-            } else {
-                return product.getCharacteristic().contains(splitAnswer.get(0))
-                    && product.getCharacteristic().contains(splitAnswer.get(1));
-            }
-        }).toList();
+        return products.stream()
+                .filter(
+                        product -> {
+                            if (splitAnswer.size() == 1) {
+                                return product.getCharacteristic().contains(splitAnswer.get(0));
+                            } else {
+                                return product.getCharacteristic().contains(splitAnswer.get(0))
+                                        && product.getCharacteristic().contains(splitAnswer.get(1));
+                            }
+                        })
+                .toList();
     }
 
     // 3번째 스텝
     private List<Product> thirdStep(List<Product> products, String answer) {
         List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
         if (!splitAnswer.contains("크롭")) { // 크롭을 선택하지 않았다면 크롭을 제외한 상품들을 보여준다
-            return products.stream().filter(product -> {
-                return !product.getCharacteristic().contains("크롭");
-            }).toList();
+            return products.stream()
+                    .filter(
+                            product -> {
+                                return !product.getCharacteristic().contains("크롭");
+                            })
+                    .toList();
         } else { // 크롭 혹은 상관없음을 선택한 경우 모든 상품을 다 보여준다
             return products;
         }
@@ -71,6 +78,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
     private List<Product> fourthStep(List<Product> products, String answer) {
         List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
         return products.stream()
-            .filter(product -> splitAnswer.contains(product.getCharacteristic())).toList();
+                .filter(product -> splitAnswer.contains(product.getCharacteristic()))
+                .toList();
     }
 }
