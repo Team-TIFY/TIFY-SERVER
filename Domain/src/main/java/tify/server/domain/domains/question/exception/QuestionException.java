@@ -21,7 +21,7 @@ public enum QuestionException implements BaseErrorCode {
     ALREADY_ANSWERED_FAVOR_QUESTION_ERROR(BAD_REQUEST, "FavorAnswer_400_2", "이미 답변하신 취향 질문입니다."),
     FAVOR_QUESTION_CATEGORY_NOT_FOUND_ERROR(
             NOT_FOUND, "FavorQuestionCategory_404_1", "취향 질문 카테고리 정보를 찾을 수 없습니다."),
-    ;
+    FAVOR_ANSWER_SIZE_NOT_MATCHED_CATEGORY_ERROR(BAD_REQUEST, "FavorAnswer_400_3", "");
 
     private final Integer statusCode;
     private final String errorCode;
