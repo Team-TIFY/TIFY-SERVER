@@ -4,8 +4,10 @@ package tify.server.api.question.service;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.api.question.model.response.RetrieveCategoryIsAnsweredDTO;
+import tify.server.api.question.model.response.RetrieveIsAnsweredByDetailCategoryResponse;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
@@ -16,16 +18,16 @@ import tify.server.domain.domains.user.domain.SmallCategory;
 
 @UseCase
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RetrieveIsAnsweredUseCase {
 
     private final FavorQuestionAdaptor favorQuestionAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
-    public List<RetrieveCategoryIsAnsweredDTO> retrieveIsAnswered() {
+    public List<RetrieveCategoryIsAnsweredDTO> retrieveIsAnsweredBySmallCategory() {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         List<RetrieveCategoryIsAnsweredDTO> categoryIsAnsweredDTOS = new ArrayList<>();
         List<SmallCategory> smallCategories = SmallCategory.getSmallCategories();
-        List<DetailCategory> detailCategories = DetailCategory.getDetailCategories();
 
         List<FavorAnswerCategoryDto> favorAnswerCategoryDTOs =
                 favorAnswerAdaptor.searchCategories(currentUserId);
@@ -52,5 +54,26 @@ public class RetrieveIsAnsweredUseCase {
         }
 
         return categoryIsAnsweredDTOS;
+    }
+
+    public List<RetrieveIsAnsweredByDetailCategoryResponse> retrieveIsAnsweredByDetailCategory(
+            SmallCategory smallCategory) {
+
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+
+        // smallCategory에 해당하는 detailCategory들 조회
+        List<DetailCategory> detailCategories =
+                DetailCategory.getDetailCategories().stream()
+                        .filter(d -> d.getSmallCategory().equals(smallCategory))
+                        .toList();
+
+        return detailCategories.stream()
+                .map(
+                        detailCategory ->
+                                new RetrieveIsAnsweredByDetailCategoryResponse(
+                                        detailCategory,
+                                        favorAnswerAdaptor.existsByDetailCategoryAndUserId(
+                                                detailCategory, currentUserId)))
+                .toList();
     }
 }

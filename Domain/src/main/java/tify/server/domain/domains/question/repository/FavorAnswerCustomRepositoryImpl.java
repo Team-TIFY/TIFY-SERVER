@@ -6,19 +6,12 @@ import static tify.server.domain.domains.question.domain.QFavorQuestionCategory.
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.querydsl.sql.SQLTemplates;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
 
 @RequiredArgsConstructor
 public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomRepository {
-
-    private final SQLTemplates sqlTemplates;
-
-    @PersistenceContext private EntityManager entityManager;
 
     private final JPAQueryFactory queryFactory;
 
