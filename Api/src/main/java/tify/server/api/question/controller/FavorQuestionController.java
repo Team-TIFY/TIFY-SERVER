@@ -29,7 +29,7 @@ import tify.server.domain.domains.user.domain.SmallCategory;
 @RequestMapping(value = "/favor-questions")
 @SecurityRequirement(name = "access-token")
 @RequiredArgsConstructor
-@Tag(name = "4. [취향 질문]")
+@Tag(name = "5. [취향 질문]")
 public class FavorQuestionController {
 
     private final RetrieveFavorQuestionUseCase retrieveFavorQuestionUseCase;
