@@ -48,6 +48,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                         .select(
                                 Projections.constructor(
                                         ProductRetrieveDTO.class,
+                                        product.id,
                                         product.name,
                                         product.brand,
                                         product.characteristic,
