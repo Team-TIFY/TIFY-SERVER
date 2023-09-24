@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.product.service.CrawlingUseCase;
 import tify.server.api.product.service.ProductSearchUseCase;
-import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 
 @RestController
