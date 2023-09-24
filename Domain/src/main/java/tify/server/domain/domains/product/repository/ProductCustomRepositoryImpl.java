@@ -3,11 +3,16 @@ package tify.server.domain.domains.product.repository;
 import static tify.server.domain.domains.product.domain.QProduct.*;
 import static tify.server.domain.domains.question.domain.QFavorQuestionCategory.favorQuestionCategory;
 
+import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.product.dto.ProductCondition;
 import tify.server.domain.domains.product.dto.ProductCrawlingDto;
+import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.product.dto.QProductCrawlingDto;
 
 @RequiredArgsConstructor
@@ -34,5 +39,26 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                         favorQuestionCategory.name.eq(categoryName))
                 .where(product.characteristic.contains(answer))
                 .fetch();
+    }
+
+    @Override
+    public Slice<ProductRetrieveDTO> searchByKeyword(ProductCondition productCondition) {
+        List<ProductRetrieveDTO> products =
+                queryFactory
+                        .select(
+                                Projections.constructor(
+                                        ProductRetrieveDTO.class,
+                                        product.name,
+                                        product.brand,
+                                        product.characteristic,
+                                        product.price))
+                        .from(product)
+                        .where(product.name.contains(productCondition.getKeyword()))
+                        .orderBy(product.id.asc())
+                        .offset(productCondition.getPageable().getOffset())
+                        .limit(productCondition.getPageable().getPageSize() + 1)
+                        .fetch();
+
+        return SliceUtil.valueOf(products, productCondition.getPageable());
     }
 }
