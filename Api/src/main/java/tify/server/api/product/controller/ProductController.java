@@ -37,7 +37,6 @@ public class ProductController {
     }
 
     @Operation(summary = "키워드를 이용하여 관련된 상품을 검색합니다.")
-    @GetMapping("/search")
     public SliceResponse<ProductRetrieveDTO> productSearch(
             @RequestParam String keyword,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
