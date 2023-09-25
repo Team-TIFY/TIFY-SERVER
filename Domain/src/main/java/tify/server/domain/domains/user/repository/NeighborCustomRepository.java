@@ -8,4 +8,6 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 public interface NeighborCustomRepository {
 
     Slice<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition);
+
+    Slice<RetrieveNeighborDTO> searchBirthToPage(NeighborCondition neighborCondition);
 }
