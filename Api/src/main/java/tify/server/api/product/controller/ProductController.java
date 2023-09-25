@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +37,7 @@ public class ProductController {
     }
 
     @Operation(summary = "키워드를 이용하여 관련된 상품을 검색합니다.")
+    @GetMapping()
     public SliceResponse<ProductRetrieveDTO> productSearch(
             @RequestParam String keyword,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
