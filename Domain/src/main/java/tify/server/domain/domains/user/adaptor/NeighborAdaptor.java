@@ -49,4 +49,8 @@ public class NeighborAdaptor {
     public void save(Neighbor neighbor) {
         neighborRepository.save(neighbor);
     }
+
+    public Slice<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
+        return neighborRepository.searchBirthToPage(neighborCondition);
+    }
 }
