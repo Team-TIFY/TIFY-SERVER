@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question.domain.strategy;
+package tify.server.domain.domains.question.strategy;
 
 
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 @RequiredArgsConstructor
@@ -14,9 +15,11 @@ import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 public class FCTOPRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
+    private final FavorAnswerAdaptor favorAnswerAdaptor;
 
     @Override
-    public List<Product> recommendation(String categoryName, List<FavorRecommendationDTO> dtos) {
+    public List<Product> recommendation(
+            Long userId, String categoryName, List<FavorRecommendationDTO> dtos) {
 
         // 1번 스텝
         List<Product> firstProducts = firstStep(categoryName, dtos.get(0).getAnswer());
@@ -39,6 +42,15 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
         // 4번 스텝
         return fourthStep(thirdProducts, dtos.get(3).getAnswer());
     }
+
+    // Todo: 세환이한테 물어보기 => 핏의 경우 무엇을 선택하더라도 (티셔츠, 맨투맨, 니트 모두)가 되어야함
+    //    private List<FavorRecommendationDTO> getRecommendationDTO() {
+    //        List<FavorAnswer> favorAnswers = new ArrayList<>();
+    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 2L));
+    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 3L));
+    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 4L));
+    //        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
+    //    }
 
     // 1번째 스텝
     private List<Product> firstStep(String categoryName, String answer) {

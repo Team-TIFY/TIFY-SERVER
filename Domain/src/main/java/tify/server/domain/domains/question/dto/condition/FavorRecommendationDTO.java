@@ -1,14 +1,22 @@
 package tify.server.domain.domains.question.dto.condition;
 
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 
 @Getter
-@NoArgsConstructor
+@Builder
 public class FavorRecommendationDTO {
 
-    private Long questionNumber;
+    private final Long questionNumber;
 
-    private String answer;
+    private final String answer;
+
+    public static FavorRecommendationDTO from(FavorAnswer favorAnswer) {
+        return FavorRecommendationDTO.builder()
+                .questionNumber(favorAnswer.getFavorQuestion().getNumber())
+                .answer(favorAnswer.getAnswerContent())
+                .build();
+    }
 }

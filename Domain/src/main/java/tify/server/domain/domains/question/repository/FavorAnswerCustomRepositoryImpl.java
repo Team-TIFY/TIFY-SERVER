@@ -7,7 +7,9 @@ import static tify.server.domain.domains.question.domain.QFavorQuestionCategory.
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
 
 @RequiredArgsConstructor
@@ -35,5 +37,22 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
                         .fetch();
 
         return categoryDtos;
+    }
+
+    @Override
+    public Optional<FavorAnswer> searchByCategoryAndNumber(
+            Long userId, String category, Long number) {
+        return Optional.ofNullable(
+                queryFactory
+                        .selectFrom(favorAnswer)
+                        .innerJoin(favorAnswer.favorQuestion, favorQuestion)
+                        .fetchJoin()
+                        .innerJoin(favorQuestion.favorQuestionCategory, favorQuestionCategory)
+                        .fetchJoin()
+                        .where(
+                                favorAnswer.userId.eq(userId),
+                                favorQuestionCategory.name.eq(category),
+                                favorQuestion.number.eq(number))
+                        .fetchOne());
     }
 }

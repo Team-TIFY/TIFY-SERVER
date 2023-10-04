@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question.domain.strategy;
+package tify.server.domain.domains.question.strategy;
 
 
 import java.util.List;
@@ -7,5 +7,6 @@ import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 public interface ProductRecommendationStrategy {
 
-    public List<Product> recommendation(String categoryName, List<FavorRecommendationDTO> dto);
+    public List<Product> recommendation(
+            Long userId, String categoryName, List<FavorRecommendationDTO> dto);
 }

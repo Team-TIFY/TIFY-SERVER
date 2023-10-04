@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question.domain.strategy;
+package tify.server.domain.domains.question.strategy;
 
 
 import java.util.ArrayList;
@@ -7,18 +7,28 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 @RequiredArgsConstructor
 public class FEDIGRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
+    private final FavorAnswerAdaptor favorAnswerAdaptor;
+
+    private static final String CATEGORY_NAME = "FEDIG";
+
     private static List<Product> fedigProducts = new ArrayList<>();
+    private static List<FavorRecommendationDTO> favorRecommendationDTOS = new ArrayList<>();
 
     @Override
-    public List<Product> recommendation(String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(
+            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
 
-        List<String> productAnswer = Arrays.stream(dto.get(5).getAnswer().split(", ")).toList();
+        List<FavorRecommendationDTO> initRecommendationDTO = getInitRecommendationDTO(userId);
+        List<String> productAnswer =
+                Arrays.stream(initRecommendationDTO.get(0).getAnswer().split(", ")).toList();
 
         if (productAnswer.size() == 1) {
             List<Product> products =
@@ -37,6 +47,13 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         }
 
         return fedigProducts;
+    }
+
+    private List<FavorRecommendationDTO> getInitRecommendationDTO(Long userId) {
+        List<FavorAnswer> favorAnswers = new ArrayList<>();
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 6L));
+        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 
     private List<Product> singleFilterStep(List<Product> products, String answer) {
