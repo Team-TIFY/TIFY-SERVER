@@ -1,5 +1,6 @@
 package tify.server.domain.domains.user.repository;
 
+import static tify.server.domain.domains.QAbstractTimeStamp.*;
 import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QProfile.*;
 import static tify.server.domain.domains.user.domain.QUser.*;
@@ -34,7 +35,8 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                         user.profile.birth,
                                         user.onBoardingStatus.name,
                                         neighbor.order,
-                                        neighbor.isView))
+                                        neighbor.isView,
+                                        user.updatedAt))
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
@@ -64,7 +66,8 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                         user.profile.birth,
                                         user.onBoardingStatus.name,
                                         neighbor.order,
-                                        neighbor.isView))
+                                        neighbor.isView,
+                                        user.updatedAt))
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
