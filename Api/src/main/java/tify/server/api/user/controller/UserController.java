@@ -56,6 +56,12 @@ public class UserController {
         return neighborInfoUseCase.execute(neighborId);
     }
 
+    @Operation(summary = "친구 정보 조회 시간 업데이트")
+    @PatchMapping("/neighbors/{neighborId}")
+    public void updateNeighborViewedAt(@PathVariable Long neighborId) {
+        neighborInfoUseCase.updateViewedAt(neighborId);
+    }
+
     @Operation(summary = "내 취향 태그 조회")
     @GetMapping("/{userId}/tags")
     public List<UserTagVo> getUserTags(@PathVariable Long userId) {

@@ -10,6 +10,8 @@ import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.domain.FavorQuestion;
 import tify.server.domain.domains.question.dto.model.FavorAnswerDto;
 import tify.server.domain.domains.question.validator.FavorQuestionValidator;
+import tify.server.domain.domains.user.adaptor.UserAdaptor;
+import tify.server.domain.domains.user.domain.User;
 
 @DomainService
 @RequiredArgsConstructor
@@ -18,6 +20,7 @@ public class FavorQuestionDomainService {
 
     private final FavorQuestionAdaptor favorQuestionAdaptor;
     private final FavorQuestionValidator favorQuestionValidator;
+    private final UserAdaptor userAdaptor;
 
     @Transactional
     public void createFavorAnswer(Long userId, String categoryName, List<FavorAnswerDto> answers) {
@@ -44,5 +47,7 @@ public class FavorQuestionDomainService {
                         .toList();
         // 답변 작성
         favorQuestionAdaptor.favorAnswerSaveAll(favorAnswers);
+        User user = userAdaptor.query(userId);
+        user.updateFavor();
     }
 }

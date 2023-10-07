@@ -1,6 +1,8 @@
 package tify.server.domain.domains.user.domain;
 
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,12 +36,15 @@ public class Neighbor extends AbstractTimeStamp {
 
     @NotNull private Boolean isView;
 
+    private Timestamp viewedAt;
+
     @Builder
     public Neighbor(Long fromUserId, Long toUserId, Long order, Boolean isView) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.order = order;
         this.isView = isView;
+        this.viewedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 
     public void updateOrder(Long changeOrder) {
@@ -52,5 +57,9 @@ public class Neighbor extends AbstractTimeStamp {
         } else {
             this.isView = true;
         }
+    }
+
+    public void updatedViewedAt() {
+        this.viewedAt = Timestamp.valueOf(LocalDateTime.now());
     }
 }

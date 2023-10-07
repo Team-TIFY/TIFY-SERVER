@@ -29,14 +29,15 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                 Projections.constructor(
                                         RetrieveNeighborDTO.class,
                                         neighbor.toUserId,
-                                        user.userId,
+                                        neighbor.fromUserId,
                                         user.profile.thumbNail,
                                         user.profile.userName,
                                         user.profile.birth,
                                         user.onBoardingStatus.name,
                                         neighbor.order,
                                         neighbor.isView,
-                                        user.updatedAt))
+                                        user.updatedAt,
+                                        neighbor.viewedAt))
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
@@ -60,14 +61,15 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                 Projections.constructor(
                                         RetrieveNeighborDTO.class,
                                         neighbor.toUserId,
-                                        user.userId,
+                                        neighbor.fromUserId,
                                         user.profile.thumbNail,
                                         user.profile.userName,
                                         user.profile.birth,
                                         user.onBoardingStatus.name,
                                         neighbor.order,
                                         neighbor.isView,
-                                        user.updatedAt))
+                                        user.updatedAt,
+                                        neighbor.viewedAt))
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
