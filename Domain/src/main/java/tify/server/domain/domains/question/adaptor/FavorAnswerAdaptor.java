@@ -31,4 +31,11 @@ public class FavorAnswerAdaptor {
                 .existsByFavorQuestion_FavorQuestionCategory_DetailCategoryAndUserId(
                         detailCategory, userId);
     }
+
+    public FavorAnswer searchByCategoryNameAndNumber(
+            Long userId, String categoryName, Long number) {
+        return favorAnswerRepository
+                .searchByCategoryAndNumber(userId, categoryName, number)
+                .orElseThrow(() -> FavorAnswerNotFoundException.EXCEPTION);
+    }
 }

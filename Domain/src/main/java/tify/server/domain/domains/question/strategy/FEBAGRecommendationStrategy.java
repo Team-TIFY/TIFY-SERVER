@@ -1,6 +1,7 @@
-package tify.server.domain.domains.question.domain.strategy;
+package tify.server.domain.domains.question.strategy;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 import tify.server.domain.domains.question.exception.QuestionException;
 
@@ -16,21 +19,39 @@ import tify.server.domain.domains.question.exception.QuestionException;
 public class FEBAGRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
+    private final FavorAnswerAdaptor favorAnswerAdaptor;
 
     private static final int MINIMUM_COUNT = 12;
     private static final int ANSWER_CNT = 3;
+    private static final String CATEGORY_NAME = "FEBAG";
 
     @Override
-    public List<Product> recommendation(String categoryName, List<FavorRecommendationDTO> dto) {
-        validateAnswerSize(dto);
+    public List<Product> recommendation(
+            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
 
-        List<Product> firstProducts = firstStep(categoryName, dto.get(0).getAnswer());
-        List<Product> secondProducts = secondStep(firstProducts, dto.get(1).getAnswer());
+        List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
+
+        validateAnswerSize(recommendationDTO);
+
+        List<Product> firstProducts = firstStep(categoryName, recommendationDTO.get(0).getAnswer());
+        List<Product> secondProducts =
+                secondStep(firstProducts, recommendationDTO.get(1).getAnswer());
 
         if (validateProductCount(secondProducts)) {
             return secondProducts;
         }
-        return secondStep(secondProducts, dto.get(2).getAnswer());
+        return secondStep(secondProducts, recommendationDTO.get(2).getAnswer());
+    }
+
+    private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
+        List<FavorAnswer> favorAnswers = new ArrayList<>();
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 3L));
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L));
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
+        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 
     private List<Product> firstStep(String categoryName, String answer) {
