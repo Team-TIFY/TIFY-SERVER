@@ -4,6 +4,8 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -18,12 +20,17 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
 
     private final ProductAdaptor productAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
+    private Map<String, Long> map = new ConcurrentHashMap<>();
 
     private static final String CATEGORY_NAME = "FCTOP";
 
     @Override
     public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dtos) {
+            Long userId,
+            String categoryName,
+            List<FavorRecommendationDTO> dto) { // 필요없는 파라미터들 날릴 예정
+
+        List<FavorRecommendationDTO> dtos = getRecommendDTO(userId);
 
         // 1번 스텝
         List<Product> firstProducts = firstStep(categoryName, dtos.get(0).getAnswer());
@@ -47,14 +54,23 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
         return fourthStep(thirdProducts, dtos.get(3).getAnswer());
     }
 
-    private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
+    private List<FavorRecommendationDTO> getRecommendDTO(Long userId) {
+        map.put("티셔츠", 3L);
+        map.put("맨투맨", 4L);
+        map.put("니트", 5L);
+
         List<FavorAnswer> favorAnswers = new ArrayList<>();
         favorAnswers.add(
                 favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L));
-        favorAnswers.add(
-                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
-        favorAnswers.add(
-                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 6L));
+        FavorAnswer initFavorAnswer =
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L);
+        List<String> split = Arrays.stream(initFavorAnswer.getAnswerContent().split(", ")).toList();
+        favorAnswers.add(initFavorAnswer);
+        split.forEach(
+                s ->
+                        favorAnswers.add(
+                                favorAnswerAdaptor.searchByCategoryNameAndNumber(
+                                        userId, CATEGORY_NAME, map.get(s))));
         return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 

@@ -20,7 +20,6 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FEDIG";
 
     private static List<Product> fedigProducts = new ArrayList<>();
-    private static List<FavorRecommendationDTO> favorRecommendationDTOS = new ArrayList<>();
 
     @Override
     public List<Product> recommendation(
@@ -34,7 +33,7 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
             List<Product> products =
                     productAdaptor.queryAllByCategoryNameAndCharacter(
                             categoryName, productAnswer.get(0));
-            productFilter(products, productAnswer.get(0));
+            productFilter(products, productAnswer.get(0), userId);
         } else {
             List<Product> firstProducts =
                     productAdaptor.queryAllByCategoryNameAndCharacter(
@@ -42,8 +41,8 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
             List<Product> secondProducts =
                     productAdaptor.queryAllByCategoryNameAndCharacter(
                             categoryName, productAnswer.get(1));
-            productFilter(firstProducts, productAnswer.get(0));
-            productFilter(secondProducts, productAnswer.get(1));
+            productFilter(firstProducts, productAnswer.get(0), userId);
+            productFilter(secondProducts, productAnswer.get(1), userId);
         }
 
         return fedigProducts;
@@ -81,15 +80,49 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         return false;
     }
 
-    // Todo: 그립톡, 파우치는 7번 질문에 대한 답변을 dto로 / 워치 스트랩은 5번 질문에 대한 답변을 dto
-    // Todo: 폰케이스, 이어폰케이스 질문 분리
-    private void productFilter(List<Product> products, String answer) {
+    private void productFilter(List<Product> products, String answer, Long userId) {
         if (answer.equals("폰스트랩") || answer.equals("키링")) {
             fedigProducts.addAll(products);
-        } else if (answer.equals("그립톡") || answer.equals("파우치") || answer.equals("워치스트랩")) {
-            fedigProducts.addAll(singleFilterStep(products, answer));
-        } else {
-            fedigProducts.addAll(multiFilterStep(products, answer));
+        } else if (answer.equals("그립톡") || answer.equals("파우치")) {
+            fedigProducts.addAll(
+                    singleFilterStep(
+                            products,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
+                                    .getAnswerContent()));
+        } else if (answer.equals("워치스트랩")) {
+            fedigProducts.addAll(
+                    singleFilterStep(
+                            products,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 5L)
+                                    .getAnswerContent()));
+        } else if (answer.equals("폰케이스")) {
+            List<Product> products1 =
+                    singleFilterStep(
+                            products,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
+                                    .getAnswerContent());
+            fedigProducts.addAll(
+                    singleFilterStep(
+                            products1,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
+                                    .getAnswerContent()));
+        } else if (answer.equals("이어폰 케이스")) {
+            List<Product> products1 =
+                    singleFilterStep(
+                            products,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L)
+                                    .getAnswerContent());
+            fedigProducts.addAll(
+                    singleFilterStep(
+                            products1,
+                            favorAnswerAdaptor
+                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
+                                    .getAnswerContent()));
         }
     }
 }
