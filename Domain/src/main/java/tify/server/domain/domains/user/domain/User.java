@@ -72,4 +72,8 @@ public class User extends AbstractTimeStamp {
         this.userId = userId;
         this.onBoardingStatus = onBoardingStatus;
     }
+
+    public void updateFavor() {
+        setUpdatedAt();
+    }
 }

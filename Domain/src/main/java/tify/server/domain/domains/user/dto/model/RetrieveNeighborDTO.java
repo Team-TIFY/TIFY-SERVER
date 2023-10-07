@@ -11,7 +11,7 @@ public class RetrieveNeighborDTO {
 
     private Long neighborId;
 
-    private String neighborUserId;
+    private Long userId;
 
     private String neighborThumbnail;
 
@@ -26,4 +26,6 @@ public class RetrieveNeighborDTO {
     private boolean isView;
 
     private Timestamp updatedAt;
+
+    private Timestamp viewedAt;
 }

@@ -4,4 +4,4 @@ COPY ${JAR_FILE} app.jar
 
 ARG PROFILE=dev
 ENV PROFILE=${PROFILE}
-ENTRYPOINT ["java","-Dspring.profiles.active=${PROFILE}", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
+ENTRYPOINT ["java","-Duser.timezone=Asia/Seoul", "-Dspring.profiles.active=${PROFILE}", "-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
