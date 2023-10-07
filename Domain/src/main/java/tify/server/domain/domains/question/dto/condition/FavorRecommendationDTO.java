@@ -1,12 +1,14 @@
 package tify.server.domain.domains.question.dto.condition;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class FavorRecommendationDTO {
 
     private final Long questionNumber;

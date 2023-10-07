@@ -49,10 +49,7 @@ public class BMLIPRecommendationStrategy implements ProductRecommendationStrateg
         }
 
         // 3번 스텝
-        List<Product> thirdStepProducts =
-                otherStep(secondStepProducts, recommendationDTO.get(2).getAnswer());
-
-        return thirdStepProducts;
+        return otherStep(secondStepProducts, recommendationDTO.get(2).getAnswer());
     }
 
     private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {

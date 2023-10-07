@@ -81,6 +81,8 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         return false;
     }
 
+    // Todo: 그립톡, 파우치는 7번 질문에 대한 답변을 dto로 / 워치 스트랩은 5번 질문에 대한 답변을 dto
+    // Todo: 폰케이스, 이어폰케이스 질문 분리
     private void productFilter(List<Product> products, String answer) {
         if (answer.equals("폰스트랩") || answer.equals("키링")) {
             fedigProducts.addAll(products);

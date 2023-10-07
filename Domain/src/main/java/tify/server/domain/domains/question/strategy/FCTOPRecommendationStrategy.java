@@ -1,6 +1,7 @@
 package tify.server.domain.domains.question.strategy;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 @RequiredArgsConstructor
@@ -16,6 +18,8 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
 
     private final ProductAdaptor productAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
+
+    private static final String CATEGORY_NAME = "FCTOP";
 
     @Override
     public List<Product> recommendation(
@@ -43,14 +47,16 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
         return fourthStep(thirdProducts, dtos.get(3).getAnswer());
     }
 
-    // Todo: 세환이한테 물어보기 => 핏의 경우 무엇을 선택하더라도 (티셔츠, 맨투맨, 니트 모두)가 되어야함
-    //    private List<FavorRecommendationDTO> getRecommendationDTO() {
-    //        List<FavorAnswer> favorAnswers = new ArrayList<>();
-    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 2L));
-    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 3L));
-    //        favorAnswers.add(favorAnswerAdaptor.searchByCategoryNameAndNumber(CATEGORY_NAME, 4L));
-    //        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
-    //    }
+    private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
+        List<FavorAnswer> favorAnswers = new ArrayList<>();
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L));
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 6L));
+        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
+    }
 
     // 1번째 스텝
     private List<Product> firstStep(String categoryName, String answer) {
@@ -73,6 +79,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
                 .toList();
     }
 
+    // Todo: 티셔츠 -> 티로 변경 필요할 듯?
     // 3번째 스텝
     private List<Product> thirdStep(List<Product> products, String answer) {
         List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
