@@ -41,6 +41,7 @@ public class UserController {
     private final RetrieveNeighborListUseCase retrieveNeighborListUseCase;
     private final UpdateNeighborUseCase updateNeighborUseCase;
     private final CreateNeighborUseCase createNeighborUseCase;
+    private final RetrieveBirthdayNeighborUseCase retrieveBirthdayNeighborUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -125,5 +126,12 @@ public class UserController {
     @PostMapping("{toUserId}/neighbors")
     public void postNeighbor(@PathVariable Long toUserId) {
         createNeighborUseCase.execute(toUserId);
+    }
+
+    @Operation(summary = "생일인 친구 조회")
+    @GetMapping("/neighbors/birthday")
+    public SliceResponse<RetrieveNeighborDTO> getBirthdayNeighbor(
+            @ParameterObject @PageableDefault Pageable pageable) {
+        return retrieveBirthdayNeighborUseCase.execute(pageable);
     }
 }

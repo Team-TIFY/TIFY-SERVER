@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.dto.model;
 
 
+import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,4 +24,6 @@ public class RetrieveNeighborDTO {
     private Long order;
 
     private boolean isView;
+
+    private Timestamp updatedAt;
 }
