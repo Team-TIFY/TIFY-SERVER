@@ -1,5 +1,6 @@
 package tify.server.infrastructure.outer.crawling;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -19,8 +20,8 @@ public class MusinsaCrawl {
 
     public String process(String url) {
         System.setProperty(
-            "webdriver.chrome.driver",
-            "/Users/sehwan/Downloads/chromedriver-mac-arm64/chromedriver");
+                "webdriver.chrome.driver",
+                "/Users/sehwan/Downloads/chromedriver-mac-arm64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -46,7 +47,10 @@ public class MusinsaCrawl {
     private String getDataList(String url) throws InterruptedException {
         driver.get(url);
         Thread.sleep(1000);
-        WebElement element = driver.findElement(By.id("detail_bigimg")).findElement(By.className("product-img")).findElement(By.id("bigimg"));
+        WebElement element =
+                driver.findElement(By.id("detail_bigimg"))
+                        .findElement(By.className("product-img"))
+                        .findElement(By.id("bigimg"));
         System.out.println(element.toString());
         return element.getAttribute("src");
     }

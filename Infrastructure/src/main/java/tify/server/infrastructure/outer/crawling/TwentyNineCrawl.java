@@ -1,5 +1,6 @@
 package tify.server.infrastructure.outer.crawling;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -9,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Component;
-import tify.server.infrastructure.exception.FeignException;
 
 @Component
 @RequiredArgsConstructor
@@ -19,8 +19,8 @@ public class TwentyNineCrawl {
 
     public String process(String url) {
         System.setProperty(
-            "webdriver.chrome.driver",
-            "/Users/sehwan/Downloads/chromedriver-mac-arm64/chromedriver");
+                "webdriver.chrome.driver",
+                "/Users/sehwan/Downloads/chromedriver-mac-arm64/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
@@ -32,7 +32,7 @@ public class TwentyNineCrawl {
         try {
             imgSrc = getDataList(url);
         } catch (InterruptedException e) {
-//            throw FeignException.EXCEPTION;
+            //            throw FeignException.EXCEPTION;
             log.info("에러 발생 ㅠㅠ");
         } catch (UnhandledAlertException e) {
             log.info("유효하지 않은 url : {}", url);
@@ -48,7 +48,8 @@ public class TwentyNineCrawl {
         driver.get(url);
         Thread.sleep(1000);
         if (!driver.findElements(By.cssSelector(".css-12qah06.ewptmlp5")).isEmpty()) {
-            WebElement element = driver.findElements(By.cssSelector(".css-12qah06.ewptmlp5")).get(0);
+            WebElement element =
+                    driver.findElements(By.cssSelector(".css-12qah06.ewptmlp5")).get(0);
             System.out.println(element.toString());
             return element.getAttribute("src");
         }

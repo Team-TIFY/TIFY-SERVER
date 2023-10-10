@@ -23,7 +23,8 @@ public class CrawlingUseCase {
 
     @Transactional
     public void executeForOliveYoung() {
-        List<ProductCrawlingDto> productCrawlingDtos = productAdaptor.searchByCompany(Site.OLIVE_YOUNG);
+        List<ProductCrawlingDto> productCrawlingDtos =
+                productAdaptor.searchByCompany(Site.OLIVE_YOUNG);
         productCrawlingDtos.forEach(
                 dto -> {
                     String imgSrc = oliveYoungCrawl.process(dto.getCrawlUrl());
@@ -35,21 +36,21 @@ public class CrawlingUseCase {
     public void executeForMusinsa() {
         List<ProductCrawlingDto> productCrawlingDtos = productAdaptor.searchByCompany(Site.MUSINSA);
         productCrawlingDtos.forEach(
-            dto -> {
-                System.out.println(dto.getName() + dto.getCrawlUrl());
-                String imgSrc = musinsaCrawl.process(dto.getCrawlUrl());
-                updateImageUrl(dto.getName(), imgSrc);
-            });
+                dto -> {
+                    System.out.println(dto.getName() + dto.getCrawlUrl());
+                    String imgSrc = musinsaCrawl.process(dto.getCrawlUrl());
+                    updateImageUrl(dto.getName(), imgSrc);
+                });
     }
 
     @Transactional
     public void executeForTwentyNine() {
         List<ProductCrawlingDto> productCrawlingDtos = productAdaptor.searchByCompany(Site.CM);
         productCrawlingDtos.forEach(
-            dto -> {
-                String imgSrc = twentyNineCrawl.process(dto.getCrawlUrl());
-                updateImageUrl(dto.getName(), imgSrc);
-            });
+                dto -> {
+                    String imgSrc = twentyNineCrawl.process(dto.getCrawlUrl());
+                    updateImageUrl(dto.getName(), imgSrc);
+                });
     }
 
     @Transactional
