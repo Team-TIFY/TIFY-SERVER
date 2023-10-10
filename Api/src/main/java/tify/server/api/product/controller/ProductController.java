@@ -36,6 +36,18 @@ public class ProductController {
         crawlingUseCase.executeForOliveYoung();
     }
 
+    @Operation(summary = "무신사 크롤링을 통해 상품명과 상품 이미지를 가져옵니다.")
+    @PatchMapping("/musinsa")
+    public void musinsaCrawl() {
+        crawlingUseCase.executeForMusinsa();
+    }
+
+    @Operation(summary = "29cm 크롤링을 통해 상품명과 상품 이미지를 가져옵니다.")
+    @PatchMapping("/twentynine")
+    public void twentynineCrawl() {
+        crawlingUseCase.executeForTwentyNine();
+    }
+
     @Operation(summary = "키워드를 이용하여 관련된 상품을 검색합니다.")
     @GetMapping()
     public SliceResponse<ProductRetrieveDTO> productSearch(

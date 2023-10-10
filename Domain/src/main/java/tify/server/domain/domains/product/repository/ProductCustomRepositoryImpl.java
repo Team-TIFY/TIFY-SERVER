@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.product.domain.Site;
 import tify.server.domain.domains.product.dto.ProductCondition;
 import tify.server.domain.domains.product.dto.ProductCrawlingDto;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
@@ -28,6 +29,17 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 .groupBy(product.name)
                 .fetch();
     }
+
+    @Override
+    public List<ProductCrawlingDto> searchByCompany(Site site) {
+        return queryFactory
+            .select(new QProductCrawlingDto(product.name, product.crawlUrl))
+            .from(product)
+            .where(product.crawlUrl.contains(site.getValue()))
+            .groupBy(product.name)
+            .fetch();
+    }
+
 
     @Override
     public List<Product> searchAllToRecommendation(String categoryName, String answer) {
