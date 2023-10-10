@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Site {
-    OLIVE_YOUNG("올리브영"),
-    MUSINSA("무신사"),
+    OLIVE_YOUNG("oliveyoung"),
+    MUSINSA("musinsa"),
     CM("29cm"),
     ;
 

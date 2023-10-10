@@ -15,8 +15,7 @@ import tify.server.infrastructure.exception.FeignException;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OliveYoungCrawl {
-
+public class MusinsaCrawl {
     private WebDriver driver;
 
     public String process(String url) {
@@ -48,7 +47,10 @@ public class OliveYoungCrawl {
     private String getDataList(String url) throws InterruptedException {
         driver.get(url);
         Thread.sleep(1000);
-        WebElement element = driver.findElement(By.id("mainImg"));
+        WebElement element =
+                driver.findElement(By.id("detail_bigimg"))
+                        .findElement(By.className("product-img"))
+                        .findElement(By.id("bigimg"));
         System.out.println(element.toString());
         return element.getAttribute("src");
     }

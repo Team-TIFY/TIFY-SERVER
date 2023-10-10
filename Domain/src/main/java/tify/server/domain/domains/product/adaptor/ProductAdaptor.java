@@ -26,6 +26,10 @@ public class ProductAdaptor {
         return productRepository.search();
     }
 
+    public List<ProductCrawlingDto> searchByCompany(Site site) {
+        return productRepository.searchByCompany(site);
+    }
+
     public List<Product> queryAllBySite(Site site) {
         return productRepository.findAllBySite(site);
     }

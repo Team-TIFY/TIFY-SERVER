@@ -10,13 +10,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.stereotype.Component;
-import tify.server.infrastructure.exception.FeignException;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class OliveYoungCrawl {
-
+public class TwentyNineCrawl {
     private WebDriver driver;
 
     public String process(String url) {
@@ -34,22 +32,27 @@ public class OliveYoungCrawl {
         try {
             imgSrc = getDataList(url);
         } catch (InterruptedException e) {
-            throw FeignException.EXCEPTION;
+            //            throw FeignException.EXCEPTION;
+            log.info("에러 발생 ㅠㅠ");
         } catch (UnhandledAlertException e) {
             log.info("유효하지 않은 url : {}", url);
+        } finally {
+            driver.close();
+            driver.quit();
+
+            return imgSrc;
         }
-
-        driver.close();
-        driver.quit();
-
-        return imgSrc;
     }
 
     private String getDataList(String url) throws InterruptedException {
         driver.get(url);
         Thread.sleep(1000);
-        WebElement element = driver.findElement(By.id("mainImg"));
-        System.out.println(element.toString());
-        return element.getAttribute("src");
+        if (!driver.findElements(By.cssSelector(".css-12qah06.ewptmlp5")).isEmpty()) {
+            WebElement element =
+                    driver.findElements(By.cssSelector(".css-12qah06.ewptmlp5")).get(0);
+            System.out.println(element.toString());
+            return element.getAttribute("src");
+        }
+        return null;
     }
 }
