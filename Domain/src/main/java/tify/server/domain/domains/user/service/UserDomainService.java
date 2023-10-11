@@ -22,10 +22,10 @@ public class UserDomainService {
     private final UserRepository userRepository;
 
     @Transactional
-    public User registerUser(Profile profile, OauthInfo oauthInfo) {
+    public User registerUser(OauthInfo oauthInfo) {
         userValidator.isNewUser(oauthInfo);
 
-        User user = User.builder().profile(profile).oauthInfo(oauthInfo).build();
+        User user = User.builder().oauthInfo(oauthInfo).build();
         return userAdaptor.save(user);
     }
 

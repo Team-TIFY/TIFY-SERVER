@@ -62,6 +62,11 @@ public class User extends AbstractTimeStamp {
         this.expoToken = expoToken;
     }
 
+    @Builder
+    public User(OauthInfo oauthInfo) {
+        this.oauthInfo = oauthInfo;
+    }
+
     public void onBoarding(
             String username,
             String userId,
