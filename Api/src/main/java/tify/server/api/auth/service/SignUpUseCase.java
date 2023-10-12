@@ -4,7 +4,6 @@ package tify.server.api.auth.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tify.server.api.auth.model.KakaoUserInfoDto;
-import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
@@ -38,11 +37,10 @@ public class SignUpUseCase {
         return new OauthLoginLinkResponse(kakaoOauthHelper.getKaKaoOauthLink(referer));
     }
 
-    public AuthResponse registerUserByOICDToken(
-            String idToken, RegisterRequest registerUserRequest) {
+    public AuthResponse registerUserByOICDToken(String idToken) {
 
         OauthInfo oauthInfo = kakaoOauthHelper.getOauthInfoByIdToken(idToken);
-        User user = userDomainService.registerUser(registerUserRequest.toProfile(), oauthInfo);
+        User user = userDomainService.registerUser(oauthInfo);
 
         return tokenGenerateHelper.execute(user);
     }

@@ -5,17 +5,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tify.server.api.auth.model.request.RegisterRequest;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
@@ -75,10 +72,8 @@ public class AuthController {
 
     @Operation(summary = "발급받은 idToken을 통해 회원가입")
     @PostMapping("/oauth/kakao/register")
-    public AuthResponse registerUser(
-            @RequestParam("id_token") String token,
-            @Valid @RequestBody RegisterRequest registerRequest) {
-        return signUpUseCase.registerUserByOICDToken(token, registerRequest);
+    public AuthResponse registerUser(@RequestParam("id_token") String token) {
+        return signUpUseCase.registerUserByOICDToken(token);
     }
 
     @Deprecated

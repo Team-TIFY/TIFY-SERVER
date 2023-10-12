@@ -11,6 +11,8 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
+import tify.server.domain.domains.question.dto.model.FavorAnswerVo;
+import tify.server.domain.domains.user.domain.SmallCategory;
 
 @RequiredArgsConstructor
 public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomRepository {
@@ -54,5 +56,31 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
                                 favorQuestionCategory.name.eq(category),
                                 favorQuestion.number.eq(number))
                         .fetchOne());
+    }
+
+    @Override
+    public List<FavorAnswerVo> getFavorAnswerBySmallCategory(
+            Long userId, SmallCategory smallCategory) {
+        List<FavorAnswerVo> favorAnswers =
+                queryFactory
+                        .select(
+                                Projections.constructor(
+                                        FavorAnswerVo.class,
+                                        favorAnswer.id,
+                                        favorQuestionCategory.largeCategory,
+                                        favorQuestionCategory.smallCategory,
+                                        favorAnswer.answerContent))
+                        .from(favorAnswer)
+                        .join(favorQuestion)
+                        .on(favorAnswer.favorQuestion.id.eq(favorQuestion.id))
+                        .join(favorQuestionCategory)
+                        .on(favorQuestion.favorQuestionCategory.id.eq(favorQuestionCategory.id))
+                        .where(
+                                favorQuestionCategory
+                                        .smallCategory
+                                        .eq(smallCategory)
+                                        .and(favorAnswer.userId.eq(userId)))
+                        .fetch();
+        return favorAnswers;
     }
 }
