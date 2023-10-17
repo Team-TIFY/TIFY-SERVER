@@ -28,13 +28,4 @@ public class UserOnBoardingRequest {
 
     @NotBlank(message = "상태값을 입력해주세요.")
     private String onBoardingState;
-
-    @NotBlank(message = "뷰티 취향을 입력해주세요.")
-    private String beautyFavor;
-
-    @NotBlank(message = "패션 취향을 입력해주세요.")
-    private String fashionFavor;
-
-    @NotBlank(message = "취미 취향을 입력해주세요.")
-    private String hobbyFavor;
 }
