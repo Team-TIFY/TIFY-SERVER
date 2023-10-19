@@ -12,12 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
-import tify.server.api.user.model.dto.request.CreateNeighborUseCase;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.service.*;
+import tify.server.api.user.service.CreateNeighborUseCase;
 import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
@@ -44,6 +44,8 @@ public class UserController {
     private final CreateNeighborUseCase createNeighborUseCase;
     private final RetrieveBirthdayNeighborUseCase retrieveBirthdayNeighborUseCase;
     private final RetrieveNeighborApplicationUseCase retrieveNeighborApplicationUseCase;
+    private final AcceptanceNeighborApplicationUseCase acceptanceNeighborApplicationUseCase;
+    private final RejectNeighborApplicationUseCase rejectNeighborApplicationUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -144,9 +146,21 @@ public class UserController {
     }
 
     @Operation(summary = "친구 신청 목록을 조회합니다.")
-    @GetMapping("/{toUserId}/neighbors/applications")
+    @GetMapping("/neighbors/applications")
     public SliceResponse<RetrieveNeighborApplicationDTO> getNeighborApplications(
-            @ParameterObject @PageableDefault Pageable pageable, @PathVariable Long toUserId) {
-        return SliceResponse.of(retrieveNeighborApplicationUseCase.execute(pageable, toUserId));
+            @ParameterObject @PageableDefault Pageable pageable) {
+        return SliceResponse.of(retrieveNeighborApplicationUseCase.execute(pageable));
+    }
+
+    @Operation(summary = "친구 신청을 수락합니다.")
+    @PatchMapping("/neighbors/applications/{neighborApplicationId}/accept")
+    public void patchNeighborApplicationAccept(@PathVariable Long neighborApplicationId) {
+        acceptanceNeighborApplicationUseCase.execute(neighborApplicationId);
+    }
+
+    @Operation(summary = "친구 신청을 거절합니다.")
+    @PatchMapping("/neighbors/applications/{neighborApplicationId}/reject")
+    public void patchNeighborApplicationReject(@PathVariable Long neighborApplicationId) {
+        rejectNeighborApplicationUseCase.execute(neighborApplicationId);
     }
 }

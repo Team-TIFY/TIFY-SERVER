@@ -60,6 +60,10 @@ public class NeighborAdaptor {
         return neighborRepository.searchBirthToPage(neighborCondition);
     }
 
+    public void saveNeighborApplication(NeighborApplication neighborApplication) {
+        neighborApplicationRepository.save(neighborApplication);
+    }
+
     public NeighborApplication queryNeighborApplication(Long neighborApplicationId) {
         return neighborApplicationRepository
                 .findById(neighborApplicationId)
