@@ -71,8 +71,8 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
                                         favorQuestionCategory.smallCategory,
                                         favorAnswer.answerContent))
                         .from(favorAnswer)
-                        .join(favorQuestion)
-                        .on(favorAnswer.favorQuestion.id.eq(favorQuestion.id))
+                        .innerJoin(favorAnswer.favorQuestion, favorQuestion)
+                        .fetchJoin()
                         .join(favorQuestionCategory)
                         .on(favorQuestion.favorQuestionCategory.id.eq(favorQuestionCategory.id))
                         .where(

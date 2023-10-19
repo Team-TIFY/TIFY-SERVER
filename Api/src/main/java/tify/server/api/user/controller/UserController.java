@@ -23,6 +23,7 @@ import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @SecurityRequirement(name = "access-token")
@@ -42,6 +43,7 @@ public class UserController {
     private final UpdateNeighborUseCase updateNeighborUseCase;
     private final CreateNeighborUseCase createNeighborUseCase;
     private final RetrieveBirthdayNeighborUseCase retrieveBirthdayNeighborUseCase;
+    private final RetrieveNeighborApplicationUseCase retrieveNeighborApplicationUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -139,5 +141,12 @@ public class UserController {
     public SliceResponse<RetrieveNeighborDTO> getBirthdayNeighbor(
             @ParameterObject @PageableDefault Pageable pageable) {
         return retrieveBirthdayNeighborUseCase.execute(pageable);
+    }
+
+    @Operation(summary = "친구 신청 목록을 조회합니다.")
+    @GetMapping("/{toUserId}/neighbors/applications")
+    public SliceResponse<RetrieveNeighborApplicationDTO> getNeighborApplications(
+            @ParameterObject @PageableDefault Pageable pageable, @PathVariable Long toUserId) {
+        return SliceResponse.of(retrieveNeighborApplicationUseCase.execute(pageable, toUserId));
     }
 }
