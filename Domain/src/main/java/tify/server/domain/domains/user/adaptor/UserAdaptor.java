@@ -5,11 +5,14 @@ import static tify.server.domain.domains.user.exception.UserException.ON_BOARDIN
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.user.domain.OauthInfo;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
+import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.exception.UserNotFoundException;
 import tify.server.domain.domains.user.repository.UserOnBoardingStatusRepository;
 import tify.server.domain.domains.user.repository.UserRepository;
@@ -47,5 +50,9 @@ public class UserAdaptor {
 
     public List<UserOnBoardingStatusInfoVo> searchByKeyword(String keyword) {
         return userOnBoardingStatusRepository.searchByKeyword(keyword);
+    }
+
+    public Slice<User> searchUsers(Pageable pageable, UserCondition condition) {
+        return userRepository.searchUsers(pageable, condition);
     }
 }

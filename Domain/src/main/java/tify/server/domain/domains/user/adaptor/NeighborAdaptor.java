@@ -4,12 +4,17 @@ package tify.server.domain.domains.user.adaptor;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
+import tify.server.domain.domains.user.exception.NeighborApplicationNotFoundException;
 import tify.server.domain.domains.user.exception.NeighborNotFoundException;
+import tify.server.domain.domains.user.repository.NeighborApplicationRepository;
 import tify.server.domain.domains.user.repository.NeighborRepository;
 
 @Adaptor
@@ -17,6 +22,7 @@ import tify.server.domain.domains.user.repository.NeighborRepository;
 public class NeighborAdaptor {
 
     private final NeighborRepository neighborRepository;
+    private final NeighborApplicationRepository neighborApplicationRepository;
 
     public Neighbor query(Long neighborId) {
         return neighborRepository
@@ -52,5 +58,21 @@ public class NeighborAdaptor {
 
     public Slice<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchBirthToPage(neighborCondition);
+    }
+
+    public void saveNeighborApplication(NeighborApplication neighborApplication) {
+        neighborApplicationRepository.save(neighborApplication);
+    }
+
+    public NeighborApplication queryNeighborApplication(Long neighborApplicationId) {
+        return neighborApplicationRepository
+                .findById(neighborApplicationId)
+                .orElseThrow(() -> NeighborApplicationNotFoundException.EXCEPTION);
+    }
+
+    public Slice<RetrieveNeighborApplicationDTO> searchNeighborApplications(
+            Pageable pageable, Long toUserId) {
+        return neighborApplicationRepository.searchAllNeighborApplicationByFromUserId(
+                pageable, toUserId);
     }
 }

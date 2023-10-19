@@ -12,9 +12,11 @@ import tify.server.domain.domains.user.domain.User;
 public class UserInfoVo {
 
     // 유저 프로필 사진, 이름, 생년월일, 직업 조회
-    private final Long userId;
+    private final Long id;
 
     private final String userName;
+
+    private final String userId;
 
     private final String imageUrl;
 
@@ -30,8 +32,9 @@ public class UserInfoVo {
 
     public static UserInfoVo from(User user) {
         return UserInfoVo.builder()
-                .userId(user.getId())
+                .id(user.getId())
                 .userName(user.getProfile().getUserName())
+                .userId(user.getUserId())
                 .imageUrl(user.getProfile().getThumbNail())
                 .birth(user.getProfile().getBirth())
                 .job(user.getProfile().getJob())
