@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.domain.domains.AbstractTimeStamp;
+import tify.server.domain.domains.user.exception.NeighborApplicationStatusNotWaitException;
 
 @Getter
 @Entity
@@ -44,10 +45,18 @@ public class NeighborApplication extends AbstractTimeStamp {
     }
 
     public void accept() {
+        checkStatus();
         this.neighborApplicationStatus = ACCEPT;
     }
 
     public void reject() {
+        checkStatus();
         this.neighborApplicationStatus = REJECT;
+    }
+
+    private void checkStatus() {
+        if (!this.neighborApplicationStatus.equals(WAIT)) {
+            throw NeighborApplicationStatusNotWaitException.EXCEPTION;
+        }
     }
 }

@@ -27,6 +27,8 @@ public enum UserException implements BaseErrorCode {
             NOT_FOUND, "Neighbor_Application_404_1", "친구 신청 내역을 찾을 수 없습니다."),
     NEIGHBOR_APPLICATION_NOT_MATCHED_TO_USER_ID_ERROR(
             BAD_REQUEST, "Neighbor_Application_400_1", "해당 유저에게 신청한 친구 신청이 아닙니다."),
+    NEIGHBOR_APPLICATION_STATUS_NOT_WAIT_ERROR(
+            BAD_REQUEST, "Neighbor_Application_400_2", "이미 수락 및 거절 된 신청입니다."),
     ;
 
     private final Integer statusCode;

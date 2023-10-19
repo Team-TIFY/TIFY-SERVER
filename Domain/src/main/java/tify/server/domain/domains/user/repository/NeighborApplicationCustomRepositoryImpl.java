@@ -31,6 +31,8 @@ public class NeighborApplicationCustomRepositoryImpl
                                         user,
                                         neighborApplication.neighborApplicationStatus))
                         .from(neighborApplication)
+                        .innerJoin(user)
+                        .on(user.id.eq(neighborApplication.fromUserId))
                         .where(
                                 neighborApplication.toUserId.eq(toUserId),
                                 neighborApplication.neighborApplicationStatus.eq(WAIT))

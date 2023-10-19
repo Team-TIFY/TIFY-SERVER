@@ -23,6 +23,7 @@ import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
@@ -46,6 +47,7 @@ public class UserController {
     private final RetrieveNeighborApplicationUseCase retrieveNeighborApplicationUseCase;
     private final AcceptanceNeighborApplicationUseCase acceptanceNeighborApplicationUseCase;
     private final RejectNeighborApplicationUseCase rejectNeighborApplicationUseCase;
+    private final RetrieveUserListUseCase retrieveUserListUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -80,7 +82,7 @@ public class UserController {
     }
 
     @Operation(summary = "유저 정보 조회 (토큰)")
-    @GetMapping
+    @GetMapping("/me")
     public UserInfoVo getUserProfileInfoByToken() {
         return userInfoUseCase.executeByToken();
     }
@@ -162,5 +164,13 @@ public class UserController {
     @PatchMapping("/neighbors/applications/{neighborApplicationId}/reject")
     public void patchNeighborApplicationReject(@PathVariable Long neighborApplicationId) {
         rejectNeighborApplicationUseCase.execute(neighborApplicationId);
+    }
+
+    @Operation(summary = "유저를 검색합니다.")
+    @GetMapping
+    public SliceResponse<UserInfoVo> getUsers(
+            @ParameterObject @PageableDefault Pageable pageable,
+            @ParameterObject UserCondition condition) {
+        return SliceResponse.of(retrieveUserListUseCase.execute(pageable, condition));
     }
 }

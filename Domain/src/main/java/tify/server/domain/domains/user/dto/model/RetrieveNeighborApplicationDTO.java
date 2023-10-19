@@ -2,6 +2,7 @@ package tify.server.domain.domains.user.dto.model;
 
 
 import lombok.Getter;
+import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.domains.user.domain.NeighborApplicationStatus;
 import tify.server.domain.domains.user.domain.User;
 
@@ -10,7 +11,7 @@ public class RetrieveNeighborApplicationDTO {
 
     private final Long neighborApplicationId;
 
-    private final User toUser;
+    private final UserInfoVo toUserInfo;
 
     private final NeighborApplicationStatus neighborApplicationStatus;
 
@@ -19,7 +20,7 @@ public class RetrieveNeighborApplicationDTO {
             User toUser,
             NeighborApplicationStatus neighborApplicationStatus) {
         this.neighborApplicationId = neighborApplicationId;
-        this.toUser = toUser;
+        this.toUserInfo = UserInfoVo.from(toUser);
         this.neighborApplicationStatus = neighborApplicationStatus;
     }
 }

@@ -1,20 +1,43 @@
 package tify.server.domain.domains.user.repository;
 
+import static tify.server.domain.domains.user.domain.QUser.user;
+import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.userOnBoardingStatus;
+import static tify.server.domain.domains.user.domain.QUserTag.userTag;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import tify.server.domain.common.util.SliceUtil;
+import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.dto.condition.UserCondition;
 
 @RequiredArgsConstructor
 public class UserCustomRepositoryImpl implements UserCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    //      @Override
-    //      public List<UserTagVo> findUserTagVo(Long userId) {
-    //        return jpaQueryFactory.select(new QUserTagVo(userTag.id, largeCategory.value,
-    //     userTag.favors))
-    //                .from(user).leftJoin(user.userTags, userTag).fetchJoin()
-    //                .leftJoin(userTag.favors, userFavor).fetchJoin()
-    //                .where(user.id.eq(userId)).fetch();
+    @Override
+    public Slice<User> searchUsers(Pageable pageable, UserCondition userCondition) {
+        List<User> contents =
+                jpaQueryFactory
+                        .selectFrom(user)
+                        .leftJoin(user.userTags, userTag)
+                        .fetchJoin()
+                        .leftJoin(user.onBoardingStatus, userOnBoardingStatus)
+                        .fetchJoin()
+                        .where(userIdContains(userCondition.getUserId()))
+                        .orderBy(user.id.desc())
+                        .offset(pageable.getOffset())
+                        .limit(pageable.getPageSize() + 1)
+                        .fetch();
 
+        return SliceUtil.valueOf(contents, pageable);
+    }
+
+    private BooleanExpression userIdContains(String userId) {
+        return (userId != null) ? user.userId.contains(userId) : null;
+    }
 }
