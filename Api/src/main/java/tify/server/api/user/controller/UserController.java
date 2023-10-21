@@ -24,7 +24,7 @@ import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
-import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
+import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @SecurityRequirement(name = "access-token")
@@ -149,7 +149,7 @@ public class UserController {
 
     @Operation(summary = "친구 신청 목록을 조회합니다.")
     @GetMapping("/neighbors/applications")
-    public SliceResponse<RetrieveNeighborApplicationDTO> getNeighborApplications(
+    public SliceResponse<GetNeighborApplicationDTO> getNeighborApplications(
             @ParameterObject @PageableDefault Pageable pageable) {
         return SliceResponse.of(retrieveNeighborApplicationUseCase.execute(pageable));
     }

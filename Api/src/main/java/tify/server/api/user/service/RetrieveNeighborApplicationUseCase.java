@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
-import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
+import tify.server.domain.domains.user.adaptor.UserAdaptor;
+import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 
 @UseCase
 @RequiredArgsConstructor
@@ -16,9 +18,11 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
 public class RetrieveNeighborApplicationUseCase {
 
     private final NeighborAdaptor neighborAdaptor;
+    private final UserAdaptor userAdaptor;
 
-    public Slice<RetrieveNeighborApplicationDTO> execute(Pageable pageable) {
+    public Slice<GetNeighborApplicationDTO> execute(Pageable pageable) {
         Long toUserId = SecurityUtils.getCurrentUserId();
-        return neighborAdaptor.searchNeighborApplications(pageable, toUserId);
+        User user = userAdaptor.query(toUserId);
+        return neighborAdaptor.searchNeighborApplications(pageable, user);
     }
 }
