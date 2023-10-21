@@ -9,8 +9,9 @@ import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
+import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
-import tify.server.domain.domains.user.dto.model.RetrieveNeighborApplicationDTO;
+import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 import tify.server.domain.domains.user.exception.NeighborApplicationNotFoundException;
 import tify.server.domain.domains.user.exception.NeighborNotFoundException;
@@ -70,9 +71,28 @@ public class NeighborAdaptor {
                 .orElseThrow(() -> NeighborApplicationNotFoundException.EXCEPTION);
     }
 
-    public Slice<RetrieveNeighborApplicationDTO> searchNeighborApplications(
-            Pageable pageable, Long toUserId) {
-        return neighborApplicationRepository.searchAllNeighborApplicationByFromUserId(
-                pageable, toUserId);
+    public Slice<GetNeighborApplicationDTO> searchNeighborApplications(
+            Pageable pageable, User toUser) {
+        // 내가 아는 친구
+        List<Long> currentUserNeighborIds =
+                neighborRepository.findAllByFromUserId(toUser.getId()).stream()
+                        .map(Neighbor::getToUserId)
+                        .toList();
+        return neighborApplicationRepository
+                .searchAllNeighborApplicationByFromUserId(pageable, toUser.getId())
+                .map(
+                        dto -> {
+                            List<Long> neighborIds =
+                                    neighborRepository
+                                            .findAllByFromUserId(dto.getUser().getId())
+                                            .stream()
+                                            .map(Neighbor::getToUserId)
+                                            .toList();
+                            List<Long> mutualNeighbors =
+                                    currentUserNeighborIds.stream()
+                                            .filter(neighborIds::contains)
+                                            .toList();
+                            return GetNeighborApplicationDTO.of(dto, mutualNeighbors.size());
+                        });
     }
 }
