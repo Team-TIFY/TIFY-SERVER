@@ -2,6 +2,7 @@ package tify.server.api.user.service;
 
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
@@ -22,7 +23,8 @@ public class UserOnBoardingUseCase {
 
     @Transactional
     public void execute(UserOnBoardingRequest body, Long userId) {
-        if (userAdaptor.queryByUserId(body.getId()).isPresent()) {
+        Optional<User> getUser = userAdaptor.queryByUserId(body.getId());
+        if (getUser.isPresent() && getUser.get().getId().equals(userId)) {
             throw new BaseException(UserException.ALREADY_EXIST_USER_ERROR);
         }
         User user = userAdaptor.query(userId);
