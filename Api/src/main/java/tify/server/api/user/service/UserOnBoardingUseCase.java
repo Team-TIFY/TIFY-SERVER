@@ -24,7 +24,7 @@ public class UserOnBoardingUseCase {
     @Transactional
     public void execute(UserOnBoardingRequest body, Long userId) {
         Optional<User> getUser = userAdaptor.queryByUserId(body.getId());
-        if (getUser.isPresent() && getUser.get().getId().equals(userId)) {
+        if (getUser.isPresent() && !getUser.get().getId().equals(userId)) {
             throw new BaseException(UserException.ALREADY_EXIST_USER_ERROR);
         }
         User user = userAdaptor.query(userId);
