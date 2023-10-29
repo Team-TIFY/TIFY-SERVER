@@ -16,6 +16,7 @@ import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
+import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
 import tify.server.domain.common.vo.UserFavorVo;
@@ -26,7 +27,6 @@ import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
-import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
