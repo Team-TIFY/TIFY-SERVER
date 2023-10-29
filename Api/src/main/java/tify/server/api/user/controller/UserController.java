@@ -26,6 +26,7 @@ import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
+import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -48,6 +49,7 @@ public class UserController {
     private final AcceptanceNeighborApplicationUseCase acceptanceNeighborApplicationUseCase;
     private final RejectNeighborApplicationUseCase rejectNeighborApplicationUseCase;
     private final RetrieveUserListUseCase retrieveUserListUseCase;
+    private final RetrieveMutualFriendsUseCase retrieveMutualFriendsUseCase;
 
     // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
@@ -172,5 +174,11 @@ public class UserController {
             @ParameterObject @PageableDefault Pageable pageable,
             @ParameterObject UserCondition condition) {
         return SliceResponse.of(retrieveUserListUseCase.execute(pageable, condition));
+    }
+
+    @Operation(summary = "함께 아는 친구의 수를 조회합니다.")
+    @GetMapping("/neighbors/mutual/{toUserId}")
+    public MutualFriendsVo getMutualFriendNum(@PathVariable Long toUserId) {
+        return retrieveMutualFriendsUseCase.execute(toUserId);
     }
 }
