@@ -7,30 +7,31 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.core.annotation.UseCase;
+import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
-import tify.server.domain.domains.user.repository.NeighborRepository;
 
 @UseCase
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RetrieveMutualFriendsUseCase {
 
-    private final NeighborRepository neighborRepository;
+    private final NeighborAdaptor neighborAdaptor;
 
     public MutualFriendsVo execute(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
 
         List<Long> myNeighbors =
-                neighborRepository.findAllByFromUserId(userId).stream()
+                neighborAdaptor.queryAllByFromUserId(userId).stream()
                         .map(Neighbor::getToUserId)
                         .toList();
 
         List<Long> findUserNeighbors =
-                neighborRepository.findAllByFromUserId(toUserId).stream()
+                neighborAdaptor.queryAllByFromUserId(toUserId).stream()
                         .map(Neighbor::getToUserId)
                         .toList();
 
-        long mutualFriendsCount = myNeighbors.stream().filter(findUserNeighbors::contains).count();
+        int mutualFriendsCount =
+                (int) myNeighbors.stream().filter(findUserNeighbors::contains).count();
 
         return MutualFriendsVo.of(userId, toUserId, mutualFriendsCount);
     }
