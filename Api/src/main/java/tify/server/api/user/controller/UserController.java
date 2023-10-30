@@ -17,6 +17,7 @@ import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
+import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
 import tify.server.domain.common.vo.UserFavorVo;
@@ -170,7 +171,7 @@ public class UserController {
 
     @Operation(summary = "유저를 검색합니다.")
     @GetMapping
-    public SliceResponse<UserInfoVo> getUsers(
+    public SliceResponse<UserSearchInfoVo> getUsers(
             @ParameterObject @PageableDefault Pageable pageable,
             @ParameterObject UserCondition condition) {
         return SliceResponse.of(retrieveUserListUseCase.execute(pageable, condition));
