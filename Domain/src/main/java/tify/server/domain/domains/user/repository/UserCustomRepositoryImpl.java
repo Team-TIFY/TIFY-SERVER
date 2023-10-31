@@ -28,7 +28,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         .fetchJoin()
                         .leftJoin(user.onBoardingStatus, userOnBoardingStatus)
                         .fetchJoin()
-                        .where(userIdContains(userCondition.getUserId()))
+                        .where(userIdEquals(userCondition.getUserId()))
                         .orderBy(user.id.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)
@@ -37,7 +37,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         return SliceUtil.valueOf(contents, pageable);
     }
 
-    private BooleanExpression userIdContains(String userId) {
-        return (userId != null) ? user.userId.contains(userId) : null;
+    private BooleanExpression userIdEquals(String userId) {
+        return (userId != null) ? user.userId.eq(userId) : null;
     }
 }
