@@ -1,5 +1,6 @@
 package tify.server.domain.domains.user.domain;
 
+import static tify.server.domain.domains.user.domain.SmallCategory.*;
 import static tify.server.domain.domains.user.domain.SmallCategory.CLOTHES;
 import static tify.server.domain.domains.user.domain.SmallCategory.FASHION_PRODUCT;
 import static tify.server.domain.domains.user.domain.SmallCategory.FRAGRANCE;
@@ -22,6 +23,10 @@ public enum DetailCategory {
     FAS_PRODUCT("패션소품", FASHION_PRODUCT),
     DIG_PRODUCT("디지털/테크소품", FASHION_PRODUCT),
     BAG("가방", SmallCategory.BAG),
+    ACCESSORY("액세서리", SmallCategory.ACCESSORY),
+    DISH("식기", COOKING),
+    CUP("컵, 텀블러", COOKING),
+    EXERCISE("운동", SmallCategory.EXERCISE),
     ;
 
     public static List<DetailCategory> getDetailCategories() {
