@@ -3,15 +3,18 @@ package tify.server.domain.domains.user.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.domains.AbstractTimeStamp;
 
+@Slf4j
 @Getter
 @Entity
 @Table(name = "tbl_user")
@@ -73,7 +76,8 @@ public class User extends AbstractTimeStamp {
             String birth,
             Gender gender,
             UserOnBoardingStatus onBoardingStatus) {
-        this.profile.onBoardingProfile(username, birth, gender);
+//        this.profile.onBoardingProfile(username, birth, gender);
+        this.profile = Profile.builder().userName(username).birth(birth).gender(gender).build();
         this.userId = userId;
         this.onBoardingStatus = onBoardingStatus;
     }

@@ -4,6 +4,7 @@ package tify.server.api.user.service;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.core.annotation.UseCase;
