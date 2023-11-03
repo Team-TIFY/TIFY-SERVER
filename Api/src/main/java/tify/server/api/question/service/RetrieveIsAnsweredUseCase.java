@@ -4,6 +4,7 @@ package tify.server.api.question.service;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.api.question.model.response.RetrieveCategoryIsAnsweredDTO;
@@ -16,6 +17,7 @@ import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
 import tify.server.domain.domains.user.domain.DetailCategory;
 import tify.server.domain.domains.user.domain.SmallCategory;
 
+@Slf4j
 @UseCase
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -47,6 +49,7 @@ public class RetrieveIsAnsweredUseCase {
                             .filter(category -> category.getSmallCategory().equals(smallCategory))
                             .toList()
                             .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
+
             categoryIsAnsweredDTOS.add(
                     RetrieveCategoryIsAnsweredDTO.of(
                             smallCategory, userAnswerCategorySize == size));

@@ -8,7 +8,6 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
-import tify.server.domain.domains.user.domain.User;
 
 @UseCase
 @RequiredArgsConstructor
@@ -18,8 +17,7 @@ public class UserInfoUseCase {
     private final UserAdaptor userAdaptor;
 
     public UserProfileVo execute(Long userId) {
-        User user = userAdaptor.query(userId);
-        return user.toUserProfileVo();
+        return userAdaptor.query(userId).toUserProfileVo();
     }
 
     public UserInfoVo executeByToken() {
