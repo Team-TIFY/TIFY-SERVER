@@ -2,10 +2,13 @@ package tify.server.domain.common.vo;
 
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.user.domain.Gender;
+import tify.server.domain.domains.user.domain.Profile;
 import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 
 @Getter
 @Builder
@@ -33,14 +36,27 @@ public class UserInfoVo {
     public static UserInfoVo from(User user) {
         return UserInfoVo.builder()
                 .id(user.getId())
-                .userName(user.getProfile().getUserName())
+                .userName(
+                        Optional.ofNullable(user.getProfile())
+                                .map(Profile::getUserName)
+                                .orElse(null))
                 .userId(user.getUserId())
-                .imageUrl(user.getProfile().getThumbNail())
-                .birth(user.getProfile().getBirth())
-                .job(user.getProfile().getJob())
+                .imageUrl(
+                        Optional.ofNullable(user.getProfile())
+                                .map(Profile::getThumbNail)
+                                .orElse(null))
+                .birth(Optional.ofNullable(user.getProfile()).map(Profile::getBirth).orElse(null))
+                .job(Optional.ofNullable(user.getProfile()).map(Profile::getJob).orElse(null))
                 .createdAt(user.getCreatedAt().toLocalDateTime())
-                .gender(Gender.toValue(user.getProfile().getGender()))
-                .onBoardingStatus(user.getOnBoardingStatus().getName())
+                .gender(
+                        Gender.toValue(
+                                Optional.ofNullable(user.getProfile())
+                                        .map(Profile::getGender)
+                                        .orElse(null)))
+                .onBoardingStatus(
+                        Optional.ofNullable(user.getOnBoardingStatus())
+                                .map(UserOnBoardingStatus::getName)
+                                .orElse(null))
                 .build();
     }
 }

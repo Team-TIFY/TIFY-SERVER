@@ -83,7 +83,7 @@ public class UserController {
         updateUserProfileUseCase.execute(body);
     }
 
-    @Operation(summary = "온보딩 이후 유저 정보 조회 (토큰)")
+    @Operation(summary = "유저 정보 조회 (토큰)")
     @GetMapping("/me")
     public UserInfoVo getUserProfileInfoByToken() {
         return userInfoUseCase.executeByToken();
