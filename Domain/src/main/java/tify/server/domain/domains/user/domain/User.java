@@ -47,11 +47,19 @@ public class User extends AbstractTimeStamp {
     private UserOnBoardingStatus onBoardingStatus;
 
     public UserInfoVo toUserInfoVo() {
-        return UserInfoVo.from(this);
+        if (this.profile == null) {
+            return UserInfoVo.builder().id(this.id).build();
+        } else {
+            return UserInfoVo.from(this);
+        }
     }
 
     public UserProfileVo toUserProfileVo() {
-        return UserProfileVo.from(this);
+        if (this.profile == null) {
+            return UserProfileVo.builder().build();
+        } else {
+            return UserProfileVo.from(this);
+        }
     }
 
     @Builder

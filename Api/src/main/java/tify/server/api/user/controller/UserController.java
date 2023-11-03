@@ -52,7 +52,6 @@ public class UserController {
     private final RetrieveUserListUseCase retrieveUserListUseCase;
     private final RetrieveMutualFriendsUseCase retrieveMutualFriendsUseCase;
 
-    // userId를 pathvariable로 받아서 그 해당 유저의 profile 정보를 리턴하기.
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
     public UserProfileVo getUserProfileInfo(@PathVariable Long userId) {
@@ -84,7 +83,7 @@ public class UserController {
         updateUserProfileUseCase.execute(body);
     }
 
-    @Operation(summary = "유저 정보 조회 (토큰)")
+    @Operation(summary = "온보딩 이후 유저 정보 조회 (토큰)")
     @GetMapping("/me")
     public UserInfoVo getUserProfileInfoByToken() {
         return userInfoUseCase.executeByToken();
