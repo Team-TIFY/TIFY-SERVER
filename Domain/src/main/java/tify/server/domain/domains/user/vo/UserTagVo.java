@@ -1,4 +1,4 @@
-package tify.server.domain.common.vo;
+package tify.server.domain.domains.user.vo;
 
 
 import java.util.List;

@@ -15,19 +15,20 @@ import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
+import tify.server.api.user.model.dto.request.UserReportRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
-import tify.server.domain.common.vo.UserFavorVo;
-import tify.server.domain.common.vo.UserInfoVo;
-import tify.server.domain.common.vo.UserProfileVo;
-import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
+import tify.server.domain.domains.user.vo.UserFavorVo;
+import tify.server.domain.domains.user.vo.UserInfoVo;
+import tify.server.domain.domains.user.vo.UserProfileVo;
+import tify.server.domain.domains.user.vo.UserTagVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -51,6 +52,9 @@ public class UserController {
     private final RejectNeighborApplicationUseCase rejectNeighborApplicationUseCase;
     private final RetrieveUserListUseCase retrieveUserListUseCase;
     private final RetrieveMutualFriendsUseCase retrieveMutualFriendsUseCase;
+    private final RemoveNeighborUseCase removeNeighborUseCase;
+    private final UserBlockUseCase userBlockUseCase;
+    private final CreateUserReportUseCase createUserReportUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -180,5 +184,30 @@ public class UserController {
     @GetMapping("/neighbors/mutual/{toUserId}")
     public MutualFriendsVo getMutualFriendNum(@PathVariable Long toUserId) {
         return retrieveMutualFriendsUseCase.execute(toUserId);
+    }
+
+    @Operation(summary = "친구를 삭제합니다.")
+    @DeleteMapping("/{toUserId}/neighbors/delete")
+    public void postNeighborDelete(@PathVariable Long toUserId) {
+        removeNeighborUseCase.execute(toUserId);
+    }
+
+    @Operation(summary = "유저를 차단합니다.")
+    @PostMapping("/{toUserId}/block")
+    public void postUserBlock(@PathVariable Long toUserId) {
+        userBlockUseCase.execute(toUserId);
+    }
+
+    @Operation(summary = "차단된 유저의 차단을 해제합니다.")
+    @DeleteMapping("/{toUserId}/block")
+    public void deleteUserBlock(@PathVariable Long toUserId) {
+        userBlockUseCase.delete(toUserId);
+    }
+
+    @Operation(summary = "유저를 신고합니다.")
+    @PostMapping("/report/{userId}")
+    public void postUserReport(
+            @PathVariable Long userId, @RequestBody @Valid UserReportRequest body) {
+        createUserReportUseCase.execute(userId, body);
     }
 }

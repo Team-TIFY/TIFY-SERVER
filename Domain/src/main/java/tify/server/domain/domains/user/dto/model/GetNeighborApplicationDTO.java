@@ -3,8 +3,8 @@ package tify.server.domain.domains.user.dto.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import tify.server.domain.common.vo.UserInfoVo;
 import tify.server.domain.domains.user.domain.NeighborApplicationStatus;
+import tify.server.domain.domains.user.vo.UserInfoVo;
 
 @Getter
 @Builder
