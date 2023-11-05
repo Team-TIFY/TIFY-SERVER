@@ -17,7 +17,7 @@ public class RetrieveUserReportUseCase {
 
     private final UserAdaptor userAdaptor;
     private final UserReportAdaptor userReportAdaptor;
-  
+
     @Transactional(readOnly = true)
     public UserReportInfoVo execute(Long userId) {
         User reportedUser = userAdaptor.query(userId);

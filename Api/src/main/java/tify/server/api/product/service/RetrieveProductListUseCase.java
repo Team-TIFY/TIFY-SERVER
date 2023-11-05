@@ -28,8 +28,7 @@ public class RetrieveProductListUseCase {
         List<ProductRetrieveDTO> products = new ArrayList<>();
         smallCategory.forEach(
                 category -> {
-                    Long categoryId =
-                            favorQuestionAdaptor.queryBySmallCategory(category).getId();
+                    Long categoryId = favorQuestionAdaptor.queryBySmallCategory(category).getId();
                     List<ProductRetrieveDTO> list =
                             productAdaptor
                                     .searchBySmallCategoryId(
