@@ -1,10 +1,7 @@
 package tify.server.domain.domains.user.repository;
 
-import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
 import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
-import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.userOnBoardingStatus;
-import static tify.server.domain.domains.user.domain.QUserTag.userTag;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,19 +19,14 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<User> searchUsers(Pageable pageable, UserCondition userCondition) {
+    public Slice<User> searchUsers(
+            Pageable pageable, UserCondition userCondition, Long currentUserId) {
         List<User> contents =
                 jpaQueryFactory
                         .selectFrom(user)
-                        .leftJoin(user.userTags, userTag)
-                        .fetchJoin()
-                        .leftJoin(user.onBoardingStatus, userOnBoardingStatus)
-                        .fetchJoin()
-                        .join(userBlock)
-                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
-                        .where(
-                                userIdEquals(userCondition.getUserId()),
-                                neighbor.toUserId.ne(userBlock.toUserId))
+                        .leftJoin(userBlock)
+                        .on(user.id.eq(userBlock.toUserId), userBlock.fromUserId.eq(currentUserId))
+                        .where(userBlock.toUserId.isNull(), userIdEquals(userCondition.getUserId()))
                         .orderBy(user.id.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)

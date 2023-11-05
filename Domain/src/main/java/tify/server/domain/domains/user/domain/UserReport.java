@@ -1,7 +1,6 @@
 package tify.server.domain.domains.user.domain;
 
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,17 +27,9 @@ public class UserReport extends AbstractTimeStamp {
 
     @NotNull private Long toUserId;
 
-    @NotNull private String title;
-
-    @NotNull
-    @Column(columnDefinition = "TEXT")
-    private String content;
-
     @Builder
-    public UserReport(Long fromUserId, Long toUserId, String title, String content) {
+    public UserReport(Long fromUserId, Long toUserId) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
-        this.title = title;
-        this.content = content;
     }
 }

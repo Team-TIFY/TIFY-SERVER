@@ -52,7 +52,7 @@ public class UserAdaptor {
         return userOnBoardingStatusRepository.searchByKeyword(keyword);
     }
 
-    public Slice<User> searchUsers(Pageable pageable, UserCondition condition) {
-        return userRepository.searchUsers(pageable, condition);
+    public Slice<User> searchUsers(Pageable pageable, UserCondition condition, Long currentUserId) {
+        return userRepository.searchUsers(pageable, condition, currentUserId);
     }
 }
