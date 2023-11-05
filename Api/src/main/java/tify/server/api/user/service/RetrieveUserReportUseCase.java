@@ -3,6 +3,7 @@ package tify.server.api.user.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
@@ -17,6 +18,7 @@ public class RetrieveUserReportUseCase {
     private final UserAdaptor userAdaptor;
     private final UserReportAdaptor userReportAdaptor;
 
+    @Transactional(readOnly = true)
     public UserReportInfoVo execute(Long userId) {
         User reportedUser = userAdaptor.query(userId);
         List<UserReport> userReports = userReportAdaptor.queryAllByUserId(userId);
