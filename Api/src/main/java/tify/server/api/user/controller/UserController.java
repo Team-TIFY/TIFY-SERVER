@@ -15,7 +15,6 @@ import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
-import tify.server.api.user.model.dto.request.UserReportRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
@@ -208,9 +207,8 @@ public class UserController {
 
     @Operation(summary = "유저를 신고합니다.")
     @PostMapping("/report/{userId}")
-    public void postUserReport(
-            @PathVariable Long userId, @RequestBody @Valid UserReportRequest body) {
-        createUserReportUseCase.execute(userId, body);
+    public void postUserReport(@PathVariable Long userId) {
+        createUserReportUseCase.execute(userId);
     }
 
     @Operation(summary = "유저가 당한 신고의 정보를 조회합니다.")

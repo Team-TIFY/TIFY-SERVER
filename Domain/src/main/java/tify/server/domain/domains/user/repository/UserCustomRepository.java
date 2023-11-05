@@ -8,5 +8,5 @@ import tify.server.domain.domains.user.dto.condition.UserCondition;
 
 public interface UserCustomRepository {
 
-    Slice<User> searchUsers(Pageable pageable, UserCondition userCondition);
+    Slice<User> searchUsers(Pageable pageable, UserCondition userCondition, Long currentUserId);
 }
