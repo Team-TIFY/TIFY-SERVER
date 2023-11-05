@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.adaptor;
 
 
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
