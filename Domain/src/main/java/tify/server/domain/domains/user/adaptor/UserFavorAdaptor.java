@@ -4,11 +4,11 @@ package tify.server.domain.domains.user.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
-import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.UserFavor;
 import tify.server.domain.domains.user.exception.UserFavorNotFoundException;
 import tify.server.domain.domains.user.repository.UserFavorRepository;
+import tify.server.domain.domains.user.vo.UserFavorVo;
 
 @Adaptor
 @RequiredArgsConstructor

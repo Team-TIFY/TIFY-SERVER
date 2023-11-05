@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
-import tify.server.domain.common.vo.UserInfoVo;
-import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
+import tify.server.domain.domains.user.vo.UserInfoVo;
+import tify.server.domain.domains.user.vo.UserProfileVo;
 
 @UseCase
 @RequiredArgsConstructor

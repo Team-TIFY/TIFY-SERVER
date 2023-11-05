@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
-import tify.server.domain.common.vo.UserTagVo;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserTag;
+import tify.server.domain.domains.user.vo.UserTagVo;
 
 @UseCase
 @RequiredArgsConstructor

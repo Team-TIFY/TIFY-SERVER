@@ -57,6 +57,10 @@ public class NeighborAdaptor {
         neighborRepository.save(neighbor);
     }
 
+    public void delete(Neighbor neighbor) {
+        neighborRepository.delete(neighbor);
+    }
+
     public Slice<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchBirthToPage(neighborCondition);
     }

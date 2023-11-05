@@ -1,7 +1,6 @@
-package tify.server.domain.common.vo;
+package tify.server.domain.domains.user.vo;
 
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,42 +11,38 @@ import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 
 @Getter
 @Builder
-public class UserInfoVo {
-
-    // 유저 프로필 사진, 이름, 생년월일, 직업 조회
-    private final Long id;
+public class UserProfileVo {
 
     private final String userName;
 
     private final String userId;
 
-    private final String imageUrl;
+    private final String email;
+
+    private final String thumbnail;
 
     private final String birth;
 
     private final String job;
 
-    private final LocalDateTime createdAt;
-
     private final String gender;
 
     private final String onBoardingStatus;
 
-    public static UserInfoVo from(User user) {
-        return UserInfoVo.builder()
-                .id(user.getId())
+    public static UserProfileVo from(User user) {
+        return UserProfileVo.builder()
                 .userName(
                         Optional.ofNullable(user.getProfile())
                                 .map(Profile::getUserName)
                                 .orElse(null))
                 .userId(user.getUserId())
-                .imageUrl(
+                .email(Optional.ofNullable(user.getProfile()).map(Profile::getEmail).orElse(null))
+                .thumbnail(
                         Optional.ofNullable(user.getProfile())
                                 .map(Profile::getThumbNail)
                                 .orElse(null))
                 .birth(Optional.ofNullable(user.getProfile()).map(Profile::getBirth).orElse(null))
                 .job(Optional.ofNullable(user.getProfile()).map(Profile::getJob).orElse(null))
-                .createdAt(user.getCreatedAt().toLocalDateTime())
                 .gender(
                         Gender.toValue(
                                 Optional.ofNullable(user.getProfile())

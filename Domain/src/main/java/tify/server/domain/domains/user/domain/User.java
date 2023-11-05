@@ -9,9 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tify.server.domain.common.vo.UserInfoVo;
-import tify.server.domain.common.vo.UserProfileVo;
 import tify.server.domain.domains.AbstractTimeStamp;
+import tify.server.domain.domains.user.vo.UserInfoVo;
+import tify.server.domain.domains.user.vo.UserProfileVo;
 
 @Slf4j
 @Getter

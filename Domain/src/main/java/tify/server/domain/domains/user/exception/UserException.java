@@ -29,6 +29,9 @@ public enum UserException implements BaseErrorCode {
             BAD_REQUEST, "Neighbor_Application_400_1", "해당 유저에게 신청한 친구 신청이 아닙니다."),
     NEIGHBOR_APPLICATION_STATUS_NOT_WAIT_ERROR(
             BAD_REQUEST, "Neighbor_Application_400_2", "이미 수락 및 거절 된 신청입니다."),
+    ALREADY_EXIST_USER_BLOCK_ERROR(BAD_REQUEST, "User_Block_400_1", "이미 차단 된 유저입니다."),
+    USER_BLOCK_NOT_FOUND_ERROR(NOT_FOUND, "User_Block_404_1", "친구 차단 내역을 찾을 수 없습니다."),
+    USER_REPORT_NOT_FOUND_ERROR(NOT_FOUND, "User_Report_404_1", "신고 내역을 찾을 수 없습니다."),
     ;
 
     private final Integer statusCode;

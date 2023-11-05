@@ -6,9 +6,9 @@ import static tify.server.domain.domains.user.domain.QUserTag.userTag;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import tify.server.domain.common.vo.UserFavorVo;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.UserFavor;
+import tify.server.domain.domains.user.vo.UserFavorVo;
 
 @RequiredArgsConstructor
 public class UserFavorCustomRepositoryImpl implements UserFavorCustomRepository {
