@@ -1,10 +1,7 @@
 package tify.server.domain.domains.user.repository;
 
-import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
 import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
-import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.userOnBoardingStatus;
-import static tify.server.domain.domains.user.domain.QUserTag.userTag;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -22,7 +19,8 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<User> searchUsers(Pageable pageable, UserCondition userCondition, Long currentUserId) {
+    public Slice<User> searchUsers(
+            Pageable pageable, UserCondition userCondition, Long currentUserId) {
         List<User> contents =
                 jpaQueryFactory
                         .selectFrom(user)
