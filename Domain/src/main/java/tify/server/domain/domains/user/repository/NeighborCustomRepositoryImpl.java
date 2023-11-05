@@ -1,10 +1,8 @@
 package tify.server.domain.domains.user.repository;
 
-import static tify.server.domain.domains.QAbstractTimeStamp.*;
 import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
-import static tify.server.domain.domains.user.domain.QProfile.*;
-import static tify.server.domain.domains.user.domain.QUser.*;
-import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.*;
+import static tify.server.domain.domains.user.domain.QUser.user;
+import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,7 +39,11 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
-                        .where(neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()))
+                        .join(userBlock)
+                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
+                        .where(
+                                neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
+                                neighbor.toUserId.ne(userBlock.toUserId))
                         .orderBy(neighbor.order.asc())
                         .offset(neighborCondition.getPageable().getOffset())
                         .limit(neighborCondition.getPageable().getPageSize() + 1)
@@ -73,8 +75,11 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
+                        .join(userBlock)
+                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
                         .where(
                                 neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
+                                neighbor.toUserId.ne(userBlock.toUserId),
                                 user.profile.birth.contains(monthAndYear))
                         .orderBy(neighbor.order.asc())
                         .offset(neighborCondition.getPageable().getOffset())
