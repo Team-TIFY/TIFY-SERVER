@@ -1,6 +1,8 @@
 package tify.server.domain.domains.user.repository;
 
+import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
+import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
 import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.userOnBoardingStatus;
 import static tify.server.domain.domains.user.domain.QUserTag.userTag;
 
@@ -28,7 +30,11 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         .fetchJoin()
                         .leftJoin(user.onBoardingStatus, userOnBoardingStatus)
                         .fetchJoin()
-                        .where(userIdEquals(userCondition.getUserId()))
+                        .join(userBlock)
+                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
+                        .where(
+                                userIdEquals(userCondition.getUserId()),
+                                neighbor.toUserId.ne(userBlock.toUserId))
                         .orderBy(user.id.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)
