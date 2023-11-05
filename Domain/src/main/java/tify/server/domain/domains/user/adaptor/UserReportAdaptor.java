@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.adaptor;
 
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.UserReport;
@@ -21,5 +22,13 @@ public class UserReportAdaptor {
 
     public void save(UserReport userReport) {
         userReportRepository.save(userReport);
+    }
+
+    public List<UserReport> queryAll() {
+        return userReportRepository.findAll();
+    }
+
+    public List<UserReport> queryAllByUserId(Long userId) {
+        return userReportRepository.findAllByToUserId(userId);
     }
 }

@@ -18,6 +18,7 @@ import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.request.UserReportRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
+import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
@@ -55,6 +56,7 @@ public class UserController {
     private final RemoveNeighborUseCase removeNeighborUseCase;
     private final UserBlockUseCase userBlockUseCase;
     private final CreateUserReportUseCase createUserReportUseCase;
+    private final RetrieveUserReportUseCase retrieveUserReportUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -209,5 +211,11 @@ public class UserController {
     public void postUserReport(
             @PathVariable Long userId, @RequestBody @Valid UserReportRequest body) {
         createUserReportUseCase.execute(userId, body);
+    }
+
+    @Operation(summary = "유저가 당한 신고의 정보를 조회합니다.")
+    @GetMapping("/report/{userId}")
+    public UserReportInfoVo getUserReport(@PathVariable Long userId) {
+        return retrieveUserReportUseCase.execute(userId);
     }
 }
