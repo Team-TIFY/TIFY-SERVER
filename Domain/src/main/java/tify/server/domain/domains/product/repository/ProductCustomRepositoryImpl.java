@@ -92,8 +92,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.productOption))
                         .from(product)
                         .where(
-                                product.favorQuestionCategoryId.eq(
-                                        productCategoryCondition.getCategoryId()))
+                                product.favorQuestionCategoryId.in(
+                                        productCategoryCondition.getCategoryIdList()))
                         .orderBy(product.id.asc())
                         .offset(productCategoryCondition.getPageable().getOffset())
                         .limit(productCategoryCondition.getPageable().getPageSize() + 1)

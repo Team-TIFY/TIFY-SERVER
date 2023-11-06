@@ -1,6 +1,7 @@
 package tify.server.domain.domains.product.dto;
 
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,6 @@ import org.springframework.data.domain.Pageable;
 @AllArgsConstructor
 public class ProductCategoryCondition {
 
-    private Long categoryId;
+    private List<Long> categoryIdList;
     private Pageable pageable;
 }
