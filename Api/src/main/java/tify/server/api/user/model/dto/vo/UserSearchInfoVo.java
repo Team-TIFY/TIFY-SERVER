@@ -25,13 +25,17 @@ public class UserSearchInfoVo {
     @Schema(description = "검색하여 찾은 친구와 함께 아는 친구 수")
     private final int mutualFriends;
 
-    public static UserSearchInfoVo of(User user, int mutualFriends) {
+    @Schema(description = "검색하여 찾은 친구와의 친구 여부")
+    private final boolean isFriend;
+
+    public static UserSearchInfoVo of(User user, int mutualFriends, boolean isFriend) {
         return UserSearchInfoVo.builder()
                 .id(user.getId())
                 .userId(user.getUserId())
                 .userName(user.getProfile().getUserName())
                 .imgUrl(user.getProfile().getThumbNail())
                 .mutualFriends(mutualFriends)
+                .isFriend(isFriend)
                 .build();
     }
 }

@@ -31,7 +31,7 @@ public class RetrieveUserListUseCase {
                         .toList();
 
         return userAdaptor
-                .searchUsers(pageable, condition)
+                .searchUsers(pageable, condition, userId)
                 .map(
                         user -> {
                             List<Long> findUserNeighbors =
@@ -43,7 +43,8 @@ public class RetrieveUserListUseCase {
                                             myNeighbors.stream()
                                                     .filter(findUserNeighbors::contains)
                                                     .count();
-                            return UserSearchInfoVo.of(user, mutualFriends);
+                            boolean isFriend = neighborAdaptor.existsNeighbor(userId, user.getId());
+                            return UserSearchInfoVo.of(user, mutualFriends, isFriend);
                         });
     }
 }
