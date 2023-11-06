@@ -3,13 +3,13 @@ package tify.server.domain.domains.user.vo;
 
 import java.util.Optional;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import tify.server.domain.domains.user.domain.Gender;
 import tify.server.domain.domains.user.domain.Profile;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 
-@Getter
+@Data
 @Builder
 public class UserProfileVo {
 
@@ -28,6 +28,10 @@ public class UserProfileVo {
     private final String gender;
 
     private final String onBoardingStatus;
+
+    private boolean isFriend;
+
+    private boolean isBlocked;
 
     public static UserProfileVo from(User user) {
         return UserProfileVo.builder()
@@ -53,5 +57,12 @@ public class UserProfileVo {
                                 .map(UserOnBoardingStatus::getName)
                                 .orElse(null))
                 .build();
+    }
+
+    public static UserProfileVo of(User user, boolean isFriend, boolean isBlocked) {
+        UserProfileVo result = from(user);
+        result.setFriend(isFriend);
+        result.setBlocked(isBlocked);
+        return result;
     }
 }
