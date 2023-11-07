@@ -10,6 +10,7 @@ import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.UserBlock;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
@@ -23,15 +24,22 @@ public class UserInfoUseCase {
     private final NeighborAdaptor neighborAdaptor;
     private final UserBlockAdaptor userBlockAdaptor;
 
-    public UserProfileVo execute(Long userId) {
+    public UserProfileVo execute(Long searchedUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
-        Long searchedUserId = userAdaptor.query(userId).getId();
         Optional<Neighbor> neighbor =
                 neighborAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);
         Optional<UserBlock> userBlock =
                 userBlockAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);
+        Optional<NeighborApplication> receivedApplication =
+                neighborAdaptor.optionalQueryByFromUserIdAndToUserId(searchedUserId, currentUserId);
+        Optional<NeighborApplication> sentApplication =
+                neighborAdaptor.optionalQueryByFromUserIdAndToUserId(currentUserId, searchedUserId);
         return UserProfileVo.of(
-                userAdaptor.query(userId), neighbor.isPresent(), userBlock.isPresent());
+                userAdaptor.query(searchedUserId),
+                neighbor.isPresent(),
+                userBlock.isPresent(),
+                receivedApplication.orElse(null),
+                sentApplication.orElse(null));
     }
 
     public UserInfoVo executeByToken() {
