@@ -26,10 +26,13 @@ public class RetrieveProductListUseCase {
     public SliceResponse<ProductRetrieveDTO> executeToSmallCategory(
             List<SmallCategory> smallCategory, Pageable pageable) {
         List<Long> categoryIdList = new ArrayList<>();
-        smallCategory.forEach(category -> {
-            categoryIdList.addAll(favorQuestionAdaptor.queryBySmallCategory(category).stream().map(
-                FavorQuestionCategory::getId).toList());
-        });
+        smallCategory.forEach(
+                category -> {
+                    categoryIdList.addAll(
+                            favorQuestionAdaptor.queryBySmallCategory(category).stream()
+                                    .map(FavorQuestionCategory::getId)
+                                    .toList());
+                });
         return SliceResponse.of(
                 productAdaptor.searchBySmallCategoryId(
                         new ProductCategoryCondition(categoryIdList, pageable)));
