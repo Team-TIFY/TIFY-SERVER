@@ -12,7 +12,6 @@ import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.UserBlock;
-import tify.server.domain.domains.user.exception.NeighborApplicationNotFoundException;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
 
