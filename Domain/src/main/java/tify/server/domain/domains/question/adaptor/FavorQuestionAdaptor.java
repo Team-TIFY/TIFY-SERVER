@@ -80,9 +80,8 @@ public class FavorQuestionAdaptor {
         return favorQuestionCategoryRepository.findAll();
     }
 
-    public FavorQuestionCategory queryBySmallCategory(SmallCategory smallCategory) {
+    public List<FavorQuestionCategory> queryBySmallCategory(SmallCategory smallCategory) {
         return favorQuestionCategoryRepository
-                .findBySmallCategory(smallCategory)
-                .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
+                .findBySmallCategory(smallCategory);
     }
 }
