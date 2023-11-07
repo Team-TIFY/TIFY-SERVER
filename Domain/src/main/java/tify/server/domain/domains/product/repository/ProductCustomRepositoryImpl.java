@@ -11,6 +11,7 @@ import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.domain.Site;
+import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductCondition;
 import tify.server.domain.domains.product.dto.ProductCrawlingDto;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
@@ -63,7 +64,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.name,
                                         product.brand,
                                         product.characteristic,
-                                        product.price))
+                                        product.price,
+                                        product.productOption))
                         .from(product)
                         .where(product.name.contains(productCondition.getKeyword()))
                         .orderBy(product.id.asc())
@@ -72,5 +74,30 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                         .fetch();
 
         return SliceUtil.valueOf(products, productCondition.getPageable());
+    }
+
+    @Override
+    public Slice<ProductRetrieveDTO> searchBySmallCategory(
+            ProductCategoryCondition productCategoryCondition) {
+        List<ProductRetrieveDTO> products =
+                queryFactory
+                        .select(
+                                Projections.constructor(
+                                        ProductRetrieveDTO.class,
+                                        product.id,
+                                        product.name,
+                                        product.brand,
+                                        product.characteristic,
+                                        product.price,
+                                        product.productOption))
+                        .from(product)
+                        .where(
+                                product.favorQuestionCategoryId.in(
+                                        productCategoryCondition.getCategoryIdList()))
+                        .orderBy(product.id.asc())
+                        .offset(productCategoryCondition.getPageable().getOffset())
+                        .limit(productCategoryCondition.getPageable().getPageSize() + 1)
+                        .fetch();
+        return SliceUtil.valueOf(products, productCategoryCondition.getPageable());
     }
 }

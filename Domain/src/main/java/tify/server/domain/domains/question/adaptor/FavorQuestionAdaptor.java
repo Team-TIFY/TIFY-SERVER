@@ -13,6 +13,7 @@ import tify.server.domain.domains.question.exception.FavorQuestionNotFoundExcept
 import tify.server.domain.domains.question.repository.FavorAnswerRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionCategoryRepository;
 import tify.server.domain.domains.question.repository.FavorQuestionRepository;
+import tify.server.domain.domains.user.domain.SmallCategory;
 
 @Adaptor
 @RequiredArgsConstructor
@@ -77,5 +78,9 @@ public class FavorQuestionAdaptor {
 
     public List<FavorQuestionCategory> queryAllFavorQuestionCategory() {
         return favorQuestionCategoryRepository.findAll();
+    }
+
+    public List<FavorQuestionCategory> queryBySmallCategory(SmallCategory smallCategory) {
+        return favorQuestionCategoryRepository.findBySmallCategory(smallCategory);
     }
 }
