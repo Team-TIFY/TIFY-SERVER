@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.Builder;
 import lombok.Data;
 import tify.server.domain.domains.user.domain.Gender;
+import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.Profile;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
@@ -33,6 +34,10 @@ public class UserProfileVo {
 
     private boolean isBlocked;
 
+    private NeighborApplication receivedApplication;
+
+    private NeighborApplication sentApplication;
+
     public static UserProfileVo from(User user) {
         return UserProfileVo.builder()
                 .userName(
@@ -59,10 +64,18 @@ public class UserProfileVo {
                 .build();
     }
 
-    public static UserProfileVo of(User user, boolean isFriend, boolean isBlocked) {
+    public static UserProfileVo of(
+            User user,
+            boolean isFriend,
+            boolean isBlocked,
+            NeighborApplication receivedApplication,
+            NeighborApplication sentApplication) {
+
         UserProfileVo result = from(user);
         result.setFriend(isFriend);
         result.setBlocked(isBlocked);
+        result.setReceivedApplication(receivedApplication);
+        result.setSentApplication(sentApplication);
         return result;
     }
 }
