@@ -99,4 +99,9 @@ public class NeighborAdaptor {
                             return GetNeighborApplicationDTO.of(dto, mutualNeighbors.size());
                         });
     }
+
+    public Optional<NeighborApplication> optionalQueryByFromUserIdAndToUserId(
+            Long fromUserId, Long toUserId) {
+        return neighborApplicationRepository.findByFromUserIdAndToUserId(fromUserId, toUserId);
+    }
 }
