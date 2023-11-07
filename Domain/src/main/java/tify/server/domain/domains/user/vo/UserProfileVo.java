@@ -33,7 +33,6 @@ public class UserProfileVo {
     private boolean isFriend;
 
     private boolean isBlocked;
-
     private NeighborApplication receivedApplication;
 
     private NeighborApplication sentApplication;

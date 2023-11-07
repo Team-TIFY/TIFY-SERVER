@@ -104,4 +104,8 @@ public class NeighborAdaptor {
             Long fromUserId, Long toUserId) {
         return neighborApplicationRepository.findByFromUserIdAndToUserId(fromUserId, toUserId);
     }
+
+    public void deleteNeighborApplication(NeighborApplication neighborApplication) {
+        neighborApplicationRepository.delete(neighborApplication);
+    }
 }
