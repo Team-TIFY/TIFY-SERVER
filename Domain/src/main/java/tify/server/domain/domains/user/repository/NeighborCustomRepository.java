@@ -1,13 +1,13 @@
 package tify.server.domain.domains.user.repository;
 
 
-import org.springframework.data.domain.Slice;
+import java.util.List;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 public interface NeighborCustomRepository {
 
-    Slice<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition);
+    List<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition);
 
-    Slice<RetrieveNeighborDTO> searchBirthToPage(NeighborCondition neighborCondition);
+    List<RetrieveNeighborDTO> searchBirthToPage(NeighborCondition neighborCondition);
 }

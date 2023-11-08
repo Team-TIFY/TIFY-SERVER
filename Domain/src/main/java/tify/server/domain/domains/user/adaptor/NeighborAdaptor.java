@@ -49,7 +49,7 @@ public class NeighborAdaptor {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 
-    public Slice<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchToPage(neighborCondition);
     }
 
@@ -65,7 +65,7 @@ public class NeighborAdaptor {
         neighborRepository.delete(neighbor);
     }
 
-    public Slice<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchBirthToPage(neighborCondition);
     }
 
