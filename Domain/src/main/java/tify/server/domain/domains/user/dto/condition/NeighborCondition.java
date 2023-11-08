@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.dto.condition;
 
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 @AllArgsConstructor
 public class NeighborCondition {
 
-    Long currentUserId;
+    private Long currentUserId;
+    private List<Long> blockedUserIdList;
     private Pageable pageable;
 }

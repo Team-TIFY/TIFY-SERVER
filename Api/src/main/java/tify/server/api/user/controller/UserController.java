@@ -124,7 +124,7 @@ public class UserController {
 
     @Operation(summary = "친구 목록 조회")
     @GetMapping("/neighbors")
-    public SliceResponse<RetrieveNeighborDTO> getNeighbors(
+    public List<RetrieveNeighborDTO> getNeighbors(
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         return retrieveNeighborListUseCase.execute(pageable);
     }
@@ -149,7 +149,7 @@ public class UserController {
 
     @Operation(summary = "생일인 친구 조회")
     @GetMapping("/neighbors/birthday")
-    public SliceResponse<RetrieveNeighborDTO> getBirthdayNeighbor(
+    public List<RetrieveNeighborDTO> getBirthdayNeighbor(
             @ParameterObject @PageableDefault Pageable pageable) {
         return retrieveBirthdayNeighborUseCase.execute(pageable);
     }

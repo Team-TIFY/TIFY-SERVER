@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.adaptor;
 
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
@@ -26,6 +27,10 @@ public class UserBlockAdaptor {
 
     public Optional<UserBlock> queryByFromUserIdAndToUserId(Long fromUserId, Long toUserId) {
         return userBlockRepository.findByFromUserIdAndToUserId(fromUserId, toUserId);
+    }
+
+    public List<UserBlock> queryAllByFromUserId(Long fromUserId) {
+        return userBlockRepository.findAllByFromUserId(fromUserId);
     }
 
     public void save(Long fromUserId, Long toUserId) {
