@@ -2,7 +2,6 @@ package tify.server.domain.domains.question.repository;
 
 import static tify.server.core.consts.Status.N;
 import static tify.server.domain.domains.question.domain.QAnswer.answer;
-import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
 
 import com.querydsl.core.types.Projections;
@@ -25,17 +24,13 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
         List<AnswerVo> answers =
                 queryFactory
                         .select(Projections.constructor(AnswerVo.class, answer, user))
-                        .from(neighbor)
-                        .join(answer)
-                        .on(answer.userId.eq(neighbor.toUserId))
+                        .from(answer)
                         .join(user)
-                        .on(user.id.eq(neighbor.toUserId))
+                        .on(answer.userId.eq(user.id))
                         .where(
-                                neighbor.fromUserId.eq(userId),
-                                neighbor.isView.eq(true),
                                 questionIdEq(answerCondition.getQuestionId()),
-                                answer.isDeleted.eq(N))
-                        .orderBy(neighbor.order.asc())
+                                answer.isDeleted.eq(N),
+                                answer.userId.in(answerCondition.getUserIdList()))
                         .offset(answerCondition.getPageable().getOffset())
                         .limit(answerCondition.getPageable().getPageSize() + 1)
                         .fetch();

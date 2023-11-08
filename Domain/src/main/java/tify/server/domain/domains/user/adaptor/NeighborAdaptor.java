@@ -41,6 +41,10 @@ public class NeighborAdaptor {
         return neighborRepository.findAllByFromUserId(fromUserId);
     }
 
+    public List<Neighbor> queryAllByFromUserIdAndIsView(Long fromUserId, boolean isView) {
+        return neighborRepository.findAllByFromUserIdAndIsView(fromUserId, isView);
+    }
+
     public Optional<Neighbor> queryByFromUserIdAndToUserId(Long userId, Long neighborId) {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }

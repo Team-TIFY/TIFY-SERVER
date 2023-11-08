@@ -13,4 +13,5 @@ public class ProductRetrieveDTO {
     private String brand;
     private String characteristic;
     private Long price;
+    private String productOption;
 }

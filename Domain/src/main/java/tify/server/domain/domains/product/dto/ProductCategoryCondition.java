@@ -1,4 +1,4 @@
-package tify.server.domain.domains.question.dto.condition;
+package tify.server.domain.domains.product.dto;
 
 
 import java.util.List;
@@ -8,9 +8,8 @@ import org.springframework.data.domain.Pageable;
 
 @Getter
 @AllArgsConstructor
-public class AnswerCondition {
+public class ProductCategoryCondition {
 
-    private Long questionId;
-    private List<Long> userIdList;
+    private List<Long> categoryIdList;
     private Pageable pageable;
 }
