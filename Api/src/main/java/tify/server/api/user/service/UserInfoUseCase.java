@@ -26,8 +26,10 @@ public class UserInfoUseCase {
 
     public UserProfileVo execute(Long searchedUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
-        Optional<Neighbor> neighbor =
+        Optional<Neighbor> fromNeighbor =
                 neighborAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);
+        Optional<Neighbor> toNeighbor =
+                neighborAdaptor.queryByFromUserIdAndToUserId(searchedUserId, currentUserId);
         Optional<UserBlock> userBlock =
                 userBlockAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);
         Optional<NeighborApplication> receivedApplication =
@@ -36,7 +38,7 @@ public class UserInfoUseCase {
                 neighborAdaptor.optionalQueryByFromUserIdAndToUserId(currentUserId, searchedUserId);
         return UserProfileVo.of(
                 userAdaptor.query(searchedUserId),
-                neighbor.isPresent(),
+                fromNeighbor.isPresent() && toNeighbor.isPresent(),
                 userBlock.isPresent(),
                 receivedApplication.orElse(null),
                 sentApplication.orElse(null));
