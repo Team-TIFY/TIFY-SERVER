@@ -1,20 +1,27 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
+import tify.server.domain.domains.question.domain.DailyQuestion;
+import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
+import tify.server.domain.domains.question.dto.model.DailyQuestionAnswerVo;
 import tify.server.domain.domains.question.exception.AnswerNotFoundException;
 import tify.server.domain.domains.question.repository.AnswerRepository;
+import tify.server.domain.domains.question.repository.DailyQuestionRepository;
 
 @Adaptor
 @RequiredArgsConstructor
 public class AnswerAdaptor {
 
+    private final DailyQuestionRepository dailyQuestionRepository;
     private final AnswerRepository answerRepository;
 
     public Answer query(Long answerId) {
@@ -37,5 +44,18 @@ public class AnswerAdaptor {
 
     public Slice<AnswerVo> searchAnswer(Long userId, AnswerCondition answerCondition) {
         return answerRepository.searchToPage(userId, answerCondition);
+    }
+
+    public Slice<DailyQuestionAnswerVo> searchMyAnswer(Long userId, Pageable pageable) {
+        return answerRepository.searchMyAnswerToPage(userId, pageable);
+    }
+
+    public Long queryMyAnswerCountByDailyQuestionCategory(
+            Long userId, DailyQuestionCategory dailyQuestionCategory) {
+        List<Long> dailyQuestionIdList =
+                dailyQuestionRepository.findAllByCategory(dailyQuestionCategory).stream()
+                        .map(DailyQuestion::getId)
+                        .toList();
+        return answerRepository.countMyAnswerByDailyQuestionCategory(userId, dailyQuestionIdList);
     }
 }
