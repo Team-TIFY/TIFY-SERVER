@@ -17,10 +17,12 @@ import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
+import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
+import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
@@ -56,6 +58,7 @@ public class UserController {
     private final UserBlockUseCase userBlockUseCase;
     private final CreateUserReportUseCase createUserReportUseCase;
     private final RetrieveUserReportUseCase retrieveUserReportUseCase;
+    private final RetrieveMyDailyAnswerUseCase retrieveMyDailyAnswerUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -215,5 +218,20 @@ public class UserController {
     @GetMapping("/report/{userId}")
     public UserReportInfoVo getUserReport(@PathVariable Long userId) {
         return retrieveUserReportUseCase.execute(userId);
+    }
+
+    @Operation(summary = "자신이 답변한 데일리 질문 갯수를 카테고리별로 조회합니다.")
+    @GetMapping("/daily-answer/me/count")
+    public Long getMyDailyQuestionCountList(
+            @RequestParam DailyQuestionCategory dailyQuestionCategory) {
+        return retrieveMyDailyAnswerUseCase.executeCount(dailyQuestionCategory);
+    }
+
+    @Operation(summary = "자신이 답변한 데일리 질문에 대한 답변을 조회합니다.")
+    @GetMapping("/daily-answer/me")
+    public SliceResponse<MyDailyQuestionAnswerVo> getMyDailyAnswerList(
+            @ParameterObject @PageableDefault Pageable pageable) {
+
+        return SliceResponse.of(retrieveMyDailyAnswerUseCase.execute(pageable));
     }
 }
