@@ -2,7 +2,7 @@ package tify.server.api.product.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
+import tify.server.api.product.model.dto.ProductFilterCondition;
 import tify.server.api.product.service.CrawlingUseCase;
 import tify.server.api.product.service.ProductSearchUseCase;
 import tify.server.api.product.service.RetrieveProductListUseCase;
+import tify.server.domain.domains.product.domain.PriceFilter;
+import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.user.domain.SmallCategory;
 
@@ -64,9 +67,20 @@ public class ProductController {
     @Operation(summary = "SmallCategory(FE기준 중분류) 별 상품을 조회합니다.")
     @GetMapping("/products/small-category")
     public SliceResponse<ProductRetrieveDTO> getCategoricalProduct(
-            @Parameter(description = "필터로 쓸 중분류입니다.") @RequestParam
-                    List<SmallCategory> smallCategory,
+            @Schema(description = "필터로 쓸 중분류입니다.") @RequestParam
+                    List<SmallCategory> smallCategoryList,
+            @Schema(description = "기본, 가격낮은순, 가격높은순 정렬입니다.", implementation = PriceOrder.class)
+                    @RequestParam
+                    PriceOrder priceOrder,
+            @Schema(description = "가격대별 필터입니다.", implementation = PriceFilter.class) @RequestParam
+                    PriceFilter priceFilter,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
-        return retrieveProductListUseCase.executeToSmallCategory(smallCategory, pageable);
+        ProductFilterCondition productFilterCondition =
+                new ProductFilterCondition(smallCategoryList, priceOrder, priceFilter);
+        return retrieveProductListUseCase.executeToSmallCategory(
+                productFilterCondition.getSmallCategoryList(),
+                productFilterCondition.getPriceOrder(),
+                productFilterCondition.getPriceFilter(),
+                pageable);
     }
 }

@@ -1,14 +1,23 @@
 package tify.server.domain.domains.product.repository;
 
+import static java.lang.Long.*;
+import static tify.server.domain.domains.product.domain.PriceFilter.*;
+import static tify.server.domain.domains.product.domain.PriceOrder.*;
 import static tify.server.domain.domains.product.domain.QProduct.*;
 import static tify.server.domain.domains.question.domain.QFavorQuestionCategory.favorQuestionCategory;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
+import tify.server.domain.domains.product.domain.PriceFilter;
+import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.domain.Site;
 import tify.server.domain.domains.product.dto.ProductCategoryCondition;
@@ -93,11 +102,42 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                         .from(product)
                         .where(
                                 product.favorQuestionCategoryId.in(
-                                        productCategoryCondition.getCategoryIdList()))
-                        .orderBy(product.id.asc())
+                                        productCategoryCondition.getCategoryIdList()),
+                                priceBetween(productCategoryCondition.getPriceFilter()))
+                        .orderBy(orderByPrice(productCategoryCondition.getPriceOrder()))
                         .offset(productCategoryCondition.getPageable().getOffset())
                         .limit(productCategoryCondition.getPageable().getPageSize() + 1)
                         .fetch();
         return SliceUtil.valueOf(products, productCategoryCondition.getPageable());
+    }
+
+    private OrderSpecifier[] orderByPrice(PriceOrder priceOrder) {
+        List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
+        if (priceOrder.equals(PRICE_ASC)) {
+            orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.price));
+        } else if (priceOrder.equals(PRICE_DESC)) {
+            orderSpecifiers.add(new OrderSpecifier(Order.DESC, product.price));
+        } else {
+            orderSpecifiers.add(new OrderSpecifier(Order.ASC, product.id));
+        }
+        return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
+    }
+
+    private BooleanExpression priceBetween(PriceFilter priceFilter) {
+        if (priceFilter.equals(LESS_THAN_10000)) {
+            return product.price.between(0L, 10000L);
+        } else if (priceFilter.equals(MORE_THAN_10000_LESS_THAN_20000)) {
+            return product.price.between(10000L, 20000L);
+        } else if (priceFilter.equals(MORE_THAN_20000_LESS_THAN_30000)) {
+            return product.price.between(20000L, 30000L);
+        } else if (priceFilter.equals(MORE_THAN_30000_LESS_THAN_40000)) {
+            return product.price.between(30000L, 40000L);
+        } else if (priceFilter.equals(MORE_THAN_40000_LESS_THAN_50000)) {
+            return product.price.between(40000L, 50000L);
+        } else if (priceFilter.equals(MORE_THAN_50000)) {
+            return product.price.between(50000L, MAX_VALUE);
+        } else {
+            return product.price.between(0L, MAX_VALUE);
+        }
     }
 }
