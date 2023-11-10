@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
+import tify.server.domain.domains.product.domain.PriceFilter;
+import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
@@ -24,7 +26,10 @@ public class RetrieveProductListUseCase {
 
     @Transactional(readOnly = true)
     public SliceResponse<ProductRetrieveDTO> executeToSmallCategory(
-            List<SmallCategory> smallCategory, Pageable pageable) {
+            List<SmallCategory> smallCategory,
+            PriceOrder priceOrder,
+            PriceFilter priceFilter,
+            Pageable pageable) {
         List<Long> categoryIdList = new ArrayList<>();
         smallCategory.forEach(
                 category -> {
@@ -35,6 +40,7 @@ public class RetrieveProductListUseCase {
                 });
         return SliceResponse.of(
                 productAdaptor.searchBySmallCategoryId(
-                        new ProductCategoryCondition(categoryIdList, pageable)));
+                        new ProductCategoryCondition(
+                                categoryIdList, priceOrder, priceFilter, pageable)));
     }
 }
