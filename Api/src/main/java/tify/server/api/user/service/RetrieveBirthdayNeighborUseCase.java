@@ -1,14 +1,15 @@
 package tify.server.api.user.service;
 
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
+import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
+import tify.server.domain.domains.user.domain.UserBlock;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
@@ -17,14 +18,18 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 public class RetrieveBirthdayNeighborUseCase {
 
     private final NeighborAdaptor neighborAdaptor;
+    private final UserBlockAdaptor userBlockAdaptor;
     private final UserUtils userUtils;
 
     @Transactional(readOnly = true)
-    public SliceResponse<RetrieveNeighborDTO> execute(Pageable pageable) {
+    public List<RetrieveNeighborDTO> execute(Pageable pageable) {
         Long currentUserId = userUtils.getUserId();
-        NeighborCondition neighborCondition = new NeighborCondition(currentUserId, pageable);
-        Slice<RetrieveNeighborDTO> neighborDTOS =
-                neighborAdaptor.searchBirthdayNeighbors(neighborCondition);
-        return SliceResponse.of(neighborDTOS);
+        List<Long> blockedUserList =
+                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
+                        .map(UserBlock::getToUserId)
+                        .toList();
+        NeighborCondition neighborCondition =
+                new NeighborCondition(currentUserId, blockedUserList, pageable);
+        return neighborAdaptor.searchBirthdayNeighbors(neighborCondition);
     }
 }

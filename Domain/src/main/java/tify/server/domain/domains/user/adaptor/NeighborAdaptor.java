@@ -41,11 +41,15 @@ public class NeighborAdaptor {
         return neighborRepository.findAllByFromUserId(fromUserId);
     }
 
+    public List<Neighbor> queryAllByFromUserIdAndIsView(Long fromUserId, boolean isView) {
+        return neighborRepository.findAllByFromUserIdAndIsView(fromUserId, isView);
+    }
+
     public Optional<Neighbor> queryByFromUserIdAndToUserId(Long userId, Long neighborId) {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 
-    public Slice<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchToPage(neighborCondition);
     }
 
@@ -61,7 +65,7 @@ public class NeighborAdaptor {
         neighborRepository.delete(neighbor);
     }
 
-    public Slice<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
         return neighborRepository.searchBirthToPage(neighborCondition);
     }
 
@@ -103,5 +107,9 @@ public class NeighborAdaptor {
     public Optional<NeighborApplication> optionalQueryByFromUserIdAndToUserId(
             Long fromUserId, Long toUserId) {
         return neighborApplicationRepository.findByFromUserIdAndToUserId(fromUserId, toUserId);
+    }
+
+    public void deleteNeighborApplication(NeighborApplication neighborApplication) {
+        neighborApplicationRepository.delete(neighborApplication);
     }
 }

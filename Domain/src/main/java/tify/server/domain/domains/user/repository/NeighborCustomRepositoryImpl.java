@@ -2,7 +2,6 @@ package tify.server.domain.domains.user.repository;
 
 import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
-import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -10,8 +9,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
-import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
@@ -20,72 +17,62 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition) {
-        List<RetrieveNeighborDTO> neighbors =
-                queryFactory
-                        .select(
-                                Projections.constructor(
-                                        RetrieveNeighborDTO.class,
-                                        neighbor.toUserId,
-                                        neighbor.fromUserId,
-                                        user.profile.thumbNail,
-                                        user.profile.userName,
-                                        user.profile.birth,
-                                        user.onBoardingStatus.name,
-                                        neighbor.order,
-                                        neighbor.isView,
-                                        user.updatedAt,
-                                        neighbor.viewedAt))
-                        .from(neighbor)
-                        .join(user)
-                        .on(user.id.eq(neighbor.toUserId))
-                        .join(userBlock)
-                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
-                        .where(
-                                neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                                neighbor.toUserId.ne(userBlock.toUserId))
-                        .orderBy(neighbor.order.asc())
-                        .offset(neighborCondition.getPageable().getOffset())
-                        .limit(neighborCondition.getPageable().getPageSize() + 1)
-                        .fetch();
-
-        return SliceUtil.valueOf(neighbors, neighborCondition.getPageable());
+    public List<RetrieveNeighborDTO> searchToPage(NeighborCondition neighborCondition) {
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                RetrieveNeighborDTO.class,
+                                neighbor.toUserId,
+                                neighbor.fromUserId,
+                                user.profile.thumbNail,
+                                user.profile.userName,
+                                user.profile.birth,
+                                user.onBoardingStatus.name,
+                                neighbor.order,
+                                neighbor.isView,
+                                user.updatedAt,
+                                neighbor.viewedAt))
+                .from(neighbor)
+                .join(user)
+                .on(user.id.eq(neighbor.toUserId))
+                .where(
+                        neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
+                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()))
+                .orderBy(neighbor.order.asc())
+                .offset(neighborCondition.getPageable().getOffset())
+                .limit(neighborCondition.getPageable().getPageSize() + 1)
+                .fetch();
     }
 
     @Override
-    public Slice<RetrieveNeighborDTO> searchBirthToPage(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchBirthToPage(NeighborCondition neighborCondition) {
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String monthAndYear =
                 String.format("%02d%02d", today.getMonth().getValue(), today.getDayOfMonth());
-        List<RetrieveNeighborDTO> neighbors =
-                queryFactory
-                        .select(
-                                Projections.constructor(
-                                        RetrieveNeighborDTO.class,
-                                        neighbor.toUserId,
-                                        neighbor.fromUserId,
-                                        user.profile.thumbNail,
-                                        user.profile.userName,
-                                        user.profile.birth,
-                                        user.onBoardingStatus.name,
-                                        neighbor.order,
-                                        neighbor.isView,
-                                        user.updatedAt,
-                                        neighbor.viewedAt))
-                        .from(neighbor)
-                        .join(user)
-                        .on(user.id.eq(neighbor.toUserId))
-                        .join(userBlock)
-                        .on(userBlock.fromUserId.eq(neighbor.fromUserId))
-                        .where(
-                                neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                                neighbor.toUserId.ne(userBlock.toUserId),
-                                user.profile.birth.contains(monthAndYear))
-                        .orderBy(neighbor.order.asc())
-                        .offset(neighborCondition.getPageable().getOffset())
-                        .limit(neighborCondition.getPageable().getPageSize() + 1)
-                        .fetch();
-
-        return SliceUtil.valueOf(neighbors, neighborCondition.getPageable());
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                RetrieveNeighborDTO.class,
+                                neighbor.toUserId,
+                                neighbor.fromUserId,
+                                user.profile.thumbNail,
+                                user.profile.userName,
+                                user.profile.birth,
+                                user.onBoardingStatus.name,
+                                neighbor.order,
+                                neighbor.isView,
+                                user.updatedAt,
+                                neighbor.viewedAt))
+                .from(neighbor)
+                .join(user)
+                .on(user.id.eq(neighbor.toUserId))
+                .where(
+                        neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
+                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
+                        user.profile.birth.contains(monthAndYear))
+                .orderBy(neighbor.order.asc())
+                .offset(neighborCondition.getPageable().getOffset())
+                .limit(neighborCondition.getPageable().getPageSize() + 1)
+                .fetch();
     }
 }
