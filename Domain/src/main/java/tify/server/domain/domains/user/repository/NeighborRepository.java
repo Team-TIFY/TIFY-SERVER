@@ -10,6 +10,8 @@ public interface NeighborRepository
         extends JpaRepository<Neighbor, Long>, NeighborCustomRepository {
     List<Neighbor> findAllByFromUserId(Long fromUserId);
 
+    List<Neighbor> findAllByToUserId(Long toUserId);
+
     Optional<Neighbor> findByFromUserIdAndToUserId(Long userId, Long neighborId);
 
     Optional<Neighbor> findByIdAndFromUserId(Long id, Long fromUserId);

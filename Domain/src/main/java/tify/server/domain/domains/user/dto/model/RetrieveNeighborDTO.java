@@ -25,6 +25,8 @@ public class RetrieveNeighborDTO {
 
     private boolean isView;
 
+    private boolean isNew;
+
     private Timestamp updatedAt;
 
     private Timestamp viewedAt;

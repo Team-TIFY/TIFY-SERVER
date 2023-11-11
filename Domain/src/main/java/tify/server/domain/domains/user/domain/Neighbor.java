@@ -38,13 +38,16 @@ public class Neighbor extends AbstractTimeStamp {
 
     private Timestamp viewedAt;
 
+    @NotNull private Boolean isNew;
+
     @Builder
-    public Neighbor(Long fromUserId, Long toUserId, Long order, Boolean isView) {
+    public Neighbor(Long fromUserId, Long toUserId, Long order, Boolean isView, Boolean isNew) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.order = order;
         this.isView = isView;
         this.viewedAt = Timestamp.valueOf(LocalDateTime.now());
+        this.isNew = isNew;
     }
 
     public void updateOrder(Long changeOrder) {
@@ -61,5 +64,9 @@ public class Neighbor extends AbstractTimeStamp {
 
     public void updatedViewedAt() {
         this.viewedAt = Timestamp.valueOf(LocalDateTime.now());
+    }
+
+    public void updateIsNew() {
+        this.isNew = !this.isNew;
     }
 }

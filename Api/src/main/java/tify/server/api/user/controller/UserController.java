@@ -127,9 +127,8 @@ public class UserController {
 
     @Operation(summary = "친구 목록 조회")
     @GetMapping("/neighbors")
-    public List<RetrieveNeighborDTO> getNeighbors(
-            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
-        return retrieveNeighborListUseCase.execute(pageable);
+    public List<RetrieveNeighborDTO> getNeighbors() {
+        return retrieveNeighborListUseCase.execute();
     }
 
     @Operation(summary = "친구 목록 순서 수정")
@@ -152,9 +151,8 @@ public class UserController {
 
     @Operation(summary = "생일인 친구 조회")
     @GetMapping("/neighbors/birthday")
-    public List<RetrieveNeighborDTO> getBirthdayNeighbor(
-            @ParameterObject @PageableDefault Pageable pageable) {
-        return retrieveBirthdayNeighborUseCase.execute(pageable);
+    public List<RetrieveNeighborDTO> getBirthdayNeighbor() {
+        return retrieveBirthdayNeighborUseCase.execute();
     }
 
     @Operation(summary = "친구 신청 목록을 조회합니다.")
@@ -233,5 +231,17 @@ public class UserController {
             @ParameterObject @PageableDefault Pageable pageable) {
 
         return SliceResponse.of(retrieveMyDailyAnswerUseCase.execute(pageable));
+    }
+
+    @Operation(summary = "새로운 친구 목록을 조회합니다.")
+    @GetMapping("neighbors/isNew")
+    public List<RetrieveNeighborDTO> getNewNeighborList() {
+        return retrieveNeighborListUseCase.executeToIsNew();
+    }
+
+    @Operation(summary = "새로운 친구를 확인하고 표시하지 않게 합니다.")
+    @PatchMapping("/neighbors/{userId}/isNew")
+    public void patchNeighborIsNew(@PathVariable Long userId) {
+        updateNeighborUseCase.executeToIsNew(userId);
     }
 }

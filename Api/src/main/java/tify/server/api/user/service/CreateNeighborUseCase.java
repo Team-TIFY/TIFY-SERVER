@@ -40,6 +40,7 @@ public class CreateNeighborUseCase {
                         .fromUserId(currentUserId)
                         .toUserId(toUser.getId())
                         .isView(true)
+                        .isNew(true)
                         .order((long) neighbors.size() + 1L)
                         .build());
 
