@@ -30,6 +30,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                 user.onBoardingStatus.name,
                                 neighbor.order,
                                 neighbor.isView,
+                                neighbor.isNew,
                                 user.updatedAt,
                                 neighbor.viewedAt))
                 .from(neighbor)
@@ -37,10 +38,9 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .on(user.id.eq(neighbor.toUserId))
                 .where(
                         neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()))
+                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
+                        neighbor.toUserId.in(neighborCondition.getFriendIdList()))
                 .orderBy(neighbor.order.asc())
-                .offset(neighborCondition.getPageable().getOffset())
-                .limit(neighborCondition.getPageable().getPageSize() + 1)
                 .fetch();
     }
 
@@ -61,6 +61,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                                 user.onBoardingStatus.name,
                                 neighbor.order,
                                 neighbor.isView,
+                                neighbor.isNew,
                                 user.updatedAt,
                                 neighbor.viewedAt))
                 .from(neighbor)
@@ -69,10 +70,9 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .where(
                         neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
                         neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
-                        user.profile.birth.contains(monthAndYear))
+                        user.profile.birth.contains(monthAndYear),
+                        neighbor.toUserId.in(neighborCondition.getFriendIdList()))
                 .orderBy(neighbor.order.asc())
-                .offset(neighborCondition.getPageable().getOffset())
-                .limit(neighborCondition.getPageable().getPageSize() + 1)
                 .fetch();
     }
 }

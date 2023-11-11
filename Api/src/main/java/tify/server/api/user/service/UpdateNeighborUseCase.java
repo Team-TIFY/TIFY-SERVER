@@ -7,6 +7,7 @@ import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.exception.NeighborNotFoundException;
 
 @UseCase
 @RequiredArgsConstructor
@@ -30,5 +31,20 @@ public class UpdateNeighborUseCase {
         Neighbor neighbor = neighborAdaptor.queryByUserId(neighborId, currentUserId);
 
         neighbor.updateIsView();
+    }
+
+    public void executeToIsNew(Long neighborId) {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        Neighbor fromNeighbor =
+                neighborAdaptor
+                        .queryByFromUserIdAndToUserId(currentUserId, neighborId)
+                        .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
+        Neighbor toNeighbor =
+                neighborAdaptor
+                        .queryByFromUserIdAndToUserId(neighborId, currentUserId)
+                        .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
+
+        fromNeighbor.updateIsNew();
+        toNeighbor.updateIsNew();
     }
 }

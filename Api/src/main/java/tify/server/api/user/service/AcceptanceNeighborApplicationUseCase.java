@@ -46,6 +46,7 @@ public class AcceptanceNeighborApplicationUseCase {
                         .fromUserId(currentUserId)
                         .toUserId(toUserId)
                         .isView(true)
+                        .isNew(true)
                         .order((long) neighbors.size() + 1L)
                         .build());
     }
