@@ -2,6 +2,7 @@ package tify.server.api.question.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,8 +71,8 @@ public class FavorQuestionController {
     @Operation(summary = "SmallCategory(FE기준 중분류) 별 유저 취향 조회")
     @GetMapping("/answers")
     public List<FavorAnswerInfoVo> getFavorAnswerBySmallCategory(
-            @Schema(description = "중분류", implementation = SmallCategory.class) @RequestParam
-                    SmallCategory smallCategory) {
+            @Parameter(description = "중분류") @RequestParam
+                    List<SmallCategory> smallCategory) {
         return retrieveFavorAnswerUseCase.retrieveUserFavorAnswers(
                 SecurityUtils.getCurrentUserId(), smallCategory);
     }

@@ -15,7 +15,7 @@ public class RetrieveFavorAnswerUseCase {
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
     public List<FavorAnswerInfoVo> retrieveUserFavorAnswers(
-            Long userId, SmallCategory smallCategory) {
+            Long userId, List<SmallCategory> smallCategory) {
         return favorAnswerAdaptor.searchBySmallCategory(userId, smallCategory).stream()
                 .map(FavorAnswerInfoVo::from)
                 .toList();
