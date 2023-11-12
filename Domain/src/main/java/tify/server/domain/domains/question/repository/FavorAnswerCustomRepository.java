@@ -14,5 +14,6 @@ public interface FavorAnswerCustomRepository {
 
     Optional<FavorAnswer> searchByCategoryAndNumber(Long userId, String category, Long number);
 
-    List<FavorAnswerVo> getFavorAnswerBySmallCategory(Long userId, SmallCategory smallCategory);
+    List<FavorAnswerVo> getFavorAnswerBySmallCategory(
+            Long userId, List<SmallCategory> smallCategory);
 }

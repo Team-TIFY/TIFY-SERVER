@@ -60,26 +60,24 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
 
     @Override
     public List<FavorAnswerVo> getFavorAnswerBySmallCategory(
-            Long userId, SmallCategory smallCategory) {
-        List<FavorAnswerVo> favorAnswers =
-                queryFactory
-                        .select(
-                                Projections.constructor(
-                                        FavorAnswerVo.class,
-                                        favorAnswer.id,
-                                        favorQuestionCategory.largeCategory,
-                                        favorQuestionCategory.smallCategory,
-                                        favorAnswer.answerContent))
-                        .from(favorAnswer)
-                        .innerJoin(favorAnswer.favorQuestion, favorQuestion)
-                        .join(favorQuestionCategory)
-                        .on(favorQuestion.favorQuestionCategory.id.eq(favorQuestionCategory.id))
-                        .where(
-                                favorQuestionCategory
-                                        .smallCategory
-                                        .eq(smallCategory)
-                                        .and(favorAnswer.userId.eq(userId)))
-                        .fetch();
-        return favorAnswers;
+            Long userId, List<SmallCategory> smallCategory) {
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                FavorAnswerVo.class,
+                                favorAnswer.id,
+                                favorQuestionCategory.largeCategory,
+                                favorQuestionCategory.smallCategory,
+                                favorAnswer.answerContent))
+                .from(favorAnswer)
+                .innerJoin(favorAnswer.favorQuestion, favorQuestion)
+                .join(favorQuestionCategory)
+                .on(favorQuestion.favorQuestionCategory.id.eq(favorQuestionCategory.id))
+                .where(
+                        favorQuestionCategory
+                                .smallCategory
+                                .in(smallCategory)
+                                .and(favorAnswer.userId.eq(userId)))
+                .fetch();
     }
 }

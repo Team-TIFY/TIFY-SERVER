@@ -41,7 +41,8 @@ public class FavorAnswerAdaptor {
                 .orElseThrow(() -> FavorAnswerNotFoundException.EXCEPTION);
     }
 
-    public List<FavorAnswerVo> searchBySmallCategory(Long userId, SmallCategory smallCategory) {
+    public List<FavorAnswerVo> searchBySmallCategory(
+            Long userId, List<SmallCategory> smallCategory) {
         return favorAnswerRepository.getFavorAnswerBySmallCategory(userId, smallCategory);
     }
 }
