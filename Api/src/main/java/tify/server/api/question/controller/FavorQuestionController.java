@@ -71,8 +71,7 @@ public class FavorQuestionController {
     @Operation(summary = "SmallCategory(FE기준 중분류) 별 유저 취향 조회")
     @GetMapping("/answers")
     public List<FavorAnswerInfoVo> getFavorAnswerBySmallCategory(
-            @Parameter(description = "중분류") @RequestParam
-                    List<SmallCategory> smallCategory) {
+            @Parameter(description = "중분류") @RequestParam List<SmallCategory> smallCategory) {
         return retrieveFavorAnswerUseCase.retrieveUserFavorAnswers(
                 SecurityUtils.getCurrentUserId(), smallCategory);
     }
