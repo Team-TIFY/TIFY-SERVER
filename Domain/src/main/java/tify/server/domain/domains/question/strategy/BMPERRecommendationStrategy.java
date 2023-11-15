@@ -25,24 +25,25 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
         List<Product> productList = new ArrayList<>();
 
         /**
-         * 1번 스텝(좋아하는 향기의 강도?)
-         * favorRecommendationDTO의 첫번째 질문의 답변을 기반으로 한 퍼퓸, 오드퍼퓸....으로 상품 검색하여 productList에 addAll
+         * 1번 스텝(좋아하는 향기의 강도?) favorRecommendationDTO의 첫번째 질문의 답변을 기반으로 한 퍼퓸, 오드퍼퓸....으로 상품 검색하여
+         * productList에 addAll
          */
         productList.addAll(filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer()));
 
-        /**
-         * 2번 스텝(내가 원하는 나의 이미지?)
-         * 객관식 2개까지 가능이기 때문에 답변 개수별로 경우를 나눔
-         */
+        /** 2번 스텝(내가 원하는 나의 이미지?) 객관식 2개까지 가능이기 때문에 답변 개수별로 경우를 나눔 */
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
         if (splitAnswer.length > 1) {
             return productList.stream()
-                .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
-                .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
-                .toList();
+                    .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
+                    .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
+                    .toList();
         } else {
-            return productList.stream().filter(product -> product.getCharacteristic()
-                .contains(recommendationDTO.get(1).getAnswer())).toList();
+            return productList.stream()
+                    .filter(
+                            product ->
+                                    product.getCharacteristic()
+                                            .contains(recommendationDTO.get(1).getAnswer()))
+                    .toList();
         }
     }
 

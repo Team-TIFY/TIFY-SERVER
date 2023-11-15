@@ -46,16 +46,8 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
         if (splitAnswer.length > 1) {
             filteredProductList =
                     productList.stream()
-                            .filter(
-                                    product ->
-                                            product.getCharacteristic()
-                                                    .contains(
-                                                            splitAnswer[0]))
-                            .filter(
-                                    product ->
-                                            product.getCharacteristic()
-                                                    .contains(
-                                                            splitAnswer[1]))
+                            .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
+                            .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
                             .toList();
         } else {
             filteredProductList =

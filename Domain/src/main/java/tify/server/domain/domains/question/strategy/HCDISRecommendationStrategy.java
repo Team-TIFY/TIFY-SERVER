@@ -37,16 +37,8 @@ public class HCDISRecommendationStrategy implements ProductRecommendationStrateg
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
         if (splitAnswer.length > 1) {
             return productList.stream()
-                    .filter(
-                            product ->
-                                    product.getCharacteristic()
-                                            .contains(
-                                                    splitAnswer[0]))
-                    .filter(
-                            product ->
-                                    product.getCharacteristic()
-                                            .contains(
-                                                    splitAnswer[1]))
+                    .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
+                    .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
                     .toList();
         } else {
             return productList.stream()
