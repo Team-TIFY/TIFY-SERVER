@@ -42,25 +42,20 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
 
         /** 2번 스텝(컵에서 중요하게 여기는 것?) 객관식 중복이므로 답변의 개수에 따른 경우 분할 */
         List<Product> filteredProductList = new ArrayList<>();
-        if (recommendationDTO.get(1).getAnswer().split(", ").length > 1) {
+        String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
+        if (splitAnswer.length > 1) {
             filteredProductList =
                     productList.stream()
                             .filter(
                                     product ->
                                             product.getCharacteristic()
                                                     .contains(
-                                                            recommendationDTO
-                                                                    .get(1)
-                                                                    .getAnswer()
-                                                                    .split(", ")[0]))
+                                                            splitAnswer[0]))
                             .filter(
                                     product ->
                                             product.getCharacteristic()
                                                     .contains(
-                                                            recommendationDTO
-                                                                    .get(1)
-                                                                    .getAnswer()
-                                                                    .split(", ")[1]))
+                                                            splitAnswer[1]))
                             .toList();
         } else {
             filteredProductList =
