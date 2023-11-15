@@ -34,24 +34,19 @@ public class HCDISRecommendationStrategy implements ProductRecommendationStrateg
          * 2번 스텝(좋아하는 식기 디자인?) 객관식 max 2문항이므로 2가지 경우(답이 1개, 2개인 경우)로 나눔 답이 1개인경우, filterStep을 그냥 적용
          * 2개인 경우 첫 답변으로 우선 상품들을 갖고오고 두번째 답변으로 갖고온 상품 리스트를 첫 답변으로 갖고온 상품에 없는 것들만 갖고오도록 필터
          */
-        if (recommendationDTO.get(1).getAnswer().split(", ").length > 1) {
+        String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
+        if (splitAnswer.length > 1) {
             return productList.stream()
                     .filter(
                             product ->
                                     product.getCharacteristic()
                                             .contains(
-                                                    recommendationDTO
-                                                            .get(1)
-                                                            .getAnswer()
-                                                            .split(", ")[0]))
+                                                    splitAnswer[0]))
                     .filter(
                             product ->
                                     product.getCharacteristic()
                                             .contains(
-                                                    recommendationDTO
-                                                            .get(1)
-                                                            .getAnswer()
-                                                            .split(", ")[1]))
+                                                    splitAnswer[1]))
                     .toList();
         } else {
             return productList.stream()
