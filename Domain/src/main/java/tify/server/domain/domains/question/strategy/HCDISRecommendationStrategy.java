@@ -4,33 +4,36 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
+import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 @RequiredArgsConstructor
-public class BMPERRecommendationStrategy implements ProductRecommendationStrategy {
+@Transactional(readOnly = true)
+public class HCDISRecommendationStrategy implements ProductRecommendationStrategy {
+
+    private static final String CATEGORY_NAME = "HCDIS";
 
     private final ProductAdaptor productAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
-
-    private static final String CATEGORY_NAME = "BMPER";
 
     @Override
     public List<Product> recommendation(
             Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
-        List<Product> productList = new ArrayList<>();
+
+        /** 1번 스텝(선호하는 식기 종류?) 객관식 단일이므로 그냥 가져오기 */
+        List<Product> productList =
+                new ArrayList<>(filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer()));
 
         /**
-         * 1번 스텝(좋아하는 향기의 강도?) favorRecommendationDTO의 첫번째 질문의 답변을 기반으로 한 퍼퓸, 오드퍼퓸....으로 상품 검색하여
-         * productList에 addAll
+         * 2번 스텝(좋아하는 식기 디자인?) 객관식 max 2문항이므로 2가지 경우(답이 1개, 2개인 경우)로 나눔 답이 1개인경우, filterStep을 그냥 적용
+         * 2개인 경우 첫 답변으로 우선 상품들을 갖고오고 두번째 답변으로 갖고온 상품 리스트를 첫 답변으로 갖고온 상품에 없는 것들만 갖고오도록 필터
          */
-        productList.addAll(filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer()));
-
-        /** 2번 스텝(내가 원하는 나의 이미지?) 객관식 2개까지 가능이기 때문에 답변 개수별로 경우를 나눔 */
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
         if (splitAnswer.length > 1) {
             return productList.stream()
@@ -52,22 +55,11 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
     }
 
     private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
-        List<FavorRecommendationDTO> favorRecommendationDTOs = new ArrayList<>();
-        String firstAnswer =
-                favorAnswerAdaptor
-                        .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
-                        .getAnswerContent();
-        if (firstAnswer.equals("진한") || firstAnswer.equals("깊은")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "퍼퓸, 오드퍼퓸"));
-        } else if (firstAnswer.equals("은은한") || firstAnswer.equals("가벼운")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드뚜왈렛, 오드코롱, 샤워코롱"));
-        }
-
-        favorRecommendationDTOs.add(
-                FavorRecommendationDTO.from(
-                        favorAnswerAdaptor.searchByCategoryNameAndNumber(
-                                userId, CATEGORY_NAME, 4L)));
-
-        return favorRecommendationDTOs;
+        List<FavorAnswer> favorAnswers = new ArrayList<>();
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
+        favorAnswers.add(
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 5L));
+        return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 }
