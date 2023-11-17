@@ -80,4 +80,21 @@ public class FavorAnswerCustomRepositoryImpl implements FavorAnswerCustomReposit
                                 .and(favorAnswer.userId.eq(userId)))
                 .fetch();
     }
+
+    @Override
+    public List<FavorAnswer> getFavorAnswerByUserIdAndSmallCategory(
+            Long userId, SmallCategory smallCategory) {
+
+        return queryFactory
+                .select(favorAnswer)
+                .from(favorAnswer)
+                .join(favorQuestion)
+                .on(favorAnswer.favorQuestion.eq(favorQuestion))
+                .join(favorQuestionCategory)
+                .on(favorQuestion.favorQuestionCategory.eq(favorQuestionCategory))
+                .where(
+                        favorQuestionCategory.smallCategory.eq(smallCategory),
+                        favorAnswer.userId.eq(userId))
+                .fetch();
+    }
 }
