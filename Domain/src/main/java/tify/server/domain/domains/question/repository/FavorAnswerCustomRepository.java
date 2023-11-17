@@ -16,4 +16,7 @@ public interface FavorAnswerCustomRepository {
 
     List<FavorAnswerVo> getFavorAnswerBySmallCategory(
             Long userId, List<SmallCategory> smallCategory);
+
+    List<FavorAnswer> getFavorAnswerByUserIdAndSmallCategory(
+            Long userId, SmallCategory smallCategory);
 }

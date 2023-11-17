@@ -2,6 +2,7 @@ package tify.server.api.user.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
@@ -24,13 +25,14 @@ import tify.server.api.user.service.*;
 import tify.server.api.user.service.CreateNeighborUseCase;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.user.domain.LargeCategory;
+import tify.server.domain.domains.user.domain.SmallCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
+import tify.server.domain.domains.user.vo.UserAnswerVo;
 import tify.server.domain.domains.user.vo.UserFavorVo;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
-import tify.server.domain.domains.user.vo.UserTagVo;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -78,10 +80,14 @@ public class UserController {
         neighborInfoUseCase.updateViewedAt(neighborId);
     }
 
-    @Operation(summary = "내 취향 태그 조회")
+    @Operation(summary = "유저 취향 답변 중분류 별 조회")
     @GetMapping("/{userId}/tags")
-    public List<UserTagVo> getUserTags(@PathVariable Long userId) {
-        return userFavorUseCase.execute(userId);
+    public List<UserAnswerVo> getUserTags(
+            @PathVariable Long userId,
+            @RequestParam @Parameter(description = "필터로 쓰일 중분류입니다.")
+                    List<SmallCategory> smallCategory) {
+
+        return userFavorUseCase.execute(userId, smallCategory);
     }
 
     @Deprecated
