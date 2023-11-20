@@ -74,7 +74,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.brand,
                                         product.characteristic,
                                         product.price,
-                                        product.productOption))
+                                        product.productOption,
+                                        product.imageUrl))
                         .from(product)
                         .where(product.name.contains(productCondition.getKeyword()))
                         .orderBy(product.id.asc())
@@ -98,7 +99,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.brand,
                                         product.characteristic,
                                         product.price,
-                                        product.productOption))
+                                        product.productOption,
+                                        product.imageUrl))
                         .from(product)
                         .where(
                                 product.favorQuestionCategoryId.in(
