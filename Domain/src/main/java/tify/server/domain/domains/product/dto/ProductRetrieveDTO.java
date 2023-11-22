@@ -14,4 +14,5 @@ public class ProductRetrieveDTO {
     private String characteristic;
     private Long price;
     private String productOption;
+    private String imageUrl;
 }
