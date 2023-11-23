@@ -16,11 +16,17 @@ public class RetrieveMyDailyAnswerUseCase {
 
     private final AnswerAdaptor answerAdaptor;
 
-    public Slice<MyDailyQuestionAnswerVo> execute(Pageable pageable) {
+    public Slice<MyDailyQuestionAnswerVo> execute(
+            DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         return answerAdaptor
-                .searchMyAnswer(currentUserId, pageable)
+                .searchMyAnswer(currentUserId, dailyQuestionCategory, pageable)
                 .map(MyDailyQuestionAnswerVo::from);
+    }
+
+    public Long executeAllCount() {
+        Long currentUserId = SecurityUtils.getCurrentUserId();
+        return answerAdaptor.countAllUserAnswer(currentUserId);
     }
 
     public Long executeCount(DailyQuestionCategory dailyQuestionCategory) {

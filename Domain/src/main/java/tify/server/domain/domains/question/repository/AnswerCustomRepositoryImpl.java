@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
+import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.question.dto.model.DailyQuestionAnswerVo;
@@ -66,7 +67,8 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
     }
 
     @Override
-    public Slice<DailyQuestionAnswerVo> searchMyAnswerToPage(Long userId, Pageable pageable) {
+    public Slice<DailyQuestionAnswerVo> searchMyAnswerToPage(
+            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
 
         List<DailyQuestionAnswerVo> dailyQuestionAnswerVoList =
                 queryFactory
@@ -76,7 +78,9 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
                         .from(answer)
                         .join(dailyQuestion)
                         .on(answer.questionId.eq(dailyQuestion.id))
-                        .where(answer.userId.eq(userId))
+                        .where(
+                                answer.userId.eq(userId),
+                                dailyQuestion.category.eq(dailyQuestionCategory))
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)
                         .fetch();

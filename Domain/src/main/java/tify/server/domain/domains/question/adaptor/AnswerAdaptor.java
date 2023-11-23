@@ -46,8 +46,9 @@ public class AnswerAdaptor {
         return answerRepository.searchToPage(userId, answerCondition);
     }
 
-    public Slice<DailyQuestionAnswerVo> searchMyAnswer(Long userId, Pageable pageable) {
-        return answerRepository.searchMyAnswerToPage(userId, pageable);
+    public Slice<DailyQuestionAnswerVo> searchMyAnswer(
+            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
+        return answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, pageable);
     }
 
     public Long queryMyAnswerCountByDailyQuestionCategory(
@@ -57,5 +58,9 @@ public class AnswerAdaptor {
                         .map(DailyQuestion::getId)
                         .toList();
         return answerRepository.countMyAnswerByDailyQuestionCategory(userId, dailyQuestionIdList);
+    }
+
+    public Long countAllUserAnswer(Long userId) {
+        return answerRepository.countAllByUserId(userId);
     }
 }
