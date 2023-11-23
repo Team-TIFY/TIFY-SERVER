@@ -4,7 +4,6 @@ package tify.server.api.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import tify.server.api.config.security.SecurityUtils;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
@@ -17,21 +16,18 @@ public class RetrieveMyDailyAnswerUseCase {
     private final AnswerAdaptor answerAdaptor;
 
     public Slice<MyDailyQuestionAnswerVo> execute(
-            DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
+            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
         return answerAdaptor
-                .searchMyAnswer(currentUserId, dailyQuestionCategory, pageable)
+                .searchMyAnswer(userId, dailyQuestionCategory, pageable)
                 .map(MyDailyQuestionAnswerVo::from);
     }
 
-    public Long executeAllCount() {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
-        return answerAdaptor.countAllUserAnswer(currentUserId);
+    public Long executeAllCount(Long userId) {
+        return answerAdaptor.countAllUserAnswer(userId);
     }
 
-    public Long executeCount(DailyQuestionCategory dailyQuestionCategory) {
-        Long currentUserId = SecurityUtils.getCurrentUserId();
+    public Long executeCount(Long userId, DailyQuestionCategory dailyQuestionCategory) {
         return answerAdaptor.queryMyAnswerCountByDailyQuestionCategory(
-                currentUserId, dailyQuestionCategory);
+                userId, dailyQuestionCategory);
     }
 }
