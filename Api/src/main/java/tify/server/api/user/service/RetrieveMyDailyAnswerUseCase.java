@@ -1,10 +1,13 @@
 package tify.server.api.user.service;
 
 
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
+import tify.server.api.user.model.dto.vo.UserDailyQuestionAnswerVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
@@ -22,12 +25,25 @@ public class RetrieveMyDailyAnswerUseCase {
                 .map(MyDailyQuestionAnswerVo::from);
     }
 
-    public Long executeAllCount(Long userId) {
-        return answerAdaptor.countAllUserAnswer(userId);
+    public List<UserDailyQuestionAnswerVo> countByAllCategory(Long userId) {
+        List<DailyQuestionCategory> dailyQuestionCategories =
+                Arrays.stream(DailyQuestionCategory.values()).toList();
+        return dailyQuestionCategories.stream()
+                .map(
+                        dailyQuestionCategory -> {
+                            Long count =
+                                    answerAdaptor.queryUserAnswerCountByDailyQuestionCategory(
+                                            userId, dailyQuestionCategory);
+                            return UserDailyQuestionAnswerVo.builder()
+                                    .dailyQuestionCategory(dailyQuestionCategory)
+                                    .count(count)
+                                    .build();
+                        })
+                .toList();
     }
 
-    public Long executeCount(Long userId, DailyQuestionCategory dailyQuestionCategory) {
-        return answerAdaptor.queryMyAnswerCountByDailyQuestionCategory(
+    public Long countByCategory(Long userId, DailyQuestionCategory dailyQuestionCategory) {
+        return answerAdaptor.queryUserAnswerCountByDailyQuestionCategory(
                 userId, dailyQuestionCategory);
     }
 }

@@ -51,7 +51,7 @@ public class AnswerAdaptor {
         return answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, pageable);
     }
 
-    public Long queryMyAnswerCountByDailyQuestionCategory(
+    public Long queryUserAnswerCountByDailyQuestionCategory(
             Long userId, DailyQuestionCategory dailyQuestionCategory) {
         List<Long> dailyQuestionIdList =
                 dailyQuestionRepository.findAllByCategory(dailyQuestionCategory).stream()
