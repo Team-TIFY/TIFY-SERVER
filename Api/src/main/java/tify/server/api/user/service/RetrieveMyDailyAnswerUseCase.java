@@ -26,17 +26,20 @@ public class RetrieveMyDailyAnswerUseCase {
     }
 
     public List<UserDailyQuestionAnswerVo> countByAllCategory(Long userId) {
-        List<DailyQuestionCategory> dailyQuestionCategories = Arrays.stream(
-            DailyQuestionCategory.values()).toList();
+        List<DailyQuestionCategory> dailyQuestionCategories =
+                Arrays.stream(DailyQuestionCategory.values()).toList();
         return dailyQuestionCategories.stream()
-            .map(dailyQuestionCategory -> {
-                Long count = answerAdaptor.queryUserAnswerCountByDailyQuestionCategory(userId,
-                    dailyQuestionCategory);
-                return UserDailyQuestionAnswerVo.builder()
-                    .dailyQuestionCategory(dailyQuestionCategory)
-                    .count(count)
-                    .build();
-            }).toList();
+                .map(
+                        dailyQuestionCategory -> {
+                            Long count =
+                                    answerAdaptor.queryUserAnswerCountByDailyQuestionCategory(
+                                            userId, dailyQuestionCategory);
+                            return UserDailyQuestionAnswerVo.builder()
+                                    .dailyQuestionCategory(dailyQuestionCategory)
+                                    .count(count)
+                                    .build();
+                        })
+                .toList();
     }
 
     public Long countByCategory(Long userId, DailyQuestionCategory dailyQuestionCategory) {

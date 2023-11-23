@@ -227,7 +227,8 @@ public class UserController {
 
     @Operation(summary = "유저가 답변한 데일리 질문의 갯수를 모든 카테고리별로 조회합니다.")
     @GetMapping("/daily-answer/{userId}/count/all-category")
-    public List<UserDailyQuestionAnswerVo> getMyAllDailyQuestionCountList(@PathVariable Long userId) {
+    public List<UserDailyQuestionAnswerVo> getMyAllDailyQuestionCountList(
+            @PathVariable Long userId) {
         return retrieveMyDailyAnswerUseCase.countByAllCategory(userId);
     }
 
