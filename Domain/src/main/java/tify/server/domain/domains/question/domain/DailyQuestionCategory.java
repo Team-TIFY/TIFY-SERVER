@@ -11,7 +11,7 @@ public enum DailyQuestionCategory {
     MUSIC("음악"),
     RELATIONSHIP("관계"),
     BEVERAGE("음료"),
-    CULTURE_LIFE("문화셍활"),
+    CULTURE_LIFE("문화생활"),
     TRIP("여행"),
     ME("나"),
     ;
