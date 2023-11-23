@@ -19,6 +19,7 @@ import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
+import tify.server.api.user.model.dto.vo.UserDailyQuestionAnswerVo;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
@@ -224,17 +225,17 @@ public class UserController {
         return retrieveUserReportUseCase.execute(userId);
     }
 
-    @Operation(summary = "유저가 답변한 데일리 질문의 갯수를 조회합니다.")
-    @GetMapping("/daily-answer/{userId}/count/all")
-    public Long getMyAllDailyQuestionCountList(@PathVariable Long userId) {
-        return retrieveMyDailyAnswerUseCase.executeAllCount(userId);
+    @Operation(summary = "유저가 답변한 데일리 질문의 갯수를 모든 카테고리별로 조회합니다.")
+    @GetMapping("/daily-answer/{userId}/count/all-category")
+    public List<UserDailyQuestionAnswerVo> getMyAllDailyQuestionCountList(@PathVariable Long userId) {
+        return retrieveMyDailyAnswerUseCase.countByAllCategory(userId);
     }
 
     @Operation(summary = "유저가 답변한 데일리 질문 갯수를 카테고리별로 조회합니다.")
     @GetMapping("/daily-answer/{userId}/count")
     public Long getMyDailyQuestionCountList(
             @PathVariable Long userId, @RequestParam DailyQuestionCategory dailyQuestionCategory) {
-        return retrieveMyDailyAnswerUseCase.executeCount(userId, dailyQuestionCategory);
+        return retrieveMyDailyAnswerUseCase.countByCategory(userId, dailyQuestionCategory);
     }
 
     @Operation(summary = "유저가 답변한 데일리 질문에 대한 답변을 카테고리별로 조회합니다.")
