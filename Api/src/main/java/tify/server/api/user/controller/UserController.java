@@ -224,19 +224,28 @@ public class UserController {
         return retrieveUserReportUseCase.execute(userId);
     }
 
-    @Operation(summary = "자신이 답변한 데일리 질문 갯수를 카테고리별로 조회합니다.")
-    @GetMapping("/daily-answer/me/count")
-    public Long getMyDailyQuestionCountList(
-            @RequestParam DailyQuestionCategory dailyQuestionCategory) {
-        return retrieveMyDailyAnswerUseCase.executeCount(dailyQuestionCategory);
+    @Operation(summary = "유저가 답변한 데일리 질문의 갯수를 조회합니다.")
+    @GetMapping("/daily-answer/{userId}/count/all")
+    public Long getMyAllDailyQuestionCountList(@PathVariable Long userId) {
+        return retrieveMyDailyAnswerUseCase.executeAllCount(userId);
     }
 
-    @Operation(summary = "자신이 답변한 데일리 질문에 대한 답변을 조회합니다.")
-    @GetMapping("/daily-answer/me")
+    @Operation(summary = "유저가 답변한 데일리 질문 갯수를 카테고리별로 조회합니다.")
+    @GetMapping("/daily-answer/{userId}/count")
+    public Long getMyDailyQuestionCountList(
+            @PathVariable Long userId, @RequestParam DailyQuestionCategory dailyQuestionCategory) {
+        return retrieveMyDailyAnswerUseCase.executeCount(userId, dailyQuestionCategory);
+    }
+
+    @Operation(summary = "유저가 답변한 데일리 질문에 대한 답변을 카테고리별로 조회합니다.")
+    @GetMapping("/daily-answer/{userId}")
     public SliceResponse<MyDailyQuestionAnswerVo> getMyDailyAnswerList(
+            @PathVariable Long userId,
+            @RequestParam DailyQuestionCategory dailyQuestionCategory,
             @ParameterObject @PageableDefault Pageable pageable) {
 
-        return SliceResponse.of(retrieveMyDailyAnswerUseCase.execute(pageable));
+        return SliceResponse.of(
+                retrieveMyDailyAnswerUseCase.execute(userId, dailyQuestionCategory, pageable));
     }
 
     @Operation(summary = "새로운 친구 목록을 조회합니다.")

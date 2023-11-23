@@ -8,4 +8,6 @@ import tify.server.domain.domains.question.domain.Answer;
 public interface AnswerRepository extends JpaRepository<Answer, Long>, AnswerCustomRepository {
 
     Optional<Answer> findByQuestionIdAndUserId(Long questionId, Long userId);
+
+    Long countAllByUserId(Long userId);
 }
