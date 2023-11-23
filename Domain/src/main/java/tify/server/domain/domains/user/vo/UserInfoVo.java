@@ -23,6 +23,8 @@ public class UserInfoVo {
 
     private final String imageUrl;
 
+    private final String email;
+
     private final String birth;
 
     private final String job;
@@ -45,6 +47,7 @@ public class UserInfoVo {
                         Optional.ofNullable(user.getProfile())
                                 .map(Profile::getThumbNail)
                                 .orElse(null))
+                .email(Optional.ofNullable(user.getProfile()).map(Profile::getEmail).orElse(null))
                 .birth(Optional.ofNullable(user.getProfile()).map(Profile::getBirth).orElse(null))
                 .job(Optional.ofNullable(user.getProfile()).map(Profile::getJob).orElse(null))
                 .createdAt(user.getCreatedAt().toLocalDateTime())
