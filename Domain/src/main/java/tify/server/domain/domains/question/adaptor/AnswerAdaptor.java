@@ -18,7 +18,6 @@ import tify.server.domain.domains.question.exception.AnswerNotFoundException;
 import tify.server.domain.domains.question.repository.AnswerRepository;
 import tify.server.domain.domains.question.repository.DailyQuestionRepository;
 
-@Slf4j
 @Adaptor
 @RequiredArgsConstructor
 public class AnswerAdaptor {
