@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
