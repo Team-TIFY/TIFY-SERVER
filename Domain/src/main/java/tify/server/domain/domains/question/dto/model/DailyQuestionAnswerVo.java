@@ -10,6 +10,8 @@ import tify.server.domain.domains.question.domain.DailyQuestion;
 @AllArgsConstructor
 public class DailyQuestionAnswerVo {
 
+    private int month;
+
     private DailyQuestion dailyQuestion;
 
     private Answer answer;

@@ -11,7 +11,10 @@ import tify.server.domain.domains.question.dto.model.DailyQuestionAnswerVo;
 @Builder
 public class MyDailyQuestionAnswerVo {
 
-    @Schema(description = "답변한 날짜입니다.", example = "20000101")
+    @Schema(description = "답변한 월입니다.", example = "1")
+    private final int month;
+
+    @Schema(description = "답변한 날짜입니다.", example = "2023-08-22T01:46:30.000+00:00")
     private final Timestamp answerTime;
 
     @Schema(description = "질문의 id(pk)값입니다.", example = "1")
@@ -28,7 +31,8 @@ public class MyDailyQuestionAnswerVo {
 
     public static MyDailyQuestionAnswerVo from(DailyQuestionAnswerVo dailyQuestionAnswerVo) {
         return MyDailyQuestionAnswerVo.builder()
-                .answerTime(dailyQuestionAnswerVo.getDailyQuestion().getCreatedAt())
+                .month(dailyQuestionAnswerVo.getMonth())
+                .answerTime(dailyQuestionAnswerVo.getAnswer().getCreatedAt())
                 .questionId(dailyQuestionAnswerVo.getDailyQuestion().getId())
                 .question(dailyQuestionAnswerVo.getDailyQuestion().getContent())
                 .answerId(dailyQuestionAnswerVo.getAnswer().getId())

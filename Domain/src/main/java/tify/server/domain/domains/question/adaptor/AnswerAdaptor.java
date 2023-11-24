@@ -1,10 +1,10 @@
 package tify.server.domain.domains.question.adaptor;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
@@ -46,9 +46,13 @@ public class AnswerAdaptor {
         return answerRepository.searchToPage(userId, answerCondition);
     }
 
-    public Slice<DailyQuestionAnswerVo> searchMyAnswer(
-            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
-        return answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, pageable);
+    public List<List<DailyQuestionAnswerVo>> searchMyAnswer(
+            Long userId, DailyQuestionCategory dailyQuestionCategory) {
+        List<List<DailyQuestionAnswerVo>> list = new ArrayList<>();
+        for (int i = 1; i <= 12; i++) {
+            list.add(answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, i));
+        }
+        return list;
     }
 
     public Long queryUserAnswerCountByDailyQuestionCategory(

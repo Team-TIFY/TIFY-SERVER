@@ -2,7 +2,6 @@ package tify.server.domain.domains.question.repository;
 
 
 import java.util.List;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
@@ -17,6 +16,6 @@ public interface AnswerCustomRepository {
 
     Long countMyAnswerByDailyQuestionCategory(Long userId, List<Long> dailyQuestionIdList);
 
-    Slice<DailyQuestionAnswerVo> searchMyAnswerToPage(
-            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable);
+    List<DailyQuestionAnswerVo> searchMyAnswerToPage(
+            Long userId, DailyQuestionCategory dailyQuestionCategory, int month);
 }
