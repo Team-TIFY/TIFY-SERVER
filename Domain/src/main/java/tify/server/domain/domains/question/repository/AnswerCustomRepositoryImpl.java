@@ -10,7 +10,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
@@ -67,24 +66,24 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
     }
 
     @Override
-    public Slice<DailyQuestionAnswerVo> searchMyAnswerToPage(
-            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
+    public List<DailyQuestionAnswerVo> searchMyAnswerToPage(
+            Long userId, DailyQuestionCategory dailyQuestionCategory, int month) {
 
-        List<DailyQuestionAnswerVo> dailyQuestionAnswerVoList =
-                queryFactory
-                        .select(
-                                Projections.constructor(
-                                        DailyQuestionAnswerVo.class, dailyQuestion, answer))
-                        .from(answer)
-                        .join(dailyQuestion)
-                        .on(answer.questionId.eq(dailyQuestion.id))
-                        .where(
-                                answer.userId.eq(userId),
-                                dailyQuestion.category.eq(dailyQuestionCategory))
-                        .offset(pageable.getOffset())
-                        .limit(pageable.getPageSize() + 1)
-                        .fetch();
-
-        return SliceUtil.valueOf(dailyQuestionAnswerVoList, pageable);
+        return queryFactory
+                .select(
+                        Projections.constructor(
+                                DailyQuestionAnswerVo.class,
+                                answer.createdAt.month(),
+                                dailyQuestion,
+                                answer))
+                .from(answer)
+                .join(dailyQuestion)
+                .on(answer.questionId.eq(dailyQuestion.id))
+                .where(
+                        answer.userId.eq(userId),
+                        dailyQuestion.category.eq(dailyQuestionCategory),
+                        answer.createdAt.month().eq(month))
+                .orderBy(answer.createdAt.desc())
+                .fetch();
     }
 }

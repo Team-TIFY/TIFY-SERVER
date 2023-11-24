@@ -239,15 +239,12 @@ public class UserController {
         return retrieveMyDailyAnswerUseCase.countByCategory(userId, dailyQuestionCategory);
     }
 
-    @Operation(summary = "유저가 답변한 데일리 질문에 대한 답변을 카테고리별로 조회합니다.")
+    @Operation(summary = "유저가 답변한 데일리 질문에 대한 답변을 월별로 카테고리를 이용해 조회합니다.")
     @GetMapping("/daily-answer/{userId}")
-    public SliceResponse<MyDailyQuestionAnswerVo> getMyDailyAnswerList(
-            @PathVariable Long userId,
-            @RequestParam DailyQuestionCategory dailyQuestionCategory,
-            @ParameterObject @PageableDefault Pageable pageable) {
+    public List<List<MyDailyQuestionAnswerVo>> getMyDailyAnswerList(
+            @PathVariable Long userId, @RequestParam DailyQuestionCategory dailyQuestionCategory) {
 
-        return SliceResponse.of(
-                retrieveMyDailyAnswerUseCase.execute(userId, dailyQuestionCategory, pageable));
+        return retrieveMyDailyAnswerUseCase.execute(userId, dailyQuestionCategory);
     }
 
     @Operation(summary = "새로운 친구 목록을 조회합니다.")

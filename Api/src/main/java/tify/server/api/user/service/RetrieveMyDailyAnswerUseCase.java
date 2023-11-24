@@ -4,8 +4,6 @@ package tify.server.api.user.service;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
 import tify.server.api.user.model.dto.vo.UserDailyQuestionAnswerVo;
 import tify.server.core.annotation.UseCase;
@@ -18,11 +16,11 @@ public class RetrieveMyDailyAnswerUseCase {
 
     private final AnswerAdaptor answerAdaptor;
 
-    public Slice<MyDailyQuestionAnswerVo> execute(
-            Long userId, DailyQuestionCategory dailyQuestionCategory, Pageable pageable) {
-        return answerAdaptor
-                .searchMyAnswer(userId, dailyQuestionCategory, pageable)
-                .map(MyDailyQuestionAnswerVo::from);
+    public List<List<MyDailyQuestionAnswerVo>> execute(
+            Long userId, DailyQuestionCategory dailyQuestionCategory) {
+        return answerAdaptor.searchMyAnswer(userId, dailyQuestionCategory).stream()
+                .map(list -> list.stream().map(MyDailyQuestionAnswerVo::from).toList())
+                .toList();
     }
 
     public List<UserDailyQuestionAnswerVo> countByAllCategory(Long userId) {
