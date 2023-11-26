@@ -46,9 +46,8 @@ public class UserValidator {
                 .orElseThrow(() -> new BaseException(USER_BLOCK_NOT_FOUND_ERROR));
     }
 
-    public void isValidUserId(String userId) {
+    public void isValidUserId(Long userId) {
         userAdaptor
-                .queryByUserId(userId)
-                .orElseThrow(() -> new BaseException(USER_NOT_FOUND_ERROR));
+                .query(userId);
     }
 }

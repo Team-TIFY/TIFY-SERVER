@@ -21,8 +21,7 @@ public class CreateUserReportUseCase {
     @Transactional
     public void execute(Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
-        userValidator.isValidUserId(userAdaptor.query(userId).getUserId());
         userReportAdaptor.save(
-                UserReport.builder().fromUserId(currentUserId).toUserId(userId).build());
+                UserReport.builder().fromUserId(currentUserId).toUserId(userAdaptor.query(userId).getId()).build());
     }
 }
