@@ -47,4 +47,9 @@ public class ProductAdaptor {
             ProductCategoryCondition productCategoryCondition) {
         return productRepository.searchBySmallCategory(productCategoryCondition);
     }
+
+    public List<Product> findAllBySmallCategoryId(
+            ProductCategoryCondition productCategoryCondition) {
+        return productRepository.findAllBySmallCategory(productCategoryCondition);
+    }
 }

@@ -113,6 +113,17 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         return SliceUtil.valueOf(products, productCategoryCondition.getPageable());
     }
 
+    @Override
+    public List<Product> findAllBySmallCategory(ProductCategoryCondition productCategoryCondition) {
+        return queryFactory
+                .selectFrom(product)
+                .where(
+                        product.favorQuestionCategoryId.in(
+                                productCategoryCondition.getCategoryIdList()),
+                        priceBetween(productCategoryCondition.getPriceFilter()))
+                .fetch();
+    }
+
     private OrderSpecifier[] orderByPrice(PriceOrder priceOrder) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
         if (priceOrder.equals(PRICE_ASC)) {
@@ -127,15 +138,11 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
 
     private BooleanExpression priceBetween(PriceFilter priceFilter) {
         if (priceFilter.equals(LESS_THAN_10000)) {
-            return product.price.between(0L, 10000L);
-        } else if (priceFilter.equals(MORE_THAN_10000_LESS_THAN_20000)) {
-            return product.price.between(10000L, 20000L);
-        } else if (priceFilter.equals(MORE_THAN_20000_LESS_THAN_30000)) {
-            return product.price.between(20000L, 30000L);
-        } else if (priceFilter.equals(MORE_THAN_30000_LESS_THAN_40000)) {
-            return product.price.between(30000L, 40000L);
-        } else if (priceFilter.equals(MORE_THAN_40000_LESS_THAN_50000)) {
-            return product.price.between(40000L, 50000L);
+            return product.price.between(0L, 9999L);
+        } else if (priceFilter.equals(MORE_THAN_10000_LESS_THAN_30000)) {
+            return product.price.between(10000L, 29999L);
+        } else if (priceFilter.equals(MORE_THAN_30000_LESS_THAN_50000)) {
+            return product.price.between(30000L, 49999L);
         } else if (priceFilter.equals(MORE_THAN_50000)) {
             return product.price.between(50000L, MAX_VALUE);
         } else {
