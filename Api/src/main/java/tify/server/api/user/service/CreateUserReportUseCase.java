@@ -22,6 +22,9 @@ public class CreateUserReportUseCase {
     public void execute(Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         userReportAdaptor.save(
-                UserReport.builder().fromUserId(currentUserId).toUserId(userAdaptor.query(userId).getId()).build());
+                UserReport.builder()
+                        .fromUserId(currentUserId)
+                        .toUserId(userAdaptor.query(userId).getId())
+                        .build());
     }
 }

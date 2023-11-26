@@ -4,7 +4,6 @@ import static tify.server.domain.domains.user.exception.UserException.ALREADY_EX
 import static tify.server.domain.domains.user.exception.UserException.ALREADY_EXIST_USER_ERROR;
 import static tify.server.domain.domains.user.exception.UserException.NOT_NEIGHBOR_ERROR;
 import static tify.server.domain.domains.user.exception.UserException.USER_BLOCK_NOT_FOUND_ERROR;
-import static tify.server.domain.domains.user.exception.UserException.USER_NOT_FOUND_ERROR;
 
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Validator;
@@ -47,7 +46,6 @@ public class UserValidator {
     }
 
     public void isValidUserId(Long userId) {
-        userAdaptor
-                .query(userId);
+        userAdaptor.query(userId);
     }
 }
