@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tify.server.api.answer.model.response.RetrieveAnswerCountResponse;
-import tify.server.api.answer.model.response.RetrieveAnswerDTO;
+import tify.server.api.answer.model.response.AnswerReportResponse;
+import tify.server.api.answer.model.vo.RetrieveAnswerCountVo;
+import tify.server.api.answer.model.vo.RetrieveAnswerVo;
+import tify.server.api.answer.service.CreateDailyAnswerReportUseCase;
 import tify.server.api.answer.service.RetrieveDailyAnswerCountUseCase;
 import tify.server.api.answer.service.RetrieveDailyAnswerUseCase;
 import tify.server.api.common.slice.SliceResponse;
@@ -24,10 +27,11 @@ public class AnswerController {
 
     private final RetrieveDailyAnswerUseCase retrieveDailyAnswerUseCase;
     private final RetrieveDailyAnswerCountUseCase retrieveDailyAnswerCountUseCase;
+    private final CreateDailyAnswerReportUseCase createDailyAnswerReportUseCase;
 
     @Operation(summary = "데일리 질문에 대한 답변을 모두 조회합니다.")
     @GetMapping
-    public SliceResponse<RetrieveAnswerDTO> getAnswers(
+    public SliceResponse<RetrieveAnswerVo> getAnswers(
             @PathVariable Long questionId,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         return retrieveDailyAnswerUseCase.execute(questionId, pageable);
@@ -35,7 +39,14 @@ public class AnswerController {
 
     @Operation(summary = "데일리 질문에 대한 답변 개수를 조회합니다.")
     @GetMapping(value = "/counts")
-    public RetrieveAnswerCountResponse getAnswerCounts(@PathVariable Long questionId) {
+    public RetrieveAnswerCountVo getAnswerCounts(@PathVariable Long questionId) {
         return retrieveDailyAnswerCountUseCase.execute(questionId);
+    }
+
+    @Operation(summary = "데일리 질문에 대한 답변을 신고합니다.")
+    @PostMapping(value = "/{answerId}/report")
+    public ResponseEntity<AnswerReportResponse> postAnswerReport(
+            @PathVariable Long questionId, @PathVariable Long answerId) {
+        return createDailyAnswerReportUseCase.execute(answerId);
     }
 }

@@ -1,4 +1,4 @@
-package tify.server.api.answer.model.response;
+package tify.server.api.answer.model.vo;
 
 
 import java.util.Objects;
@@ -9,14 +9,14 @@ import tify.server.domain.domains.question.dto.model.AnswerVo;
 
 @Getter
 @Builder
-public class RetrieveAnswerDTO {
+public class RetrieveAnswerVo {
 
     private final AnswerInfoVo answerInfo;
 
     private final Boolean isMine;
 
-    public static RetrieveAnswerDTO of(AnswerVo answerVo, Long currentUserId) {
-        return RetrieveAnswerDTO.builder()
+    public static RetrieveAnswerVo of(AnswerVo answerVo, Long currentUserId) {
+        return RetrieveAnswerVo.builder()
                 .answerInfo(AnswerInfoVo.from(answerVo))
                 .isMine(Objects.equals(answerVo.getUser().getId(), currentUserId))
                 .build();

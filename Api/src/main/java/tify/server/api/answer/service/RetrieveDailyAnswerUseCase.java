@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.answer.model.response.RetrieveAnswerDTO;
+import tify.server.api.answer.model.vo.RetrieveAnswerVo;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
@@ -29,7 +29,7 @@ public class RetrieveDailyAnswerUseCase {
     private final UserUtils userUtils;
 
     @Transactional(readOnly = true)
-    public SliceResponse<RetrieveAnswerDTO> execute(Long questionId, Pageable pageable) {
+    public SliceResponse<RetrieveAnswerVo> execute(Long questionId, Pageable pageable) {
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.query(questionId);
         Long currentUserId = userUtils.getUserId();
         List<Long> userIdList =
@@ -42,6 +42,6 @@ public class RetrieveDailyAnswerUseCase {
                 new AnswerCondition(dailyQuestion.getId(), userIdList, pageable);
         Slice<AnswerVo> answers = answerAdaptor.searchAnswer(currentUserId, answerCondition);
         return SliceResponse.of(
-                answers.map(answerVo -> RetrieveAnswerDTO.of(answerVo, currentUserId)));
+                answers.map(answerVo -> RetrieveAnswerVo.of(answerVo, currentUserId)));
     }
 }

@@ -2,6 +2,7 @@ package tify.server.domain.domains.user.adaptor;
 
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.UserReport;
@@ -30,5 +31,10 @@ public class UserReportAdaptor {
 
     public List<UserReport> queryAllByUserId(Long userId) {
         return userReportRepository.findAllByToUserId(userId);
+    }
+
+    public Optional<UserReport> optionalQueryByFromUserIdAndToUserId(
+            Long fromUserId, Long toUserId) {
+        return userReportRepository.findByFromUserIdAndToUserId(fromUserId, toUserId);
     }
 }
