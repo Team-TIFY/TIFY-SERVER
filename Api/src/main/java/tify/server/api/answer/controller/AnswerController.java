@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.answer.model.response.AnswerReportResponse;
 import tify.server.api.answer.model.vo.RetrieveAnswerCountVo;
@@ -45,7 +44,7 @@ public class AnswerController {
 
     @Operation(summary = "데일리 질문에 대한 답변을 신고합니다.")
     @PostMapping(value = "/{answerId}/report")
-    public ResponseEntity<AnswerReportResponse> postAnswerReport(
+    public AnswerReportResponse postAnswerReport(
             @PathVariable Long questionId, @PathVariable Long answerId) {
         return createDailyAnswerReportUseCase.execute(answerId);
     }

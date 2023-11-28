@@ -4,8 +4,6 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.api.user.model.dto.response.UserReportResponse;
@@ -22,31 +20,27 @@ public class CreateUserReportUseCase {
     private final UserAdaptor userAdaptor;
 
     @Transactional
-    public ResponseEntity<UserReportResponse> execute(Long userId) {
+    public UserReportResponse execute(Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         Optional<UserReport> report =
                 userReportAdaptor.optionalQueryByFromUserIdAndToUserId(currentUserId, userId);
         if (report.isPresent()) { // 이미 신고가 존재할 때
-            UserReportResponse response =
-                    UserReportResponse.builder()
-                            .fromUserId(currentUserId)
-                            .toUserId(userId)
-                            .reportSuccess(false)
-                            .build();
-            return new ResponseEntity<>(response, new HttpHeaders(), BAD_REQUEST);
+            return UserReportResponse.builder()
+                    .fromUserId(currentUserId)
+                    .toUserId(userId)
+                    .reportSuccess(false)
+                    .build();
         } else { // 새로운 신고일 때
             userReportAdaptor.save(
                     UserReport.builder()
                             .fromUserId(currentUserId)
                             .toUserId(userAdaptor.query(userId).getId())
                             .build());
-            UserReportResponse response =
-                    UserReportResponse.builder()
-                            .fromUserId(currentUserId)
-                            .toUserId(userId)
-                            .reportSuccess(true)
-                            .build();
-            return new ResponseEntity<>(response, new HttpHeaders(), OK);
+            return UserReportResponse.builder()
+                    .fromUserId(currentUserId)
+                    .toUserId(userId)
+                    .reportSuccess(true)
+                    .build();
         }
     }
 }

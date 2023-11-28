@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
@@ -217,7 +216,7 @@ public class UserController {
 
     @Operation(summary = "유저를 신고합니다.")
     @PostMapping("/report/{userId}")
-    public ResponseEntity<UserReportResponse> postUserReport(@PathVariable Long userId) {
+    public UserReportResponse postUserReport(@PathVariable Long userId) {
         return createUserReportUseCase.execute(userId);
     }
 
