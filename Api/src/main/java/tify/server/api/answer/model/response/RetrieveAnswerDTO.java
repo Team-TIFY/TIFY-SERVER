@@ -4,7 +4,7 @@ package tify.server.api.answer.model.response;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
-import tify.server.api.answer.vo.AnswerInfoVo;
+import tify.server.api.answer.model.vo.AnswerInfoVo;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
 
 @Getter

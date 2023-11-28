@@ -9,6 +9,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import tify.server.api.answer.model.response.NeighborAnswerInfoDTO;
 import tify.server.api.answer.model.response.RetrieveAnswerCountResponse;
 import tify.server.api.answer.model.response.RetrieveAnswerDTO;
 import tify.server.api.answer.service.RetrieveDailyAnswerCountUseCase;
@@ -37,5 +38,16 @@ public class AnswerController {
     @GetMapping(value = "/counts")
     public RetrieveAnswerCountResponse getAnswerCounts(@PathVariable Long questionId) {
         return retrieveDailyAnswerCountUseCase.execute(questionId);
+    }
+
+    @Operation(
+            summary = "특정 유저의 친구들이 해당 데일리 질문에 답변을 남겼는지 조회하고, 남겼다면 답변의 정보를 조회합니다.",
+            description = "답변을 남기지 않았다면 답변 필드가 null")
+    @GetMapping("/{userId}/neighbors")
+    public SliceResponse<NeighborAnswerInfoDTO> getNeighborAnswerInfoList(
+            @PathVariable Long questionId,
+            @PathVariable Long userId,
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        return retrieveDailyAnswerUseCase.executeNeighborAnswerList(questionId, userId, pageable);
     }
 }
