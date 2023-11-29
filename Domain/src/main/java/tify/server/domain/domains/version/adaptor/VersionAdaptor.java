@@ -14,10 +14,7 @@ public class VersionAdaptor {
     private final VersionRepository versionRepository;
 
     public Version queryRecentVersion() {
-        long size = (long) versionRepository.findAll().size();
-        return versionRepository
-                .findById(size)
-                .orElseThrow(() -> VersionNotFoundException.EXCEPTION);
+        return versionRepository.findById(1L).orElseThrow(() -> VersionNotFoundException.EXCEPTION);
     }
 
     public void save(Version version) {
