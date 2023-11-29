@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
@@ -42,8 +41,8 @@ public class AnswerAdaptor {
         return answerRepository.countAnswer(questionId);
     }
 
-    public Slice<AnswerVo> searchAnswer(Long userId, AnswerCondition answerCondition) {
-        return answerRepository.searchToPage(userId, answerCondition);
+    public List<AnswerVo> searchAnswer(Long userId, AnswerCondition answerCondition) {
+        return answerRepository.searchAnswers(userId, answerCondition);
     }
 
     public List<List<DailyQuestionAnswerVo>> searchMyAnswer(

@@ -10,8 +10,6 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
-import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
@@ -22,23 +20,18 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<AnswerVo> searchToPage(Long userId, AnswerCondition answerCondition) {
+    public List<AnswerVo> searchAnswers(Long userId, AnswerCondition answerCondition) {
 
-        List<AnswerVo> answers =
-                queryFactory
-                        .select(Projections.constructor(AnswerVo.class, answer, user))
-                        .from(answer)
-                        .join(user)
-                        .on(answer.userId.eq(user.id))
-                        .where(
-                                questionIdEq(answerCondition.getQuestionId()),
-                                answer.isDeleted.eq(N),
-                                answer.userId.in(answerCondition.getUserIdList()))
-                        .offset(answerCondition.getPageable().getOffset())
-                        .limit(answerCondition.getPageable().getPageSize() + 1)
-                        .fetch();
-
-        return SliceUtil.valueOf(answers, answerCondition.getPageable());
+        return queryFactory
+                .select(Projections.constructor(AnswerVo.class, answer, user))
+                .from(answer)
+                .join(user)
+                .on(answer.userId.eq(user.id))
+                .where(
+                        questionIdEq(answerCondition.getQuestionId()),
+                        answer.isDeleted.eq(N),
+                        answer.userId.in(answerCondition.getUserIdList()))
+                .fetch();
     }
 
     private BooleanExpression questionIdEq(Long questionId) {

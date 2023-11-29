@@ -7,12 +7,10 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.answer.model.response.NeighborAnswerInfoDTO;
-import tify.server.api.answer.model.response.RetrieveAnswerDTO;
 import tify.server.api.answer.model.vo.AnswerInfoVo;
-import tify.server.api.common.slice.SliceResponse;
+import tify.server.api.answer.model.vo.RetrieveAnswerVo;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
@@ -20,7 +18,6 @@ import tify.server.domain.domains.question.adaptor.DailyQuestionAdaptor;
 import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
-import tify.server.domain.domains.question.dto.model.AnswerVo;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
@@ -42,7 +39,7 @@ public class RetrieveDailyAnswerUseCase {
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
 
     @Transactional(readOnly = true)
-    public SliceResponse<RetrieveAnswerDTO> execute(Long questionId, Pageable pageable) {
+    public List<RetrieveAnswerVo> execute(Long questionId) {
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.query(questionId);
         Long currentUserId = SecurityUtils.getCurrentUserId();
         List<Long> userIdList =
@@ -51,11 +48,10 @@ public class RetrieveDailyAnswerUseCase {
                                 .map(Neighbor::getToUserId)
                                 .toList());
         userIdList.add(currentUserId);
-        AnswerCondition answerCondition =
-                new AnswerCondition(dailyQuestion.getId(), userIdList, pageable);
-        Slice<AnswerVo> answers = answerAdaptor.searchAnswer(currentUserId, answerCondition);
-        return SliceResponse.of(
-                answers.map(answerVo -> RetrieveAnswerDTO.of(answerVo, currentUserId)));
+        AnswerCondition answerCondition = new AnswerCondition(dailyQuestion.getId(), userIdList);
+        return answerAdaptor.searchAnswer(currentUserId, answerCondition).stream()
+                .map(answerVo -> RetrieveAnswerVo.of(answerVo, currentUserId))
+                .toList();
     }
 
     @Transactional(readOnly = true)
