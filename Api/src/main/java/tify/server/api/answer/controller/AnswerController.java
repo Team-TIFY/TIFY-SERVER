@@ -6,9 +6,6 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.annotations.ParameterObject;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,8 +54,7 @@ public class AnswerController {
             description = "답변을 남기지 않았다면 답변 필드가 null")
     @GetMapping("/{userId}/neighbors")
     public List<NeighborAnswerInfoDTO> getNeighborAnswerInfoList(
-            @PathVariable Long questionId,
-            @PathVariable Long userId) {
+            @PathVariable Long questionId, @PathVariable Long userId) {
         return retrieveDailyAnswerUseCase.executeNeighborAnswerList(questionId, userId);
     }
 }

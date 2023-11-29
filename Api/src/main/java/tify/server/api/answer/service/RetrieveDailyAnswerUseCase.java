@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.answer.model.response.NeighborAnswerInfoDTO;
 import tify.server.api.answer.model.vo.AnswerInfoVo;
@@ -55,8 +54,7 @@ public class RetrieveDailyAnswerUseCase {
     }
 
     @Transactional(readOnly = true)
-    public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(
-            Long questionId, Long userId) {
+    public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(Long questionId, Long userId) {
         List<User> neighborList =
                 neighborAdaptor.queryAllByFromUserId(userId).stream()
                         .map(Neighbor::getToUserId)
