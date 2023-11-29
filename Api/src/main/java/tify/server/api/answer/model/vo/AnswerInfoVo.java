@@ -1,9 +1,11 @@
-package tify.server.api.answer.vo;
+package tify.server.api.answer.model.vo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Optional;
 import lombok.Builder;
 import lombok.Getter;
+import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.dto.model.AnswerVo;
 
 @Getter
@@ -28,6 +30,15 @@ public class AnswerInfoVo {
                 .questionId(answer.getAnswer().getQuestionId())
                 .userId(answer.getUser().getId())
                 .content(answer.getAnswer().getContent())
+                .build();
+    }
+
+    public static AnswerInfoVo from(Answer answer) {
+        return AnswerInfoVo.builder()
+                .id(Optional.ofNullable(answer).map(Answer::getId).orElse(null))
+                .questionId(Optional.ofNullable(answer).map(Answer::getQuestionId).orElse(null))
+                .userId(Optional.ofNullable(answer).map(Answer::getUserId).orElse(null))
+                .content(Optional.ofNullable(answer).map(Answer::getContent).orElse(null))
                 .build();
     }
 }
