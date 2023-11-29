@@ -10,7 +10,7 @@ import tify.server.domain.domains.question.dto.model.DailyQuestionAnswerVo;
 
 public interface AnswerCustomRepository {
 
-    Slice<AnswerVo> searchToPage(Long userId, AnswerCondition answerCondition);
+    List<AnswerVo> searchAnswers(Long userId, AnswerCondition answerCondition);
 
     Long countAnswer(Long questionId);
 

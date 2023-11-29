@@ -12,5 +12,4 @@ public class AnswerCondition {
 
     private Long questionId;
     private List<Long> userIdList;
-    private Pageable pageable;
 }

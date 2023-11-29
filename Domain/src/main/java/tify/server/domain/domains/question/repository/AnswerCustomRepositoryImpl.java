@@ -22,10 +22,9 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<AnswerVo> searchToPage(Long userId, AnswerCondition answerCondition) {
+    public List<AnswerVo> searchAnswers(Long userId, AnswerCondition answerCondition) {
 
-        List<AnswerVo> answers =
-                queryFactory
+        return queryFactory
                         .select(Projections.constructor(AnswerVo.class, answer, user))
                         .from(answer)
                         .join(user)
@@ -34,11 +33,7 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
                                 questionIdEq(answerCondition.getQuestionId()),
                                 answer.isDeleted.eq(N),
                                 answer.userId.in(answerCondition.getUserIdList()))
-                        .offset(answerCondition.getPageable().getOffset())
-                        .limit(answerCondition.getPageable().getPageSize() + 1)
                         .fetch();
-
-        return SliceUtil.valueOf(answers, answerCondition.getPageable());
     }
 
     private BooleanExpression questionIdEq(Long questionId) {
