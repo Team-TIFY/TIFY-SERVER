@@ -48,10 +48,10 @@ public class RetrieveDailyAnswerUseCase {
                                 .map(Neighbor::getToUserId)
                                 .toList());
         userIdList.add(currentUserId);
-        AnswerCondition answerCondition =
-                new AnswerCondition(dailyQuestion.getId(), userIdList);
+        AnswerCondition answerCondition = new AnswerCondition(dailyQuestion.getId(), userIdList);
         return answerAdaptor.searchAnswer(currentUserId, answerCondition).stream()
-            .map(answerVo -> RetrieveAnswerVo.of(answerVo, currentUserId)).toList();
+                .map(answerVo -> RetrieveAnswerVo.of(answerVo, currentUserId))
+                .toList();
     }
 
     @Transactional(readOnly = true)

@@ -2,7 +2,6 @@ package tify.server.domain.domains.question.repository;
 
 
 import java.util.List;
-import org.springframework.data.domain.Slice;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.question.dto.model.AnswerVo;

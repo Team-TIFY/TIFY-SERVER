@@ -21,7 +21,6 @@ import tify.server.api.answer.model.vo.RetrieveAnswerVo;
 import tify.server.api.answer.service.CreateDailyAnswerReportUseCase;
 import tify.server.api.answer.service.RetrieveDailyAnswerCountUseCase;
 import tify.server.api.answer.service.RetrieveDailyAnswerUseCase;
-import tify.server.api.common.slice.SliceResponse;
 
 @RestController
 @RequestMapping(value = "/{questionId}/answers")
@@ -36,8 +35,7 @@ public class AnswerController {
 
     @Operation(summary = "데일리 질문에 대한 답변을 모두 조회합니다.")
     @GetMapping
-    public List<RetrieveAnswerVo> getAnswers(
-            @PathVariable Long questionId) {
+    public List<RetrieveAnswerVo> getAnswers(@PathVariable Long questionId) {
         return retrieveDailyAnswerUseCase.execute(questionId);
     }
 
