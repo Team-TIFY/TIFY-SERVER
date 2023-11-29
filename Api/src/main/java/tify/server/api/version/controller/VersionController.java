@@ -14,6 +14,7 @@ import tify.server.api.version.model.request.PostVersionRequest;
 import tify.server.api.version.model.vo.VersionInfoVo;
 import tify.server.api.version.service.CreateVersionUseCase;
 import tify.server.api.version.service.RetrieveVersionUseCase;
+import tify.server.api.version.service.UpdateVersionUseCase;
 
 @SecurityRequirement(name = "access-token")
 @RestController
@@ -24,6 +25,7 @@ public class VersionController {
 
     private final RetrieveVersionUseCase retrieveVersionUseCase;
     private final CreateVersionUseCase createVersionUseCase;
+    private final UpdateVersionUseCase updateVersionUseCase;
 
     @Operation(summary = "현재 버전을 조회합니다. (AOS, IOS 모두)")
     @GetMapping
@@ -31,9 +33,15 @@ public class VersionController {
         return retrieveVersionUseCase.execute();
     }
 
-    @Operation(summary = "새로운 버전을 저장합니다.")
+    @Operation(summary = "초기 버전을 저장합니다. (추후 버전 업데이트 시 업데이트 api 이용)")
     @PostMapping("/new")
-    public void updateAosVersion(@RequestBody PostVersionRequest postVersionRequest) {
+    public void createVersion(@RequestBody PostVersionRequest postVersionRequest) {
         createVersionUseCase.execute(postVersionRequest);
+    }
+
+    @Operation(summary = "버전을 업데이트합니다.")
+    @PostMapping("/update")
+    public void updateVersion(@RequestBody PostVersionRequest postVersionRequest) {
+        updateVersionUseCase.execute(postVersionRequest);
     }
 }

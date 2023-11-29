@@ -11,17 +11,16 @@ import tify.server.domain.domains.version.domain.Version;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreateVersionUseCase {
+public class UpdateVersionUseCase {
 
     private final VersionAdaptor versionAdaptor;
 
     @Transactional
     public void execute(PostVersionRequest postVersionRequest) {
-        Version version = new Version(null, null);
+        Version recentVersion = versionAdaptor.queryRecentVersion();
         Optional.ofNullable(postVersionRequest.getAosVersion())
-                .ifPresent(version::updateAosVersion);
+                .ifPresent(recentVersion::updateAosVersion);
         Optional.ofNullable(postVersionRequest.getIosVersion())
-                .ifPresent(version::updateIosVersion);
-        versionAdaptor.save(version);
+                .ifPresent(recentVersion::updateIosVersion);
     }
 }

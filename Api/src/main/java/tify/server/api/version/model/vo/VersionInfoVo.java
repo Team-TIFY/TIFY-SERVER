@@ -9,7 +9,7 @@ import lombok.Getter;
 @Builder
 public class VersionInfoVo {
 
-    @Schema(description = "AOS 버전입니다.")
+    @Schema(description = "IOS 버전입니다.")
     private final String iosVersion;
 
     @Schema(description = "AOS 버전입니다.")

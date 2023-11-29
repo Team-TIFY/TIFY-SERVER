@@ -11,11 +11,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
-@Setter
 @Entity
 @Table(name = "tbl_version")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,5 +31,13 @@ public class Version extends AbstractTimeStamp {
     public Version(String iosVersion, String aosVersion) {
         this.iosVersion = iosVersion;
         this.aosVersion = aosVersion;
+    }
+
+    public void updateAosVersion(String aosVersion) {
+        this.aosVersion = aosVersion;
+    }
+
+    public void updateIosVersion(String iosVersion) {
+        this.iosVersion = iosVersion;
     }
 }
