@@ -56,7 +56,7 @@ public class RetrieveDailyAnswerUseCase {
 
     @Transactional(readOnly = true)
     public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(
-            Long questionId, Long userId, Pageable pageable) {
+            Long questionId, Long userId) {
         List<User> neighborList =
                 neighborAdaptor.queryAllByFromUserId(userId).stream()
                         .map(Neighbor::getToUserId)

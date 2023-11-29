@@ -58,8 +58,7 @@ public class AnswerController {
     @GetMapping("/{userId}/neighbors")
     public List<NeighborAnswerInfoDTO> getNeighborAnswerInfoList(
             @PathVariable Long questionId,
-            @PathVariable Long userId,
-            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
-        return retrieveDailyAnswerUseCase.executeNeighborAnswerList(questionId, userId, pageable);
+            @PathVariable Long userId) {
+        return retrieveDailyAnswerUseCase.executeNeighborAnswerList(questionId, userId);
     }
 }
