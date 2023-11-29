@@ -54,7 +54,12 @@ public class NeighborAdaptor {
     }
 
     public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchToPage(neighborCondition);
+        return neighborRepository.searchNeighbors(neighborCondition);
+    }
+
+    public Slice<RetrieveNeighborDTO> searchNeighbors(
+            NeighborCondition neighborCondition, Pageable pageable) {
+        return neighborRepository.searchNeighborsToPage(neighborCondition, pageable);
     }
 
     public boolean existsNeighbor(Long userId, Long neighborId) {
@@ -70,7 +75,7 @@ public class NeighborAdaptor {
     }
 
     public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchBirthToPage(neighborCondition);
+        return neighborRepository.searchBirthdayNeighbors(neighborCondition);
     }
 
     public void saveNeighborApplication(NeighborApplication neighborApplication) {
