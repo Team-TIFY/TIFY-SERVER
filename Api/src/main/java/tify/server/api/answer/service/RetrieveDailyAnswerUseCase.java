@@ -15,7 +15,6 @@ import tify.server.api.answer.model.vo.AnswerInfoVo;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
-import tify.server.domain.common.util.SliceUtil;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.DailyQuestionAdaptor;
 import tify.server.domain.domains.question.domain.Answer;
@@ -60,7 +59,7 @@ public class RetrieveDailyAnswerUseCase {
     }
 
     @Transactional(readOnly = true)
-    public SliceResponse<NeighborAnswerInfoDTO> executeNeighborAnswerList(
+    public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(
             Long questionId, Long userId, Pageable pageable) {
         List<User> neighborList =
                 neighborAdaptor.queryAllByFromUserId(userId).stream()
@@ -77,21 +76,18 @@ public class RetrieveDailyAnswerUseCase {
                         .toList();
         NeighborCondition neighborCondition =
                 new NeighborCondition(userId, blockedIdList, friendIdList);
-        Slice<RetrieveNeighborDTO> neighbors =
-                neighborAdaptor.searchNeighbors(neighborCondition, pageable);
-        List<NeighborAnswerInfoDTO> list =
-                neighbors.stream()
-                        .map(
-                                dto -> {
-                                    Optional<Answer> answer =
-                                            answerAdaptor.optionalQueryByQuestionAndUser(
-                                                    questionId, dto.getNeighborId());
-                                    return NeighborAnswerInfoDTO.builder()
-                                            .neighborInfo(dto)
-                                            .answerInfo(AnswerInfoVo.from(answer.orElse(null)))
-                                            .build();
-                                })
-                        .toList();
-        return SliceResponse.of(SliceUtil.valueOf(list, pageable));
+        List<RetrieveNeighborDTO> neighbors = neighborAdaptor.searchNeighbors(neighborCondition);
+        return neighbors.stream()
+                .map(
+                        dto -> {
+                            Optional<Answer> answer =
+                                    answerAdaptor.optionalQueryByQuestionAndUser(
+                                            questionId, dto.getNeighborId());
+                            return NeighborAnswerInfoDTO.builder()
+                                    .neighborInfo(dto)
+                                    .answerInfo(AnswerInfoVo.from(answer.orElse(null)))
+                                    .build();
+                        })
+                .toList();
     }
 }

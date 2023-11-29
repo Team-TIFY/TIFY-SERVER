@@ -4,6 +4,7 @@ package tify.server.api.answer.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
@@ -44,7 +45,7 @@ public class AnswerController {
             summary = "특정 유저의 친구들이 해당 데일리 질문에 답변을 남겼는지 조회하고, 남겼다면 답변의 정보를 조회합니다.",
             description = "답변을 남기지 않았다면 답변 필드가 null")
     @GetMapping("/{userId}/neighbors")
-    public SliceResponse<NeighborAnswerInfoDTO> getNeighborAnswerInfoList(
+    public List<NeighborAnswerInfoDTO> getNeighborAnswerInfoList(
             @PathVariable Long questionId,
             @PathVariable Long userId,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
