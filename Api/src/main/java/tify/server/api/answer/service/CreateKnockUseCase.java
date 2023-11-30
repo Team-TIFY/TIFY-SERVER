@@ -2,6 +2,7 @@ package tify.server.api.answer.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.KnockAdaptor;
@@ -19,6 +20,7 @@ public class CreateKnockUseCase {
     private final QuestionValidator questionValidator;
     private final KnockAdaptor knockAdaptor;
 
+    @Transactional
     public void execute(Long questionId, Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
         userValidator.isNeighbor(currentUserId, userId); // 친구인지를 검증
