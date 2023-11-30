@@ -23,12 +23,12 @@ public class Knock extends AbstractTimeStamp {
 
     @NotNull private Long knockedUserId;
 
-    @NotNull private Long dailyAnswerId;
+    @NotNull private Long dailyQuestionId;
 
     @Builder
-    public Knock(Long userId, Long knockedUserId, Long dailyAnswerId) {
+    public Knock(Long userId, Long knockedUserId, Long dailyQuestionId) {
         this.userId = userId;
         this.knockedUserId = knockedUserId;
-        this.dailyAnswerId = dailyAnswerId;
+        this.dailyQuestionId = dailyQuestionId;
     }
 }

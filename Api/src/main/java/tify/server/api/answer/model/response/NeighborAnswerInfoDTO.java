@@ -13,4 +13,6 @@ public class NeighborAnswerInfoDTO {
     private final RetrieveNeighborDTO neighborInfo;
 
     private final AnswerInfoVo answerInfo;
+
+    private final boolean isNeighborKnocked;
 }
