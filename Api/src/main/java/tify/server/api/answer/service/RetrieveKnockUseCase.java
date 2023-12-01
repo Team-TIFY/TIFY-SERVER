@@ -25,11 +25,7 @@ public class RetrieveKnockUseCase {
                         .queryAllByDailyQuestionIdAndUserIdAndKnockedUserId(
                                 questionId, currentUserId, userId)
                         .size();
-        return KnockCountVo.builder()
-                .fromUserId(currentUserId)
-                .knockedUserId(userId)
-                .knockCount(size)
-                .build();
+        return KnockCountVo.of(currentUserId, userId, size);
     }
 
     @Transactional(readOnly = true)

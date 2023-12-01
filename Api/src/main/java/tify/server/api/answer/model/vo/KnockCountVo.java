@@ -26,4 +26,12 @@ public class KnockCountVo {
                 .knockCount(count)
                 .build();
     }
+
+    public static KnockCountVo of(Long fromUserId, Long knockedUserId, int knockCount) {
+        return KnockCountVo.builder()
+                .fromUserId(fromUserId)
+                .knockedUserId(knockedUserId)
+                .knockCount(knockCount)
+                .build();
+    }
 }
