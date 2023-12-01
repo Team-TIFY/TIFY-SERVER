@@ -14,6 +14,7 @@ import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.DailyQuestionAdaptor;
+import tify.server.domain.domains.question.adaptor.KnockAdaptor;
 import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
@@ -21,7 +22,6 @@ import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
-import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserBlock;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
@@ -36,6 +36,7 @@ public class RetrieveDailyAnswerUseCase {
     private final UserBlockAdaptor userBlockAdaptor;
     private final NeighborAdaptor neighborAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
+    private final KnockAdaptor knockAdaptor;
 
     @Transactional(readOnly = true)
     public List<RetrieveAnswerVo> execute(Long questionId) {
@@ -55,11 +56,6 @@ public class RetrieveDailyAnswerUseCase {
 
     @Transactional(readOnly = true)
     public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(Long questionId, Long userId) {
-        List<User> neighborList =
-                neighborAdaptor.queryAllByFromUserId(userId).stream()
-                        .map(Neighbor::getToUserId)
-                        .map(userAdaptor::query)
-                        .toList();
         List<Long> blockedIdList =
                 userBlockAdaptor.queryAllByFromUserId(userId).stream()
                         .map(UserBlock::getToUserId)
@@ -80,6 +76,11 @@ public class RetrieveDailyAnswerUseCase {
                             return NeighborAnswerInfoDTO.builder()
                                     .neighborInfo(dto)
                                     .answerInfo(AnswerInfoVo.from(answer.orElse(null)))
+                                    .isNeighborKnocked(
+                                            !knockAdaptor
+                                                    .queryAllByDailyQuestionIdAndUserIdAndKnockedUserId(
+                                                            questionId, userId, dto.getNeighborId())
+                                                    .isEmpty())
                                     .build();
                         })
                 .toList();
