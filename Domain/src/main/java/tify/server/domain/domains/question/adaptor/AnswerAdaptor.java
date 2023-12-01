@@ -49,7 +49,11 @@ public class AnswerAdaptor {
             Long userId, DailyQuestionCategory dailyQuestionCategory) {
         List<List<DailyQuestionAnswerVo>> list = new ArrayList<>();
         for (int i = 1; i <= 12; i++) {
-            list.add(answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, i));
+            List<DailyQuestionAnswerVo> dailyQuestionAnswerVoList =
+                    answerRepository.searchMyAnswerToPage(userId, dailyQuestionCategory, i);
+            if (!dailyQuestionAnswerVoList.isEmpty()) {
+                list.add(dailyQuestionAnswerVoList);
+            }
         }
         return list;
     }
