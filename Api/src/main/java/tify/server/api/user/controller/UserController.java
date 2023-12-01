@@ -14,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
+import tify.server.api.user.model.dto.request.PostUserOpinionRequest;
 import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
@@ -21,6 +22,7 @@ import tify.server.api.user.model.dto.response.UserReportResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
 import tify.server.api.user.model.dto.vo.UserDailyQuestionAnswerVo;
+import tify.server.api.user.model.dto.vo.UserOpinionVo;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
 import tify.server.api.user.service.*;
@@ -63,6 +65,8 @@ public class UserController {
     private final CreateUserReportUseCase createUserReportUseCase;
     private final RetrieveUserReportUseCase retrieveUserReportUseCase;
     private final RetrieveMyDailyAnswerUseCase retrieveMyDailyAnswerUseCase;
+    private final CreateUserOpinionUseCase createUserOpinionUseCase;
+    private final RetrieveUserOpinionUseCase retrieveUserOpinionUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -258,5 +262,26 @@ public class UserController {
     @PatchMapping("/neighbors/{userId}/isNew")
     public void patchNeighborIsNew(@PathVariable Long userId) {
         updateNeighborUseCase.executeToIsNew(userId);
+    }
+
+    @Operation(summary = "운영진에 의견을 보냅니다.")
+    @PostMapping("/opinion/new")
+    public void postUserOpinion(
+            @RequestBody @ParameterObject PostUserOpinionRequest postUserOpinionRequest) {
+        createUserOpinionUseCase.execute(postUserOpinionRequest);
+    }
+
+    @Operation(summary = "내가 보낸 의견을 조회합니다.")
+    @GetMapping("/opinion")
+    public UserOpinionVo getMyOpinion(
+            @RequestParam @Parameter(description = "문의의 pk값입니다.") Long opinionId) {
+
+        return retrieveUserOpinionUseCase.execute(opinionId);
+    }
+
+    @Operation(summary = "내가 보낸 의견을 모두 조회합니다.")
+    @GetMapping("/opinion/all")
+    public List<UserOpinionVo> getMyAllOpinion() {
+        return retrieveUserOpinionUseCase.executeAll();
     }
 }

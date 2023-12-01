@@ -48,6 +48,13 @@ public class User extends AbstractTimeStamp {
     @JoinColumn(name = "onBoardingStatusId")
     private UserOnBoardingStatus onBoardingStatus;
 
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<UserOpinion> userOpinions = new ArrayList<>();
+
     public UserInfoVo toUserInfoVo() {
         return UserInfoVo.from(this);
     }
