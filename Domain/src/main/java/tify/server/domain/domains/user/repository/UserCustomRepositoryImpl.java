@@ -25,8 +25,10 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 jpaQueryFactory
                         .selectFrom(user)
                         .leftJoin(userBlock)
-                        .on(user.id.eq(userBlock.toUserId), userBlock.fromUserId.eq(currentUserId))
-                        .where(userBlock.toUserId.isNull(), userIdEquals(userCondition.getUserId()))
+                        .on(user.id.eq(userBlock.fromUserId), userBlock.toUserId.eq(currentUserId))
+                        .where(
+                                userBlock.fromUserId.isNull(),
+                                userIdEquals(userCondition.getUserId()))
                         .orderBy(user.id.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)
