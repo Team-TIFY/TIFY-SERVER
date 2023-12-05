@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.product.model.dto.ProductFilterCondition;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
+import tify.server.domain.domains.product.domain.PriceFilter;
+import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
@@ -42,7 +44,10 @@ public class RetrieveProductListUseCase {
                                 productFilterCondition.getPriceOrder(),
                                 productFilterCondition.getPriceFilter(),
                                 null));
-        Collections.shuffle(results);
+        if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
+                || productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
+            Collections.shuffle(results);
+        }
         return results.stream().map(ProductRetrieveDTO::from).toList();
     }
 }
