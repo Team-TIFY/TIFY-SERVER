@@ -7,7 +7,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum OauthProvider {
-    KAKAO("KAKAO");
+    KAKAO("KAKAO"),
+    APPLE("APPLE"),
+    ;
 
     private final String value;
 }

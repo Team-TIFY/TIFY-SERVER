@@ -8,6 +8,7 @@ import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
 import tify.server.api.auth.model.response.UserCanRegisterResponse;
+import tify.server.api.auth.service.helper.AppleOauthHelper;
 import tify.server.api.auth.service.helper.KakaoOauthHelper;
 import tify.server.api.auth.service.helper.OIDCHelper;
 import tify.server.api.auth.service.helper.TokenGenerateHelper;
@@ -27,6 +28,8 @@ public class SignUpUseCase {
 
     private final KakaoOauthHelper kakaoOauthHelper;
 
+    private final AppleOauthHelper appleOauthHelper;
+
     private final UserDomainService userDomainService;
 
     public OauthLoginLinkResponse getKaKaoOauthLinkTest() {
@@ -35,6 +38,10 @@ public class SignUpUseCase {
 
     public OauthLoginLinkResponse getKaKaoOauthLink(String referer) {
         return new OauthLoginLinkResponse(kakaoOauthHelper.getKaKaoOauthLink(referer));
+    }
+
+    public OauthLoginLinkResponse getAppleOauthLink(String referer) {
+        return new OauthLoginLinkResponse(appleOauthHelper.getAppleOauthLink(referer));
     }
 
     public AuthResponse registerUserByOICDToken(String idToken) {
@@ -58,6 +65,10 @@ public class SignUpUseCase {
     public OauthTokenResponse getCredentialFromKaKao(String code, String referer) {
 
         return OauthTokenResponse.from(kakaoOauthHelper.getOauthToken(code, referer));
+    }
+
+    public OauthTokenResponse getCredentialFromApple(String code, String referer) {
+        return OauthTokenResponse.from(appleOauthHelper.getOauthToken(code, referer));
     }
 
     public OauthTokenResponse getCredentialFromKaKaoTest(String code) {

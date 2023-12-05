@@ -108,5 +108,36 @@ public class AuthController {
         logoutUseCase.execute(req.getHeader("Authorization"));
     }
 
+    @Operation(summary = "apple oauth 링크발급", description = "apple 링크를 받아볼수 있습니다.")
+    @GetMapping("/oauth/apple/link")
+    public OauthLoginLinkResponse getAppleLoginLink(
+            @RequestHeader(required = false) String referer,
+            @RequestHeader(required = false) String host) {
+
+        // dev, production 환경에서
+        if (referer.contains(host)) {
+            log.info("/oauth/apple/" + host);
+            String format = String.format("https://%s/", host);
+            return signUpUseCase.getAppleOauthLink(format);
+        }
+        return signUpUseCase.getAppleOauthLink(referer);
+    }
+
+    @Operation(summary = "apple code를 통해 token 발급")
+    @GetMapping("/oauth/apple")
+    public OauthTokenResponse getAppleCredentialInfo(
+            @RequestParam String code,
+            @RequestHeader(required = false) String referer,
+            @RequestHeader(required = false) String host) {
+
+        // dev, production 환경에서
+        if (referer.contains(host)) {
+            log.info("/oauth/kakao" + host);
+            String format = String.format("https://%s/", host);
+            return signUpUseCase.getCredentialFromKaKao(code, format);
+        }
+        return signUpUseCase.getCredentialFromKaKao(code, referer);
+    }
+
     // Todo: 회원 탈퇴 구현
 }

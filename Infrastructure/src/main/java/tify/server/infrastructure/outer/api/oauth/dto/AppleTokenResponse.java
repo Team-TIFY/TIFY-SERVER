@@ -1,0 +1,19 @@
+package tify.server.infrastructure.outer.api.oauth.dto;
+
+
+import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@JsonNaming(SnakeCaseStrategy.class)
+public class AppleTokenResponse {
+
+    private String accessToken;
+    private Long expiresIn;
+    private String idToken;
+    private String refreshToken;
+    private String tokenType;
+}

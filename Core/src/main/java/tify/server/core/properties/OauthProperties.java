@@ -13,17 +13,29 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @ConfigurationProperties(prefix = "oauth2")
 public class OauthProperties {
 
-    private OauthSecret kakao;
+    private KakaoSecret kakao;
+    private AppleSecret apple;
 
     @Getter
     @Setter
-    public static class OauthSecret {
+    public static class KakaoSecret {
         private String baseUrl;
         private String clientId;
         private String clientSecret;
         private String redirectUrl;
         private String appId;
         private String adminKey;
+    }
+
+    @Getter
+    @Setter
+    public static class AppleSecret {
+        private String baseUrl;
+        private String teamId;
+        private String logInKey;
+        private String clientUrl;
+        private String redirectUrl;
+        private String keyPath;
     }
 
     // base url
@@ -49,5 +61,29 @@ public class OauthProperties {
     // native app key
     public String getKakaoAppId() {
         return kakao.getAppId();
+    }
+
+    public String getAppleBaseUrl() {
+        return apple.getBaseUrl();
+    }
+
+    public String getAppleTeamId() {
+        return apple.getTeamId();
+    }
+
+    public String getAppleLogInKey() {
+        return apple.getLogInKey();
+    }
+
+    public String getAppleClientUrl() {
+        return apple.getClientUrl();
+    }
+
+    public String getAppleRedirectUrl() {
+        return apple.getRedirectUrl();
+    }
+
+    public String getAppleKeyPath() {
+        return apple.getKeyPath();
     }
 }
