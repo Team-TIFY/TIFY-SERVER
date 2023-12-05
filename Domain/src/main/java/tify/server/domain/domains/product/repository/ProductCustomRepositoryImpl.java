@@ -121,6 +121,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                         product.favorQuestionCategoryId.in(
                                 productCategoryCondition.getCategoryIdList()),
                         priceBetween(productCategoryCondition.getPriceFilter()))
+                .orderBy(orderByPrice(productCategoryCondition.getPriceOrder()))
                 .fetch();
     }
 
