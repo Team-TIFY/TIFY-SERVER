@@ -24,9 +24,9 @@ public class OauthTokenResponse {
 
     public static OauthTokenResponse from(AppleTokenResponse appleTokenResponse) {
         return OauthTokenResponse.builder()
-            .accessToken(appleTokenResponse.getAccessToken())
-            .refreshToken(appleTokenResponse.getRefreshToken())
-            .idToken(appleTokenResponse.getIdToken())
-            .build();
+                .accessToken(appleTokenResponse.getAccessToken())
+                .refreshToken(appleTokenResponse.getRefreshToken())
+                .idToken(appleTokenResponse.getIdToken())
+                .build();
     }
 }

@@ -29,6 +29,12 @@ public class AppleOauthHelper {
     }
 
     public AppleTokenResponse getOauthToken(String code, String referer) {
-        return appleOauthClient.appleAuth(AppleTokenRequest.of(code, oauthProperties.getAppleClientUrl(), null, "authorization_code", null));
+        return appleOauthClient.appleAuth(
+                AppleTokenRequest.of(
+                        code,
+                        oauthProperties.getAppleClientUrl(),
+                        null,
+                        "authorization_code",
+                        null));
     }
 }
