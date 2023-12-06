@@ -75,7 +75,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.characteristic,
                                         product.price,
                                         product.productOption,
-                                        product.imageUrl))
+                                        product.crawlUrl))
                         .from(product)
                         .where(product.name.contains(productCondition.getKeyword()))
                         .orderBy(product.id.asc())
