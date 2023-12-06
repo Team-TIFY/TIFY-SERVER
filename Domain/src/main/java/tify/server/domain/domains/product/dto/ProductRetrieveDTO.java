@@ -17,7 +17,7 @@ public class ProductRetrieveDTO {
     private String characteristic;
     private Long price;
     private String productOption;
-    private String crawlUrl;
+    private String imageUrl;
     private String siteUrl;
 
     public static ProductRetrieveDTO from(Product product) {
@@ -28,7 +28,7 @@ public class ProductRetrieveDTO {
                 .characteristic(product.getCharacteristic())
                 .price(product.getPrice())
                 .productOption(product.getProductOption())
-                .crawlUrl(product.getCrawlUrl())
+                .imageUrl(product.getImageUrl())
                 .siteUrl(product.getCrawlUrl())
                 .build();
     }

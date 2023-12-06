@@ -75,6 +75,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.characteristic,
                                         product.price,
                                         product.productOption,
+                                        product.imageUrl,
                                         product.crawlUrl))
                         .from(product)
                         .where(product.name.contains(productCondition.getKeyword()))
@@ -100,7 +101,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.characteristic,
                                         product.price,
                                         product.productOption,
-                                        product.imageUrl))
+                                        product.imageUrl,
+                                        product.crawlUrl))
                         .from(product)
                         .where(
                                 product.favorQuestionCategoryId.in(
