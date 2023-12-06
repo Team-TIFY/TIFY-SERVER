@@ -45,8 +45,8 @@ public class RetrieveProductListUseCase {
                                 productFilterCondition.getPriceFilter(),
                                 null));
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
-                || productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
-            Collections.shuffle(results);
+                && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
+            Collections.shuffle(results); // TODO : 추천 전략을 적용하는 부분일듯
         }
         return results.stream().map(ProductRetrieveDTO::from).toList();
     }
