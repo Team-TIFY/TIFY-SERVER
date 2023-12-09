@@ -11,6 +11,5 @@ import tify.server.api.user.model.dto.UserFavorDto;
 @NoArgsConstructor
 public class PatchUserFavorRequest {
 
-    @NotNull
-    private List<UserFavorDto> userFavorDtoList;
+    @NotNull private List<UserFavorDto> userFavorDtoList;
 }

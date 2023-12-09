@@ -119,7 +119,8 @@ public class UserController {
     @Operation(summary = "유저 취향 상자 수정")
     @PatchMapping("/{userId}/tags")
     public void patchUserFavorsByUserId(
-            @PathVariable Long userId, @RequestBody @Valid PatchUserFavorRequest patchUserFavorRequest) {
+            @PathVariable Long userId,
+            @RequestBody @Valid PatchUserFavorRequest patchUserFavorRequest) {
         updateUserFavorUseCase.execute(userId, patchUserFavorRequest);
     }
 
