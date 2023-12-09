@@ -4,7 +4,6 @@ package tify.server.api.user.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.user.model.dto.UserFavorDto;
 import tify.server.api.user.model.dto.request.PatchUserFavorRequest;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
@@ -26,20 +25,16 @@ public class UpdateUserFavorUseCase {
             throw UserFavorUpdateException.EXCEPTION;
         }
         User user = userAdaptor.query(userId);
-        List<UserFavor> userFavors = user.getUserFavors();
-        userFavors.forEach(
-                favor -> {
-                    List<UserFavorDto> userFavorDtoList =
-                            body.getUserFavorDtoList().stream()
-                                    .filter(
-                                            userFavorDto ->
-                                                    userFavorDto
-                                                            .getOrder()
-                                                            .equals(favor.getOrder()))
-                                    .toList();
-                    favor.updateFavor(
-                            userFavorDtoList.get(0).getDetailCategory(),
-                            userFavorDtoList.get(0).getOrder());
-                });
+
+        List<UserFavor> updateFavors =
+                body.getUserFavorDtoList().stream()
+                        .map(
+                                dto ->
+                                        UserFavor.builder()
+                                                .user(user)
+                                                .detailCategory(dto.getDetailCategory())
+                                                .build())
+                        .toList();
+        user.updateUserFavors(updateFavors);
     }
 }

@@ -39,7 +39,6 @@ public class UserOnBoardingUseCase {
                                     UserFavor.builder()
                                             .user(user)
                                             .detailCategory(userFavorDto.getDetailCategory())
-                                            .order(userFavorDto.getOrder())
                                             .build();
                             userFavorAdaptor.save(userFavor);
                         });

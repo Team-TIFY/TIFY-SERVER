@@ -32,5 +32,7 @@ public class UserOnBoardingRequest {
     @NotBlank(message = "상태값을 입력해주세요.")
     private String onBoardingState;
 
-    @NotNull private List<UserFavorDto> userFavorDtoList;
+    @Schema(description = "유저 취향 상자에 들어갈 소분류들입니다.")
+    @NotNull
+    private List<UserFavorDto> userFavorDtoList;
 }

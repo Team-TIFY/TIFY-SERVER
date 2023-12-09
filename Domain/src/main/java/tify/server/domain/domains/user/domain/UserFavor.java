@@ -2,7 +2,6 @@ package tify.server.domain.domains.user.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,19 +25,13 @@ public class UserFavor extends AbstractTimeStamp {
     @Enumerated(EnumType.STRING)
     private DetailCategory detailCategory;
 
-    @Column(name = "orderNumber")
-    @NotNull
-    private Long order;
-
     @Builder
-    public UserFavor(User user, DetailCategory detailCategory, Long order) {
+    public UserFavor(User user, DetailCategory detailCategory) {
         this.user = user;
         this.detailCategory = detailCategory;
-        this.order = order;
     }
 
-    public void updateFavor(DetailCategory detailCategory, Long order) {
+    public void updateFavor(DetailCategory detailCategory) {
         this.detailCategory = detailCategory;
-        this.order = order;
     }
 }
