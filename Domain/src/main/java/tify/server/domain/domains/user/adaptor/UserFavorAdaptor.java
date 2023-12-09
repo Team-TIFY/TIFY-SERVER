@@ -26,6 +26,6 @@ public class UserFavorAdaptor {
     }
 
     public List<UserFavor> queryAllByUser(User user) {
-        return userFavorRepository.findAllByUserOrderByOrder(user);
+        return userFavorRepository.findAllByUser(user);
     }
 }

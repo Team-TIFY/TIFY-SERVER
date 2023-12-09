@@ -9,5 +9,5 @@ import tify.server.domain.domains.user.domain.UserFavor;
 public interface UserFavorRepository
         extends JpaRepository<UserFavor, Long>, UserFavorCustomRepository {
 
-    List<UserFavor> findAllByUserOrderByOrder(User user);
+    List<UserFavor> findAllByUser(User user);
 }

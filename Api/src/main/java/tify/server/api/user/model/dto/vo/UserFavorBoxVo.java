@@ -25,16 +25,12 @@ public class UserFavorBoxVo {
     @Schema(description = "유저 취향 박스 내 취향의 소분류입니다.", example = "LIP")
     private final DetailCategory detailCategory;
 
-    @Schema(description = "유저 취향 박스 내 취향의 순서입니다.", example = "1")
-    private final Long order;
-
     public static UserFavorBoxVo from(UserFavorVo userFavorVo) {
         return UserFavorBoxVo.builder()
                 .userFavorId(userFavorVo.getUserFavor().getId())
                 .largeCategory(userFavorVo.getLargeCategory())
                 .smallCategory(userFavorVo.getUserFavor().getDetailCategory().getSmallCategory())
                 .detailCategory(userFavorVo.getUserFavor().getDetailCategory())
-                .order(userFavorVo.getUserFavor().getOrder())
                 .build();
     }
 }
