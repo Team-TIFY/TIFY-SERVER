@@ -32,6 +32,10 @@ public class UserOnBoardingUseCase {
         }
         User user = userAdaptor.query(userId);
 
+        if (body.getUserFavorDtoList().size() != 3) {
+            throw new BaseException(UserException.USER_FAVOR_UPDATE_ERROR);
+        }
+
         body.getUserFavorDtoList()
                 .forEach(
                         userFavorDto -> {
