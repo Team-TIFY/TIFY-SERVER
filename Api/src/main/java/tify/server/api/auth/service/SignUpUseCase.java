@@ -1,6 +1,9 @@
 package tify.server.api.auth.service;
 
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tify.server.api.auth.model.KakaoUserInfoDto;
@@ -44,7 +47,7 @@ public class SignUpUseCase {
         return new OauthLoginLinkResponse(appleOauthHelper.getAppleOauthLink(referer));
     }
 
-    public AuthResponse registerUserByOICDToken(String idToken) {
+    public AuthResponse registerUserByKakaoOICDToken(String idToken) {
 
         OauthInfo oauthInfo = kakaoOauthHelper.getOauthInfoByIdToken(idToken);
         User user = userDomainService.registerUser(oauthInfo);
@@ -67,7 +70,8 @@ public class SignUpUseCase {
         return OauthTokenResponse.from(kakaoOauthHelper.getOauthToken(code, referer));
     }
 
-    public OauthTokenResponse getCredentialFromApple(String code, String referer) {
+    public OauthTokenResponse getCredentialFromApple(String code, String referer)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         return OauthTokenResponse.from(appleOauthHelper.getOauthToken(code, referer));
     }
 
@@ -79,5 +83,12 @@ public class SignUpUseCase {
     public UserCanRegisterResponse retrieveUserCanRegister(String idToken) {
         OauthInfo oauthInfo = kakaoOauthHelper.getOauthInfoByIdToken(idToken);
         return UserCanRegisterResponse.from(userDomainService.userCanRegister(oauthInfo));
+    }
+
+    public AuthResponse registerUserByAppleOIDCToken(String idToken) {
+        OauthInfo oauthInfo = appleOauthHelper.getOauthInfoByIdToken(idToken);
+        User user = userDomainService.registerUser(oauthInfo);
+
+        return tokenGenerateHelper.execute(user);
     }
 }

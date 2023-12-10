@@ -16,21 +16,15 @@ public class AppleTokenRequest {
     private String clientId;
     private String clientSecret;
     private String grantType;
-    private String refreshToken;
 
     @Builder
     public static AppleTokenRequest of(
-            String code,
-            String clientId,
-            String clientSecret,
-            String grantType,
-            String refreshToken) {
+            String code, String clientId, String clientSecret, String grantType) {
         return AppleTokenRequest.builder()
                 .code(code)
                 .clientId(clientId)
                 .clientSecret(clientSecret)
                 .grantType(grantType)
-                .refreshToken(refreshToken)
                 .build();
     }
 }

@@ -73,7 +73,7 @@ public class AuthController {
     @Operation(summary = "발급받은 idToken을 통해 회원가입")
     @PostMapping("/oauth/kakao/register")
     public AuthResponse registerUser(@RequestParam("id_token") String token) {
-        return signUpUseCase.registerUserByOICDToken(token);
+        return signUpUseCase.registerUserByKakaoOICDToken(token);
     }
 
     @Deprecated
@@ -123,20 +123,13 @@ public class AuthController {
         return signUpUseCase.getAppleOauthLink(referer);
     }
 
-    @Operation(summary = "apple code를 통해 token 발급")
-    @GetMapping("/oauth/apple")
-    public OauthTokenResponse getAppleCredentialInfo(
-            @RequestParam String code,
+    @Operation(summary = "apple에서 발급한 idToken 이용하여 회원가입")
+    @GetMapping("/oauth/apple/register")
+    public AuthResponse getAppleCredentialInfo(
+            @RequestParam("id_token") String token,
             @RequestHeader(required = false) String referer,
             @RequestHeader(required = false) String host) {
-
-        // dev, production 환경에서
-        if (referer.contains(host)) {
-            log.info("/oauth/kakao" + host);
-            String format = String.format("https://%s/", host);
-            return signUpUseCase.getCredentialFromKaKao(code, format);
-        }
-        return signUpUseCase.getCredentialFromKaKao(code, referer);
+        return signUpUseCase.registerUserByAppleOIDCToken(token);
     }
 
     // Todo: 회원 탈퇴 구현

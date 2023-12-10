@@ -6,23 +6,36 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import tify.server.core.dto.AccessTokenDetail;
 import tify.server.core.exception.ExpiredRefreshTokenException;
 import tify.server.core.exception.ExpiredTokenException;
 import tify.server.core.exception.InvalidTokenException;
 import tify.server.core.properties.JwtProperties;
+import tify.server.core.properties.OauthProperties;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
+    private final OauthProperties oauthProperties;
 
     private Jws<Claims> getJws(String token) {
         try {
@@ -120,5 +133,34 @@ public class JwtTokenProvider {
 
     public Long getLeftAccessTokenTTLSecond(String token) {
         return getJws(token).getBody().getExpiration().getTime();
+    }
+
+    public String buildAppleClientSecret()
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        Date expirationDate =
+                Date.from(
+                        LocalDateTime.now()
+                                .plusDays(30)
+                                .atZone(ZoneId.systemDefault())
+                                .toInstant());
+        return Jwts.builder()
+                .setHeaderParam("kid", oauthProperties.getAppleLogInKey())
+                .setHeaderParam("alg", "ES256")
+                .setIssuer(oauthProperties.getAppleTeamId())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(expirationDate)
+                .setAudience("https://appleid.apple.com")
+                .setSubject(oauthProperties.getAppleClientUrl())
+                .signWith(SignatureAlgorithm.ES256, getPrivateKey())
+                .compact();
+    }
+
+    public PrivateKey getPrivateKey()
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        byte[] key = oauthProperties.getAppleKeyPath().getBytes();
+        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
+        KeyFactory kf = KeyFactory.getInstance("EC");
+        return kf.generatePrivate(spec);
     }
 }

@@ -14,8 +14,12 @@ public class OIDCHelper {
 
     private final JwtOIDCProvider jwtOIDCProvider;
 
-    private String getKidFromUnsignedIdToken(String token, String iss, String aud) {
+    public String getKidFromUnsignedIdToken(String token, String iss, String aud) {
         return jwtOIDCProvider.getKidFromUnsignedTokenHeader(token, iss, aud);
+    }
+
+    public String getAlgfromUnsignedIdToken(String token, String iss, String aud) {
+        return jwtOIDCProvider.getAlgFromUnsignedTokenHeader(token, iss, aud);
     }
 
     public OIDCDto getPayloadFromIdToken(
