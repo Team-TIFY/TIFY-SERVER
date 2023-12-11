@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
+import tify.server.api.user.model.dto.vo.RetrieveUserFavorBoxVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
@@ -12,7 +13,6 @@ import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.UserBlock;
 import tify.server.domain.domains.user.dto.condition.NeighborCondition;
-import tify.server.domain.domains.user.dto.model.RetrieveUserFavorBoxDTO;
 
 @UseCase
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class RetrieveNeighborFavorBoxUseCase {
     private final NeighborAdaptor neighborAdaptor;
 
     @Transactional(readOnly = true)
-    public List<RetrieveUserFavorBoxDTO> execute() {
+    public List<RetrieveUserFavorBoxVo> execute() {
         Long currentUserId = SecurityUtils.getCurrentUserId();
 
         List<Long> blockedUserList =
@@ -38,7 +38,7 @@ public class RetrieveNeighborFavorBoxUseCase {
                 new NeighborCondition(currentUserId, blockedUserList, friendIdList);
 
         return userAdaptor.queryUserFavorBox(currentUserId, neighborCondition).stream()
-                .map(RetrieveUserFavorBoxDTO::from)
+                .map(RetrieveUserFavorBoxVo::from)
                 .toList();
     }
 }

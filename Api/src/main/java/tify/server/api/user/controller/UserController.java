@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
+import tify.server.api.user.model.dto.vo.RetrieveUserFavorBoxVo;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PatchUserFavorRequest;
 import tify.server.api.user.model.dto.request.PostUserOpinionRequest;
@@ -34,7 +35,6 @@ import tify.server.domain.domains.user.domain.SmallCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
-import tify.server.domain.domains.user.dto.model.RetrieveUserFavorBoxDTO;
 import tify.server.domain.domains.user.vo.UserAnswerVo;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
@@ -297,7 +297,7 @@ public class UserController {
 
     @Operation(summary = "친구들의 취향 상자 정보와 프로필 리스트를 조회합니다.")
     @GetMapping("/neighbors/favors")
-    public List<RetrieveUserFavorBoxDTO> getNeighborsFavorBox() {
+    public List<RetrieveUserFavorBoxVo> getNeighborsFavorBox() {
         return retrieveNeighborFavorBoxUseCase.execute();
     }
 }
