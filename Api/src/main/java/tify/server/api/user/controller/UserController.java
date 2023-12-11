@@ -34,6 +34,7 @@ import tify.server.domain.domains.user.domain.SmallCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
+import tify.server.domain.domains.user.dto.model.RetrieveUserFavorBoxDTO;
 import tify.server.domain.domains.user.vo.UserAnswerVo;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
@@ -68,6 +69,7 @@ public class UserController {
     private final RetrieveMyDailyAnswerUseCase retrieveMyDailyAnswerUseCase;
     private final CreateUserOpinionUseCase createUserOpinionUseCase;
     private final RetrieveUserOpinionUseCase retrieveUserOpinionUseCase;
+    private final RetrieveNeighborFavorBoxUseCase retrieveNeighborFavorBoxUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -291,5 +293,11 @@ public class UserController {
     @GetMapping("/opinion/all")
     public List<UserOpinionVo> getMyAllOpinion() {
         return retrieveUserOpinionUseCase.executeAll();
+    }
+
+    @Operation(summary = "친구들의 취향 상자 정보와 프로필 리스트를 조회합니다.")
+    @GetMapping("/neighbors/favors")
+    public List<RetrieveUserFavorBoxDTO> getNeighborsFavorBox() {
+        return retrieveNeighborFavorBoxUseCase.execute();
     }
 }
