@@ -61,14 +61,12 @@ public class AppleOauthHelper {
                         token,
                         oauthProperties.getAppleBaseUrl(),
                         oauthProperties.getAppleClientUrl());
-        log.info("kid = {}", kid);
 
         String alg =
                 oidcHelper.getAlgfromUnsignedIdToken(
                         token,
                         oauthProperties.getAppleBaseUrl(),
                         oauthProperties.getAppleClientUrl());
-        log.info("alg = {}", alg);
 
         AppleOIDCPublicKeyDto appleOIDCPublicKeyDto =
                 response.getKeys().stream()

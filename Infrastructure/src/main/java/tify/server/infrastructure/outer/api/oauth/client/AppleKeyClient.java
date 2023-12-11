@@ -12,6 +12,6 @@ import tify.server.infrastructure.outer.api.oauth.dto.ApplePublicKeyResponse;
         configuration = AppleAuthFeignConfig.class)
 public interface AppleKeyClient {
 
-    @GetMapping(value = "/auth/key")
+    @GetMapping(value = "/auth/keys")
     ApplePublicKeyResponse getAppleAuthPublicKey();
 }

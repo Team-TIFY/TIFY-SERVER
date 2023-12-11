@@ -4,6 +4,9 @@ package tify.server.api.auth.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +75,7 @@ public class AuthController {
 
     @Operation(summary = "발급받은 idToken을 통해 회원가입")
     @PostMapping("/oauth/kakao/register")
-    public AuthResponse registerUser(@RequestParam("id_token") String token) {
+    public AuthResponse registerUserByKakao(@RequestParam("id_token") String token) {
         return signUpUseCase.registerUserByKakaoOICDToken(token);
     }
 
@@ -85,14 +88,14 @@ public class AuthController {
 
     @Operation(summary = "id token 이용해서 로그인")
     @PostMapping("/oauth/kakao/login")
-    public AuthResponse loginUser(@RequestParam String idToken) {
-        return loginUseCase.execute(idToken);
+    public AuthResponse loginUserByKakao(@RequestParam String idToken) {
+        return loginUseCase.executeByKakao(idToken);
     }
 
-    @Operation(summary = "유저가 회원가입 되어있는지 여부 조회")
-    @GetMapping("/oauth/register/valid")
-    public UserCanRegisterResponse getUserCanRegister(@RequestParam String idToken) {
-        return signUpUseCase.retrieveUserCanRegister(idToken);
+    @Operation(summary = "유저가 카카오 회원가입 되어있는지 여부 조회")
+    @GetMapping("/oauth/register/valid/kakao")
+    public UserCanRegisterResponse getUserCanRegisterByKakao(@RequestParam String idToken) {
+        return signUpUseCase.retrieveUserCanRegisterByKakao(idToken);
     }
 
     @Operation(summary = "리프레시 토큰으로 accessToken 재발급")
@@ -123,13 +126,42 @@ public class AuthController {
         return signUpUseCase.getAppleOauthLink(referer);
     }
 
+    @Operation(summary = "apple code를 통해 토큰 발급")
+    @GetMapping("/oauth/apple")
+    public OauthTokenResponse getAppleCredentialInfo(
+        @RequestParam String code,
+        @RequestHeader(required = false) String referer,
+        @RequestHeader(required = false) String host)
+        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        // dev, production 환경에서
+        if (referer.contains(host)) {
+            log.info("/oauth/apple/" + host);
+            String format = String.format("https://%s/", host);
+            return signUpUseCase.getCredentialFromApple(code, format);
+        }
+        return signUpUseCase.getCredentialFromApple(code, referer);
+    }
+
     @Operation(summary = "apple에서 발급한 idToken 이용하여 회원가입")
     @GetMapping("/oauth/apple/register")
-    public AuthResponse getAppleCredentialInfo(
+    public AuthResponse registerUserByApple(
             @RequestParam("id_token") String token,
             @RequestHeader(required = false) String referer,
             @RequestHeader(required = false) String host) {
         return signUpUseCase.registerUserByAppleOIDCToken(token);
+    }
+
+    @Operation(summary = "apple id token으로 로그인")
+    @PostMapping("oauth/apple/login")
+    public AuthResponse loginUserByApple(@RequestParam String idToken) {
+        return loginUseCase.executeByApple(idToken);
+    }
+
+    @Operation(summary = "유저가 애플 회원가입 되어있는지 여부 조회")
+    @GetMapping("/oauth/register/valid/apple")
+    public UserCanRegisterResponse getUserCanRegisterByApple(@RequestParam String idToken) {
+        return signUpUseCase.retrieveUserCanRegisterByApple(idToken);
     }
 
     // Todo: 회원 탈퇴 구현

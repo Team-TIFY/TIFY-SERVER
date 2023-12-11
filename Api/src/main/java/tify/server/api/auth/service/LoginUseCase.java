@@ -3,6 +3,7 @@ package tify.server.api.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import tify.server.api.auth.model.response.AuthResponse;
+import tify.server.api.auth.service.helper.AppleOauthHelper;
 import tify.server.api.auth.service.helper.KakaoOauthHelper;
 import tify.server.api.auth.service.helper.TokenGenerateHelper;
 import tify.server.core.annotation.UseCase;
@@ -22,9 +23,15 @@ public class LoginUseCase {
     private final RefreshTokenAdaptor refreshTokenAdaptor;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserAdaptor userAdaptor;
+    private final AppleOauthHelper appleOauthHelper;
 
-    public AuthResponse execute(String idToken) {
+    public AuthResponse executeByKakao(String idToken) {
         User user = userDomainService.loginUser(kakaoOauthHelper.getOauthInfoByIdToken(idToken));
+        return tokenGenerateHelper.execute(user);
+    }
+
+    public AuthResponse executeByApple(String idToken) {
+        User user = userDomainService.loginUser(appleOauthHelper.getOauthInfoByIdToken(idToken));
         return tokenGenerateHelper.execute(user);
     }
 

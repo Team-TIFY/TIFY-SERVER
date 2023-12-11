@@ -8,8 +8,13 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -21,6 +26,7 @@ import java.time.ZoneId;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 import tify.server.core.dto.AccessTokenDetail;
 import tify.server.core.exception.ExpiredRefreshTokenException;
@@ -157,10 +163,16 @@ public class JwtTokenProvider {
 
     public PrivateKey getPrivateKey()
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        File file = new File("/Users/sehwan/Desktop/TIFY/TIFY-SERVER/AuthKey_N47B75FLFP.p8");
+        String result = new String(Files.readAllBytes(file.toPath()));
+        String key = result.replace("-----BEGIN PRIVATE KEY-----\n", "")
+            .replace("-----END PRIVATE KEY-----", "");
+        log.info("changed key = {}", key);
 
-        byte[] key = oauthProperties.getAppleKeyPath().getBytes();
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
-        KeyFactory kf = KeyFactory.getInstance("EC");
-        return kf.generatePrivate(spec);
+        byte[] encoded = Base64.decodeBase64(key.getBytes());
+
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
+        KeyFactory keyFactory = KeyFactory.getInstance("EC");
+        return keyFactory.generatePrivate(keySpec);
     }
 }

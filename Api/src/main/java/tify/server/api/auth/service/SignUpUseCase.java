@@ -80,8 +80,13 @@ public class SignUpUseCase {
         return OauthTokenResponse.from(kakaoOauthHelper.getOauthTokenTest(code));
     }
 
-    public UserCanRegisterResponse retrieveUserCanRegister(String idToken) {
+    public UserCanRegisterResponse retrieveUserCanRegisterByKakao(String idToken) {
         OauthInfo oauthInfo = kakaoOauthHelper.getOauthInfoByIdToken(idToken);
+        return UserCanRegisterResponse.from(userDomainService.userCanRegister(oauthInfo));
+    }
+
+    public UserCanRegisterResponse retrieveUserCanRegisterByApple(String idToken) {
+        OauthInfo oauthInfo = appleOauthHelper.getOauthInfoByIdToken(idToken);
         return UserCanRegisterResponse.from(userDomainService.userCanRegister(oauthInfo));
     }
 
