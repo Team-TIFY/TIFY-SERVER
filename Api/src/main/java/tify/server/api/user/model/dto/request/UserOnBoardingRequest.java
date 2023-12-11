@@ -2,10 +2,13 @@ package tify.server.api.user.model.dto.request;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tify.server.api.user.model.dto.UserFavorDto;
 
 @Getter
 @NoArgsConstructor
@@ -28,4 +31,8 @@ public class UserOnBoardingRequest {
 
     @NotBlank(message = "상태값을 입력해주세요.")
     private String onBoardingState;
+
+    @Schema(description = "유저 취향 상자에 들어갈 소분류들입니다.")
+    @NotNull
+    private List<UserFavorDto> userFavorDtoList;
 }

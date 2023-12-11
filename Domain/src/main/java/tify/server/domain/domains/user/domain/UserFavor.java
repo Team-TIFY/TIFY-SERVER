@@ -2,7 +2,6 @@ package tify.server.domain.domains.user.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,22 +18,20 @@ public class UserFavor extends AbstractTimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull private Long userTagId;
+    @ManyToOne
+    @JoinColumn(name = "tbl_user_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
-    private SmallCategory smallCategory;
-
-    //    public UserTagVo toUserFavorVo() {
-    //        return UserTagVo.from(new UserTag(0L, this.largeCategoryId));
-    //    }
+    private DetailCategory detailCategory;
 
     @Builder
-    public UserFavor(
-            Long userTagId,
-            Long largeCategoryId,
-            SmallCategory smallCategory,
-            String thumbNailImageUrl) {
-        this.userTagId = userTagId;
-        this.smallCategory = smallCategory;
+    public UserFavor(User user, DetailCategory detailCategory) {
+        this.user = user;
+        this.detailCategory = detailCategory;
+    }
+
+    public void updateFavor(DetailCategory detailCategory) {
+        this.detailCategory = detailCategory;
     }
 }

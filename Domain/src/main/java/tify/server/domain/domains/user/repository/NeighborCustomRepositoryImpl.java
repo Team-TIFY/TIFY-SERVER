@@ -2,6 +2,8 @@ package tify.server.domain.domains.user.repository;
 
 import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
+import static tify.server.domain.domains.user.domain.QUserFavor.*;
+import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.*;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;

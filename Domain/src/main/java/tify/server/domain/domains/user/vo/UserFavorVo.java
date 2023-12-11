@@ -3,20 +3,21 @@ package tify.server.domain.domains.user.vo;
 
 import lombok.Builder;
 import lombok.Getter;
+import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.UserFavor;
 
 @Getter
 @Builder
 public class UserFavorVo {
 
-    private final Long userFavorId;
+    private final UserFavor userFavor;
 
-    private final String smallCategory;
+    private final LargeCategory largeCategory;
 
     public static UserFavorVo from(UserFavor userFavor) {
         return UserFavorVo.builder()
-                .userFavorId(userFavor.getId())
-                .smallCategory(userFavor.getSmallCategory().getValue())
+                .userFavor(userFavor)
+                .largeCategory(userFavor.getDetailCategory().getSmallCategory().getLargeCategory())
                 .build();
     }
 }

@@ -42,7 +42,7 @@ public class User extends AbstractTimeStamp {
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<UserTag> userTags = new ArrayList<>();
+    private List<UserFavor> userFavors = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "onBoardingStatusId")
@@ -81,14 +81,20 @@ public class User extends AbstractTimeStamp {
             String userId,
             String birth,
             Gender gender,
-            UserOnBoardingStatus onBoardingStatus) {
+            UserOnBoardingStatus onBoardingStatus,
+            List<UserFavor> userFavorList) {
         //        this.profile.onBoardingProfile(username, birth, gender);
         this.profile = Profile.builder().userName(username).birth(birth).gender(gender).build();
         this.userId = userId;
         this.onBoardingStatus = onBoardingStatus;
+        this.userFavors = userFavorList;
     }
 
     public void updateFavor() {
         setUpdatedAt();
+    }
+
+    public void updateUserFavors(List<UserFavor> userFavors) {
+        this.userFavors = userFavors;
     }
 }

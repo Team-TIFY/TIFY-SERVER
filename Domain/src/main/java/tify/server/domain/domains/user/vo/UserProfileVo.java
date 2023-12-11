@@ -1,13 +1,16 @@
 package tify.server.domain.domains.user.vo;
 
 
+import java.util.List;
 import java.util.Optional;
 import lombok.Builder;
 import lombok.Data;
+import tify.server.domain.domains.user.domain.DetailCategory;
 import tify.server.domain.domains.user.domain.Gender;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.Profile;
 import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.domain.UserFavor;
 import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 
 @Data
@@ -33,9 +36,12 @@ public class UserProfileVo {
     private boolean isFriend;
 
     private boolean isBlocked;
+
     private NeighborApplication receivedApplication;
 
     private NeighborApplication sentApplication;
+
+    private List<DetailCategory> userFavorList;
 
     public static UserProfileVo from(User user) {
         return UserProfileVo.builder()
@@ -60,6 +66,8 @@ public class UserProfileVo {
                         Optional.ofNullable(user.getOnBoardingStatus())
                                 .map(UserOnBoardingStatus::getName)
                                 .orElse(null))
+                .userFavorList(
+                        user.getUserFavors().stream().map(UserFavor::getDetailCategory).toList())
                 .build();
     }
 
