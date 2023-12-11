@@ -129,10 +129,10 @@ public class AuthController {
     @Operation(summary = "apple code를 통해 토큰 발급")
     @GetMapping("/oauth/apple")
     public OauthTokenResponse getAppleCredentialInfo(
-        @RequestParam String code,
-        @RequestHeader(required = false) String referer,
-        @RequestHeader(required = false) String host)
-        throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+            @RequestParam String code,
+            @RequestHeader(required = false) String referer,
+            @RequestHeader(required = false) String host)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
         // dev, production 환경에서
         if (referer.contains(host)) {
