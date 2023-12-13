@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import tify.server.domain.common.util.SliceUtil;
-import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @RequiredArgsConstructor
@@ -71,16 +70,13 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .from(neighbor)
                 .join(user)
                 .on(user.id.eq(neighbor.toUserId))
-                .where(
-                        neighbor.fromUserId.eq(userId),
-                        user.profile.birth.contains(monthAndYear))
+                .where(neighbor.fromUserId.eq(userId), user.profile.birth.contains(monthAndYear))
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }
 
     @Override
-    public Slice<RetrieveNeighborDTO> searchNeighborsToPage(
-            Long userId, Pageable pageable) {
+    public Slice<RetrieveNeighborDTO> searchNeighborsToPage(Long userId, Pageable pageable) {
         List<RetrieveNeighborDTO> retrieveNeighborDTOS =
                 queryFactory
                         .select(
@@ -101,8 +97,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
-                        .where(
-                                neighbor.fromUserId.eq(userId))
+                        .where(neighbor.fromUserId.eq(userId))
                         .orderBy(neighbor.order.asc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())

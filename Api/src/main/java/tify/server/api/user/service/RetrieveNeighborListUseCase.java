@@ -10,9 +10,6 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
-import tify.server.domain.domains.user.domain.Neighbor;
-import tify.server.domain.domains.user.domain.UserBlock;
-import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @Slf4j

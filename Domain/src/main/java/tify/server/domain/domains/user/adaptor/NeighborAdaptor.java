@@ -10,7 +10,6 @@ import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.User;
-import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 import tify.server.domain.domains.user.exception.NeighborApplicationNotFoundException;
@@ -57,8 +56,7 @@ public class NeighborAdaptor {
         return neighborRepository.searchNeighbors(userId);
     }
 
-    public Slice<RetrieveNeighborDTO> searchNeighbors(
-            Long userId, Pageable pageable) {
+    public Slice<RetrieveNeighborDTO> searchNeighbors(Long userId, Pageable pageable) {
         return neighborRepository.searchNeighborsToPage(userId, pageable);
     }
 
