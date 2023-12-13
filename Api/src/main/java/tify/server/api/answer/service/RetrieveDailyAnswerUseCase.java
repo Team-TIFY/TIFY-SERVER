@@ -19,8 +19,6 @@ import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
-import tify.server.domain.domains.user.adaptor.UserAdaptor;
-import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
@@ -29,9 +27,7 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 @RequiredArgsConstructor
 public class RetrieveDailyAnswerUseCase {
 
-    private final UserAdaptor userAdaptor;
     private final AnswerAdaptor answerAdaptor;
-    private final UserBlockAdaptor userBlockAdaptor;
     private final NeighborAdaptor neighborAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
     private final KnockAdaptor knockAdaptor;

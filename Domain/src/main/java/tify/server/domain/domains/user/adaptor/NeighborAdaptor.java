@@ -119,4 +119,8 @@ public class NeighborAdaptor {
     public void deleteNeighborApplication(NeighborApplication neighborApplication) {
         neighborApplicationRepository.delete(neighborApplication);
     }
+
+    public List<Neighbor> queryAllByFromUserIdOrderByOrder(Long fromUserId) {
+        return neighborRepository.findAllByFromUserIdOOrderByOrder(fromUserId);
+    }
 }
