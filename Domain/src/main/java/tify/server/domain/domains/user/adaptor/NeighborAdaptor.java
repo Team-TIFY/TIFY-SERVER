@@ -10,7 +10,6 @@ import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.User;
-import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 import tify.server.domain.domains.user.exception.NeighborApplicationNotFoundException;
@@ -53,13 +52,12 @@ public class NeighborAdaptor {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 
-    public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchNeighbors(neighborCondition);
+    public List<RetrieveNeighborDTO> searchNeighbors(Long userId) {
+        return neighborRepository.searchNeighbors(userId);
     }
 
-    public Slice<RetrieveNeighborDTO> searchNeighbors(
-            NeighborCondition neighborCondition, Pageable pageable) {
-        return neighborRepository.searchNeighborsToPage(neighborCondition, pageable);
+    public Slice<RetrieveNeighborDTO> searchNeighbors(Long userId, Pageable pageable) {
+        return neighborRepository.searchNeighborsToPage(userId, pageable);
     }
 
     public boolean existsNeighbor(Long userId, Long neighborId) {
@@ -74,8 +72,8 @@ public class NeighborAdaptor {
         neighborRepository.delete(neighbor);
     }
 
-    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchBirthdayNeighbors(neighborCondition);
+    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(Long userId) {
+        return neighborRepository.searchBirthdayNeighbors(userId);
     }
 
     public void saveNeighborApplication(NeighborApplication neighborApplication) {
@@ -120,5 +118,9 @@ public class NeighborAdaptor {
 
     public void deleteNeighborApplication(NeighborApplication neighborApplication) {
         neighborApplicationRepository.delete(neighborApplication);
+    }
+
+    public List<Neighbor> queryAllByFromUserIdOrderByOrder(Long fromUserId) {
+        return neighborRepository.findAllByFromUserIdOOrderByOrder(fromUserId);
     }
 }

@@ -30,7 +30,8 @@ public class RejectNeighborApplicationUseCase {
 
         Neighbor neighbor =
                 neighborAdaptor
-                        .queryByFromUserIdAndToUserId(neighborApplicationId, currentUserId)
+                        .queryByFromUserIdAndToUserId(
+                                neighborApplication.getFromUserId(), currentUserId)
                         .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
         neighborAdaptor.delete(neighbor);
     }

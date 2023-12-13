@@ -19,11 +19,7 @@ import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
-import tify.server.domain.domains.user.adaptor.UserAdaptor;
-import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
-import tify.server.domain.domains.user.domain.UserBlock;
-import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @Slf4j
@@ -31,9 +27,7 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 @RequiredArgsConstructor
 public class RetrieveDailyAnswerUseCase {
 
-    private final UserAdaptor userAdaptor;
     private final AnswerAdaptor answerAdaptor;
-    private final UserBlockAdaptor userBlockAdaptor;
     private final NeighborAdaptor neighborAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
     private final KnockAdaptor knockAdaptor;
@@ -56,17 +50,7 @@ public class RetrieveDailyAnswerUseCase {
 
     @Transactional(readOnly = true)
     public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(Long questionId, Long userId) {
-        List<Long> blockedIdList =
-                userBlockAdaptor.queryAllByFromUserId(userId).stream()
-                        .map(UserBlock::getToUserId)
-                        .toList();
-        List<Long> friendIdList =
-                neighborAdaptor.queryAllByFromUserId(userId).stream()
-                        .map(Neighbor::getToUserId)
-                        .toList();
-        NeighborCondition neighborCondition =
-                new NeighborCondition(userId, blockedIdList, friendIdList);
-        List<RetrieveNeighborDTO> neighbors = neighborAdaptor.searchNeighbors(neighborCondition);
+        List<RetrieveNeighborDTO> neighbors = neighborAdaptor.searchNeighbors(userId);
         return neighbors.stream()
                 .map(
                         dto -> {
