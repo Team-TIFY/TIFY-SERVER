@@ -21,9 +21,11 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import tify.server.core.dto.AccessTokenDetail;
 import tify.server.core.exception.ExpiredRefreshTokenException;
@@ -39,6 +41,11 @@ public class JwtTokenProvider {
 
     private final JwtProperties jwtProperties;
     private final OauthProperties oauthProperties;
+
+    @Value("${oauth2.apple.key-path}")
+    private String appleKeyPath;
+
+    ConcurrentHashMap<String, String> hashMap = new ConcurrentHashMap<>();
 
     private Jws<Claims> getJws(String token) {
         try {
@@ -160,8 +167,16 @@ public class JwtTokenProvider {
 
     public PrivateKey getPrivateKey()
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        File file = new File("/Users/sehwan/Desktop/TIFY/TIFY-SERVER/AuthKey_N47B75FLFP.p8");
-        String result = new String(Files.readAllBytes(file.toPath()));
+        String result = "";
+
+        if (hashMap.get("apple") == null) {
+            File file = new File(appleKeyPath);
+            result = new String(Files.readAllBytes(file.toPath()));
+            hashMap.put("apple", result);
+        } else {
+            result = hashMap.get("apple");
+        }
+
         String key =
                 result.replace("-----BEGIN PRIVATE KEY-----\n", "")
                         .replace("-----END PRIVATE KEY-----", "");
