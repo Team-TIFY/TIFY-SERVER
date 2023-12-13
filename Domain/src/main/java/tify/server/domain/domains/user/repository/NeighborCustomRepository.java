@@ -14,5 +14,5 @@ public interface NeighborCustomRepository {
     List<RetrieveNeighborDTO> searchBirthdayNeighbors(Long userId);
 
     Slice<RetrieveNeighborDTO> searchNeighborsToPage(
-            NeighborCondition neighborCondition, Pageable pageable);
+            Long userId, Pageable pageable);
 }

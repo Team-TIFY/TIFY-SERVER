@@ -72,17 +72,15 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .join(user)
                 .on(user.id.eq(neighbor.toUserId))
                 .where(
-                        neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
-                        user.profile.birth.contains(monthAndYear),
-                        neighbor.toUserId.in(neighborCondition.getFriendIdList()))
+                        neighbor.fromUserId.eq(userId),
+                        user.profile.birth.contains(monthAndYear))
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }
 
     @Override
     public Slice<RetrieveNeighborDTO> searchNeighborsToPage(
-            NeighborCondition neighborCondition, Pageable pageable) {
+            Long userId, Pageable pageable) {
         List<RetrieveNeighborDTO> retrieveNeighborDTOS =
                 queryFactory
                         .select(
@@ -104,9 +102,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
                         .where(
-                                neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                                neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
-                                neighbor.toUserId.in(neighborCondition.getFriendIdList()))
+                                neighbor.fromUserId.eq(userId))
                         .orderBy(neighbor.order.asc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())

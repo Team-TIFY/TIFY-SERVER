@@ -58,8 +58,8 @@ public class NeighborAdaptor {
     }
 
     public Slice<RetrieveNeighborDTO> searchNeighbors(
-            NeighborCondition neighborCondition, Pageable pageable) {
-        return neighborRepository.searchNeighborsToPage(neighborCondition, pageable);
+            Long userId, Pageable pageable) {
+        return neighborRepository.searchNeighborsToPage(userId, pageable);
     }
 
     public boolean existsNeighbor(Long userId, Long neighborId) {
