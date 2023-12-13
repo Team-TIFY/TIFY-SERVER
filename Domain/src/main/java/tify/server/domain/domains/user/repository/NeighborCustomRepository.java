@@ -9,9 +9,9 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 public interface NeighborCustomRepository {
 
-    List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition);
+    List<RetrieveNeighborDTO> searchNeighbors(Long userId);
 
-    List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition);
+    List<RetrieveNeighborDTO> searchBirthdayNeighbors(Long userId);
 
     Slice<RetrieveNeighborDTO> searchNeighborsToPage(
             NeighborCondition neighborCondition, Pageable pageable);

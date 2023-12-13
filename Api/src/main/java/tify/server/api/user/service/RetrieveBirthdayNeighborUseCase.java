@@ -24,16 +24,6 @@ public class RetrieveBirthdayNeighborUseCase {
     @Transactional(readOnly = true)
     public List<RetrieveNeighborDTO> execute() {
         Long currentUserId = userUtils.getUserId();
-        List<Long> blockedUserList =
-                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
-                        .map(UserBlock::getToUserId)
-                        .toList();
-        List<Long> friendIdList =
-                neighborAdaptor.queryAllByToUserId(currentUserId).stream()
-                        .map(Neighbor::getFromUserId)
-                        .toList();
-        NeighborCondition neighborCondition =
-                new NeighborCondition(currentUserId, blockedUserList, friendIdList);
-        return neighborAdaptor.searchBirthdayNeighbors(neighborCondition);
+        return neighborAdaptor.searchBirthdayNeighbors(currentUserId);
     }
 }

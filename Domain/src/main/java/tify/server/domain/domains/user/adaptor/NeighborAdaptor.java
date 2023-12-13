@@ -53,8 +53,8 @@ public class NeighborAdaptor {
         return neighborRepository.findByFromUserIdAndToUserId(userId, neighborId);
     }
 
-    public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchNeighbors(neighborCondition);
+    public List<RetrieveNeighborDTO> searchNeighbors(Long userId) {
+        return neighborRepository.searchNeighbors(userId);
     }
 
     public Slice<RetrieveNeighborDTO> searchNeighbors(
@@ -74,8 +74,8 @@ public class NeighborAdaptor {
         neighborRepository.delete(neighbor);
     }
 
-    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
-        return neighborRepository.searchBirthdayNeighbors(neighborCondition);
+    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(Long userId) {
+        return neighborRepository.searchBirthdayNeighbors(userId);
     }
 
     public void saveNeighborApplication(NeighborApplication neighborApplication) {

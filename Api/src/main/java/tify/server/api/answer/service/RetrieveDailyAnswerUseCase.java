@@ -56,17 +56,7 @@ public class RetrieveDailyAnswerUseCase {
 
     @Transactional(readOnly = true)
     public List<NeighborAnswerInfoDTO> executeNeighborAnswerList(Long questionId, Long userId) {
-        List<Long> blockedIdList =
-                userBlockAdaptor.queryAllByFromUserId(userId).stream()
-                        .map(UserBlock::getToUserId)
-                        .toList();
-        List<Long> friendIdList =
-                neighborAdaptor.queryAllByFromUserId(userId).stream()
-                        .map(Neighbor::getToUserId)
-                        .toList();
-        NeighborCondition neighborCondition =
-                new NeighborCondition(userId, blockedIdList, friendIdList);
-        List<RetrieveNeighborDTO> neighbors = neighborAdaptor.searchNeighbors(neighborCondition);
+        List<RetrieveNeighborDTO> neighbors = neighborAdaptor.searchNeighbors(userId);
         return neighbors.stream()
                 .map(
                         dto -> {

@@ -28,33 +28,13 @@ public class RetrieveNeighborListUseCase {
     @Transactional(readOnly = true)
     public List<RetrieveNeighborDTO> execute() {
         Long currentUserId = userUtils.getUserId();
-        List<Long> blockedUserList =
-                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
-                        .map(UserBlock::getToUserId)
-                        .toList();
-        List<Long> friendIdList =
-                neighborAdaptor.queryAllByToUserId(currentUserId).stream()
-                        .map(Neighbor::getFromUserId)
-                        .toList();
-        NeighborCondition neighborCondition =
-                new NeighborCondition(currentUserId, blockedUserList, friendIdList);
-        return neighborAdaptor.searchNeighbors(neighborCondition);
+        return neighborAdaptor.searchNeighbors(currentUserId);
     }
 
     @Transactional(readOnly = true)
     public List<RetrieveNeighborDTO> executeToIsNew() {
         Long currentUserId = userUtils.getUserId();
-        List<Long> blockedUserList =
-                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
-                        .map(UserBlock::getToUserId)
-                        .toList();
-        List<Long> friendIdList =
-                neighborAdaptor.queryAllByToUserId(currentUserId).stream()
-                        .map(Neighbor::getFromUserId)
-                        .toList();
-        NeighborCondition neighborCondition =
-                new NeighborCondition(currentUserId, blockedUserList, friendIdList);
-        return neighborAdaptor.searchNeighbors(neighborCondition).stream()
+        return neighborAdaptor.searchNeighbors(currentUserId).stream()
                 .filter(RetrieveNeighborDTO::isNew)
                 .toList();
     }

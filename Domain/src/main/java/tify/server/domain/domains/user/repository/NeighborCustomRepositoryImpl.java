@@ -22,11 +22,12 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<RetrieveNeighborDTO> searchNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchNeighbors(Long userId) {
         return queryFactory
                 .select(
                         Projections.constructor(
                                 RetrieveNeighborDTO.class,
+                                neighbor.id,
                                 neighbor.toUserId,
                                 neighbor.fromUserId,
                                 user.profile.thumbNail,
@@ -41,16 +42,13 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .from(neighbor)
                 .join(user)
                 .on(user.id.eq(neighbor.toUserId))
-                .where(
-                        neighbor.fromUserId.eq(neighborCondition.getCurrentUserId()),
-                        neighbor.toUserId.notIn(neighborCondition.getBlockedUserIdList()),
-                        neighbor.toUserId.in(neighborCondition.getFriendIdList()))
+                .where(neighbor.fromUserId.eq(userId))
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }
 
     @Override
-    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(NeighborCondition neighborCondition) {
+    public List<RetrieveNeighborDTO> searchBirthdayNeighbors(Long userId) {
         LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String monthAndYear =
                 String.format("%02d%02d", today.getMonth().getValue(), today.getDayOfMonth());
@@ -58,6 +56,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .select(
                         Projections.constructor(
                                 RetrieveNeighborDTO.class,
+                                neighbor.id,
                                 neighbor.toUserId,
                                 neighbor.fromUserId,
                                 user.profile.thumbNail,
@@ -89,6 +88,7 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .select(
                                 Projections.constructor(
                                         RetrieveNeighborDTO.class,
+                                        neighbor.id,
                                         neighbor.toUserId,
                                         neighbor.fromUserId,
                                         user.profile.thumbNail,
