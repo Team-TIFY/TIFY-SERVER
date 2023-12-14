@@ -20,5 +20,5 @@ public interface NeighborRepository
 
     List<Neighbor> findAllByFromUserIdAndIsView(Long fromUserId, boolean isView);
 
-    List<Neighbor> findAllByFromUserIdOOrderByOrder(Long fromUserId);
+    List<Neighbor> findAllByFromUserIdOrderByOrder(Long fromUserId);
 }

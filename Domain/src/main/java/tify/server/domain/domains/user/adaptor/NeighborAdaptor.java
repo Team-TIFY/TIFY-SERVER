@@ -121,6 +121,6 @@ public class NeighborAdaptor {
     }
 
     public List<Neighbor> queryAllByFromUserIdOrderByOrder(Long fromUserId) {
-        return neighborRepository.findAllByFromUserIdOOrderByOrder(fromUserId);
+        return neighborRepository.findAllByFromUserIdOrderByOrder(fromUserId);
     }
 }
