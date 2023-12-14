@@ -116,9 +116,15 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public List<Product> findAllBySmallCategory(ProductCategoryCondition productCategoryCondition) {
+    public List<ProductRetrieveDTO> findAllBySmallCategory(
+            ProductCategoryCondition productCategoryCondition) {
         return queryFactory
-                .selectFrom(product)
+                .select(
+                        Projections.constructor(
+                                ProductRetrieveDTO.class, product, favorQuestionCategory))
+                .from(product)
+                .join(favorQuestionCategory)
+                .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))
                 .where(
                         product.favorQuestionCategoryId.in(
                                 productCategoryCondition.getCategoryIdList()),
