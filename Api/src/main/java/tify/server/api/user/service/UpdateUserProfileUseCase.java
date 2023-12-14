@@ -1,34 +1,61 @@
 package tify.server.api.user.service;
 
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.user.model.dto.request.PutUserProfileRequest;
+import tify.server.api.user.model.dto.request.PatchUserProfileRequest;
 import tify.server.api.utils.UserUtils;
 import tify.server.core.annotation.UseCase;
+import tify.server.domain.domains.user.adaptor.UserOnBoardingStatusAdaptor;
 import tify.server.domain.domains.user.domain.Gender;
+import tify.server.domain.domains.user.domain.Profile;
 import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 
 @UseCase
 @RequiredArgsConstructor
-@Transactional
 public class UpdateUserProfileUseCase {
 
     private final UserUtils userUtils;
+    private final UserOnBoardingStatusAdaptor userOnBoardingStatusAdaptor;
 
-    public void execute(PutUserProfileRequest body) {
-        // 현재 로그인된 유저 조회
+    @Transactional
+    public void execute(PatchUserProfileRequest body) {
         User currentUser = userUtils.getUser();
-        // 입력 오류 검증
-        Gender gender = Gender.toGender(body.getGender());
-        // 유저 정보 업데이트
-        currentUser
-                .getProfile()
-                .updateProfile(
-                        body.getUsername(),
-                        body.getThumbnail(),
-                        body.getBirth(),
-                        body.getJob(),
-                        gender);
+
+        Gender gender =
+                Gender.valueOf(
+                        Optional.ofNullable(body.getGender())
+                                .orElse(String.valueOf(currentUser.getProfile().getGender())));
+
+        UserOnBoardingStatus status =
+                userOnBoardingStatusAdaptor.queryByName(
+                        Optional.ofNullable(body.getOnBoardingStatus())
+                                .orElse(currentUser.getOnBoardingStatus().getName()));
+
+        Profile newProfile =
+                Profile.builder()
+                        .userName(
+                                Optional.ofNullable(body.getUsername())
+                                        .orElse(currentUser.getProfile().getUserName()))
+                        .birth(
+                                Optional.ofNullable(body.getBirth())
+                                        .orElse(currentUser.getProfile().getBirth()))
+                        .job(
+                                Optional.ofNullable(body.getJob())
+                                        .orElse(currentUser.getProfile().getJob()))
+                        .thumbNail(
+                                Optional.ofNullable(body.getThumbnail())
+                                        .orElse(currentUser.getProfile().getThumbNail()))
+                        .gender(gender)
+                        .build();
+
+        currentUser.updateProfile(newProfile);
+
+        currentUser.updateUserId(
+                Optional.ofNullable(body.getUserId()).orElse(currentUser.getUserId()));
+
+        currentUser.updateOnBoardingStatus(status);
     }
 }
