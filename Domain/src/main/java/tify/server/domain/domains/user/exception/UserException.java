@@ -34,6 +34,8 @@ public enum UserException implements BaseErrorCode {
     USER_REPORT_NOT_FOUND_ERROR(NOT_FOUND, "User_Report_404_1", "신고 내역을 찾을 수 없습니다."),
     USER_OPINION_NOT_FOUND_ERROR(NOT_FOUND, "User_Opinion_404_1", "문의사항을 찾을 수 없습니다."),
     USER_FAVOR_UPDATE_ERROR(BAD_REQUEST, "User_Favor_400_1", "유저 취향 상자의 개수가 3개를 초과합니다."),
+    USER_ON_BOARDING_STATUS_NOT_FOUND_ERROR(
+            NOT_FOUND, "User_OnBoardingStatus_404_1", "유저 온보딩 상태값을 찾을 수 없습니다."),
     ;
 
     private final Integer statusCode;
