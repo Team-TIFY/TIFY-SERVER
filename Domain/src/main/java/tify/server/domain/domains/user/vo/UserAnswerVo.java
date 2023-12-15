@@ -12,9 +12,10 @@ public class UserAnswerVo {
 
     private final SmallCategory smallCategory;
 
-    private final List<String> answerContentList;
+    private final List<FavorAnswerContentVo> answerContentList;
 
-    public static UserAnswerVo of(SmallCategory smallCategory, List<String> answerContentList) {
+    public static UserAnswerVo of(
+            SmallCategory smallCategory, List<FavorAnswerContentVo> answerContentList) {
         return UserAnswerVo.builder()
                 .smallCategory(smallCategory)
                 .answerContentList(answerContentList)
