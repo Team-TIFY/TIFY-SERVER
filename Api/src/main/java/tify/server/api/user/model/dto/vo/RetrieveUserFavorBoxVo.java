@@ -2,12 +2,13 @@ package tify.server.api.user.model.dto.vo;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.user.domain.DetailCategory;
-import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserFavor;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborFavorBoxDTO;
 
 @Getter
 @Builder
@@ -31,15 +32,25 @@ public class RetrieveUserFavorBoxVo {
     @Schema(description = "친구의 온보딩 상태 정보입니다.")
     private final String userOnBoardingStatus;
 
-    public static RetrieveUserFavorBoxVo from(User user) {
+    @Schema(description = "친구가 정보를 업데이트한 시점입니다.")
+    private final Timestamp updateAt;
+
+    @Schema(description = "친구의 정보 업데이트를 조회한 시점입니다.")
+    private final Timestamp viewedAt;
+
+    public static RetrieveUserFavorBoxVo from(RetrieveNeighborFavorBoxDTO dto) {
         return RetrieveUserFavorBoxVo.builder()
-                .id(user.getId())
-                .thumbnail(user.getProfile().getThumbNail())
-                .userId(user.getUserId())
-                .userName(user.getProfile().getUserName())
+                .id(dto.getUser().getId())
+                .thumbnail(dto.getUser().getProfile().getThumbNail())
+                .userId(dto.getUser().getUserId())
+                .userName(dto.getUser().getProfile().getUserName())
                 .userFavorList(
-                        user.getUserFavors().stream().map(UserFavor::getDetailCategory).toList())
-                .userOnBoardingStatus(user.getOnBoardingStatus().getName())
+                        dto.getUser().getUserFavors().stream()
+                                .map(UserFavor::getDetailCategory)
+                                .toList())
+                .userOnBoardingStatus(dto.getUser().getOnBoardingStatus().getName())
+                .updateAt(dto.getUser().getUpdatedAt())
+                .viewedAt(dto.getViewedAt())
                 .build();
     }
 }
