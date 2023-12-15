@@ -14,8 +14,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
+import tify.server.api.user.model.dto.request.PatchUserProfileRequest;
 import tify.server.api.user.model.dto.request.PostUserOpinionRequest;
-import tify.server.api.user.model.dto.request.PutUserProfileRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
 import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.response.UserReportResponse;
@@ -96,10 +96,9 @@ public class UserController {
         return userFavorUseCase.execute(userId, smallCategory);
     }
 
-    @Deprecated
     @Operation(summary = "유저 정보 수정")
-    @PutMapping("/profile")
-    public void putUserProfile(@RequestBody @Valid PutUserProfileRequest body) {
+    @PatchMapping("/profile")
+    public void patchUserProfile(@RequestBody PatchUserProfileRequest body) {
         updateUserProfileUseCase.execute(body);
     }
 

@@ -73,6 +73,10 @@ public class User extends AbstractTimeStamp {
         this.expoToken = expoToken;
     }
 
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
+    }
+
     @Builder
     public User(OauthInfo oauthInfo) {
         this.oauthInfo = oauthInfo;
@@ -96,5 +100,13 @@ public class User extends AbstractTimeStamp {
 
     public void updateAppleRefreshToken(String appleRefreshToken) {
         this.appleRefreshToken = appleRefreshToken;
+    }
+
+    public void updateUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void updateOnBoardingStatus(UserOnBoardingStatus userOnBoardingStatus) {
+        this.onBoardingStatus = userOnBoardingStatus;
     }
 }
