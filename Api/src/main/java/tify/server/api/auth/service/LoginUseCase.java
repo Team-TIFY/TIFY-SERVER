@@ -1,8 +1,13 @@
 package tify.server.api.auth.service;
 
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import lombok.RequiredArgsConstructor;
 import tify.server.api.auth.model.response.AuthResponse;
+import tify.server.api.auth.model.response.OauthRefreshResponse;
+import tify.server.api.auth.model.response.UserRefreshTokenResponse;
 import tify.server.api.auth.service.helper.AppleOauthHelper;
 import tify.server.api.auth.service.helper.KakaoOauthHelper;
 import tify.server.api.auth.service.helper.TokenGenerateHelper;
@@ -45,5 +50,16 @@ public class LoginUseCase {
         // 리프레쉬 시에도 last로그인 정보 업데이트
         userDomainService.loginUser(user.getOauthInfo());
         return tokenGenerateHelper.execute(user);
+    }
+
+    public OauthRefreshResponse getCredentialFromApple(String refreshToken)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        return appleOauthHelper.validateRefreshToken(refreshToken);
+    }
+
+    public UserRefreshTokenResponse getAppleRefreshToken(Long userId) {
+        return UserRefreshTokenResponse.builder()
+                .appleRefreshToken(userAdaptor.query(userId).getAppleRefreshToken())
+                .build();
     }
 }

@@ -4,6 +4,8 @@ package tify.server.infrastructure.outer.api.oauth.client;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import tify.server.infrastructure.outer.api.oauth.config.AppleAuthFeignConfig;
+import tify.server.infrastructure.outer.api.oauth.dto.AppleRefreshRequest;
+import tify.server.infrastructure.outer.api.oauth.dto.AppleRefreshResponse;
 import tify.server.infrastructure.outer.api.oauth.dto.AppleTokenRequest;
 import tify.server.infrastructure.outer.api.oauth.dto.AppleTokenResponse;
 
@@ -13,6 +15,9 @@ import tify.server.infrastructure.outer.api.oauth.dto.AppleTokenResponse;
         configuration = AppleAuthFeignConfig.class)
 public interface AppleOauthClient {
 
-    @PostMapping(value = "/oauth/token", consumes = "application/x-www-form-urlencoded")
+    @PostMapping(value = "/auth/token", consumes = "application/x-www-form-urlencoded")
     AppleTokenResponse appleAuth(AppleTokenRequest request);
+
+    @PostMapping(value = "/auth/token", consumes = "application/x-www-form-urlencoded")
+    AppleRefreshResponse appleAuth(AppleRefreshRequest request);
 }

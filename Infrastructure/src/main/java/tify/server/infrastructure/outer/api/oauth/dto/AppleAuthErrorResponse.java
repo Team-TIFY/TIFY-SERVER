@@ -17,8 +17,6 @@ import tify.server.infrastructure.exception.FeignException;
 public class AppleAuthErrorResponse {
 
     private String error;
-    private String errorCode;
-    private String errorDescription;
 
     public static AppleAuthErrorResponse from(Response res) {
         try (InputStream bodyIs = res.body().asInputStream()) {

@@ -15,7 +15,7 @@ public class AppleAuthErrorDecoder implements ErrorDecoder {
         AppleAuthErrorResponse body = AppleAuthErrorResponse.from(response);
 
         try {
-            AppleAuthErrorCode appleAuthErrorCode = AppleAuthErrorCode.valueOf(body.getErrorCode());
+            AppleAuthErrorCode appleAuthErrorCode = AppleAuthErrorCode.valueOf(body.getError());
             ErrorDetail errorDetail = appleAuthErrorCode.getErrorDetail();
             throw new OuterServerException(
                     errorDetail.getStatusCode(),

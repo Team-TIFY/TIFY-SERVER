@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @JsonNaming(SnakeCaseStrategy.class)
-public class AppleTokenResponse {
+public class AppleRefreshResponse {
 
     private String accessToken;
     private String tokenType;
     private Long expiresIn;
-    private String refreshToken;
-    private String idToken;
 }

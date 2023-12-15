@@ -180,7 +180,6 @@ public class JwtTokenProvider {
         String key =
                 result.replace("-----BEGIN PRIVATE KEY-----\n", "")
                         .replace("-----END PRIVATE KEY-----", "");
-        log.info("changed key = {}", key);
 
         byte[] encoded = Base64.decodeBase64(key.getBytes());
 

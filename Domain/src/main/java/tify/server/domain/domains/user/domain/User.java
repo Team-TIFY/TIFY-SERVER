@@ -37,6 +37,8 @@ public class User extends AbstractTimeStamp {
 
     private String expoToken;
 
+    private String appleRefreshToken;
+
     @OneToMany(
             mappedBy = "user",
             fetch = FetchType.LAZY,
@@ -90,5 +92,9 @@ public class User extends AbstractTimeStamp {
 
     public void updateFavor() {
         setUpdatedAt();
+    }
+
+    public void updateAppleRefreshToken(String appleRefreshToken) {
+        this.appleRefreshToken = appleRefreshToken;
     }
 }

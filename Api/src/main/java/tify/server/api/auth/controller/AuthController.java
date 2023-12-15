@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.auth.model.response.AuthResponse;
 import tify.server.api.auth.model.response.OauthLoginLinkResponse;
+import tify.server.api.auth.model.response.OauthRefreshResponse;
 import tify.server.api.auth.model.response.OauthTokenResponse;
 import tify.server.api.auth.model.response.UserCanRegisterResponse;
+import tify.server.api.auth.model.response.UserRefreshTokenResponse;
 import tify.server.api.auth.service.LoginUseCase;
 import tify.server.api.auth.service.LogoutUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
@@ -134,22 +136,17 @@ public class AuthController {
             @RequestHeader(required = false) String host)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        // dev, production 환경에서
-        if (referer.contains(host)) {
-            log.info("/oauth/apple/" + host);
-            String format = String.format("https://%s/", host);
-            return signUpUseCase.getCredentialFromApple(code, format);
-        }
-        return signUpUseCase.getCredentialFromApple(code, referer);
+        return signUpUseCase.getCredentialFromApple(code);
     }
 
-    @Operation(summary = "apple에서 발급한 idToken 이용하여 회원가입")
+    @Operation(summary = "apple에서 발급한 idToken, refreshToken 이용하여 회원가입")
     @GetMapping("/oauth/apple/register")
     public AuthResponse registerUserByApple(
-            @RequestParam("id_token") String token,
+            @RequestParam("id_token") String idToken,
+            @RequestParam("refresh_token") String refreshToken,
             @RequestHeader(required = false) String referer,
             @RequestHeader(required = false) String host) {
-        return signUpUseCase.registerUserByAppleOIDCToken(token);
+        return signUpUseCase.registerUserByAppleOIDCToken(idToken, refreshToken);
     }
 
     @Operation(summary = "apple id token으로 로그인")
@@ -162,6 +159,19 @@ public class AuthController {
     @GetMapping("/oauth/register/valid/apple")
     public UserCanRegisterResponse getUserCanRegisterByApple(@RequestParam String idToken) {
         return signUpUseCase.retrieveUserCanRegisterByApple(idToken);
+    }
+
+    @Operation(summary = "유저의 apple refresh token 조회")
+    @GetMapping("/oauth/apple/refresh")
+    public UserRefreshTokenResponse getAppleRefreshToken(@RequestParam Long userId) {
+        return loginUseCase.getAppleRefreshToken(userId);
+    }
+
+    @Operation(summary = "기존 refresh token으로 access token 얻어 세션 유지")
+    @GetMapping("/oauth/apple/valid")
+    public OauthRefreshResponse validateRefreshToken(@RequestParam String refreshToken)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        return loginUseCase.getCredentialFromApple(refreshToken);
     }
 
     // Todo: 회원 탈퇴 구현

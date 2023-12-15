@@ -1,30 +1,25 @@
 package tify.server.infrastructure.outer.api.oauth.dto;
 
 
-import com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
-@JsonNaming(SnakeCaseStrategy.class)
+@Builder
 public class AppleTokenRequest {
 
     private String code;
-    private String clientId;
-    private String clientSecret;
-    private String grantType;
+    private String client_id;
+    private String grant_type;
+    private String client_secret;
 
-    @Builder
     public static AppleTokenRequest of(
-            String code, String clientId, String clientSecret, String grantType) {
+            String code, String clientId, String grantType, String clientSecret) {
         return AppleTokenRequest.builder()
                 .code(code)
-                .clientId(clientId)
-                .clientSecret(clientSecret)
-                .grantType(grantType)
+                .client_id(clientId)
+                .grant_type(grantType)
+                .client_secret(clientSecret)
                 .build();
     }
 }
