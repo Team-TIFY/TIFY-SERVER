@@ -25,10 +25,15 @@ import tify.server.core.exception.InvalidTokenException;
 public class JwtOIDCProvider {
 
     private final String KID = "kid";
+    private final String ALG = "alg";
 
     // 외부에서 돌릴 검증 로직
     public String getKidFromUnsignedTokenHeader(String token, String iss, String aud) {
         return (String) getUnsignedTokenClaims(token, iss, aud).getHeader().get(KID);
+    }
+
+    public String getAlgFromUnsignedTokenHeader(String token, String iss, String aud) {
+        return (String) getUnsignedTokenClaims(token, iss, aud).getHeader().get(ALG);
     }
 
     private Jwt<Header, Claims> getUnsignedTokenClaims(String token, String iss, String aud) {

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
+import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.exception.NeighborNotFoundException;
 import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
@@ -19,11 +21,17 @@ public class RemoveNeighborUseCase {
     public void execute(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
         userValidator.isNeighbor(userId, toUserId);
-        neighborAdaptor
-                .queryByFromUserIdAndToUserId(userId, toUserId)
-                .ifPresent(neighborAdaptor::delete);
-        neighborAdaptor
-                .queryByFromUserIdAndToUserId(toUserId, userId)
-                .ifPresent(neighborAdaptor::delete);
+
+        Neighbor fromNeighbor =
+                neighborAdaptor
+                        .queryByFromUserIdAndToUserId(userId, toUserId)
+                        .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
+        Neighbor toNeighbor =
+                neighborAdaptor
+                        .queryByFromUserIdAndToUserId(toUserId, userId)
+                        .orElseThrow(() -> NeighborNotFoundException.EXCEPTION);
+
+        neighborAdaptor.delete(fromNeighbor);
+        neighborAdaptor.delete(toNeighbor);
     }
 }

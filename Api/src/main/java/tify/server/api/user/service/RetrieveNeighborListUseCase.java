@@ -10,6 +10,9 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
+import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.domain.UserBlock;
+import tify.server.domain.domains.user.dto.condition.NeighborCondition;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @Slf4j
@@ -25,13 +28,33 @@ public class RetrieveNeighborListUseCase {
     @Transactional(readOnly = true)
     public List<RetrieveNeighborDTO> execute() {
         Long currentUserId = userUtils.getUserId();
-        return neighborAdaptor.searchNeighbors(currentUserId);
+        List<Long> blockedUserList =
+                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
+                        .map(UserBlock::getToUserId)
+                        .toList();
+        List<Long> friendIdList =
+                neighborAdaptor.queryAllByToUserId(currentUserId).stream()
+                        .map(Neighbor::getFromUserId)
+                        .toList();
+        NeighborCondition neighborCondition =
+                new NeighborCondition(currentUserId, blockedUserList, friendIdList);
+        return neighborAdaptor.searchNeighbors(neighborCondition);
     }
 
     @Transactional(readOnly = true)
     public List<RetrieveNeighborDTO> executeToIsNew() {
         Long currentUserId = userUtils.getUserId();
-        return neighborAdaptor.searchNeighbors(currentUserId).stream()
+        List<Long> blockedUserList =
+                userBlockAdaptor.queryAllByFromUserId(currentUserId).stream()
+                        .map(UserBlock::getToUserId)
+                        .toList();
+        List<Long> friendIdList =
+                neighborAdaptor.queryAllByToUserId(currentUserId).stream()
+                        .map(Neighbor::getFromUserId)
+                        .toList();
+        NeighborCondition neighborCondition =
+                new NeighborCondition(currentUserId, blockedUserList, friendIdList);
+        return neighborAdaptor.searchNeighbors(neighborCondition).stream()
                 .filter(RetrieveNeighborDTO::isNew)
                 .toList();
     }

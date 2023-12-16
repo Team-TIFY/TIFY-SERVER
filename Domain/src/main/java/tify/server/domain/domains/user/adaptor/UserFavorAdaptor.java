@@ -4,10 +4,11 @@ package tify.server.domain.domains.user.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
-import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.UserFavor;
 import tify.server.domain.domains.user.exception.UserFavorNotFoundException;
 import tify.server.domain.domains.user.repository.UserFavorRepository;
+import tify.server.domain.domains.user.vo.UserFavorVo;
 
 @Adaptor
 @RequiredArgsConstructor
@@ -21,11 +22,7 @@ public class UserFavorAdaptor {
                 .orElseThrow(() -> UserFavorNotFoundException.EXCEPTION);
     }
 
-    public void save(UserFavor userFavor) {
-        userFavorRepository.save(userFavor);
-    }
-
-    public List<UserFavor> queryAllByUser(User user) {
-        return userFavorRepository.findAllByUser(user);
+    public List<UserFavorVo> queryByLargeCategory(LargeCategory largeCategory) {
+        return userFavorRepository.findByLargeCategory(largeCategory);
     }
 }

@@ -11,8 +11,6 @@ public class RetrieveNeighborDTO {
 
     private Long neighborId;
 
-    private Long neighborUserId;
-
     private Long userId;
 
     private String neighborThumbnail;

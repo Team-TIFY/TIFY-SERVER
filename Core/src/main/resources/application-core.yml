@@ -14,3 +14,10 @@ oauth2:
     redirect-url: ${KAKAO_REDIRECT}
     app-id: ${KAKAO_APP_ID}
     admin-key: ${KAKAO_ADMIN_KEY}
+  apple:
+    base-url: ${APPLE_BASE_URL}
+    team-id: ${APPLE_TEAM_ID}
+    client-url: ${APPLE_CLIENT}
+    log-in-key: ${APPLE_LOGIN_KEY}
+    redirect-url: ${APPLE_REDIRECT}
+    key-path: ${APPLE_KEY_PATH}

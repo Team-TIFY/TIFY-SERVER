@@ -33,7 +33,7 @@ public class UserBlockUseCase {
                 .optionalQueryByFromUserIdAndToUserId(toUserId, userId)
                 .ifPresent(neighborAdaptor::deleteNeighborApplication);
 
-        // 타겟이 되는 유저와 원래 친구였다면 둘의 친구를 끊음 & 두 사람의 친구 목록 업데이트
+        // 타겟이 되는 유저와 원래 친구였다면 둘의 친구를 끊음
         neighborAdaptor
                 .queryByFromUserIdAndToUserId(userId, toUserId)
                 .ifPresent(neighborAdaptor::delete);

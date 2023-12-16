@@ -19,7 +19,6 @@ public class CorsConfig implements WebMvcConfigurer {
         allowedOriginPatterns.add("http://54.180.57.46");
         allowedOriginPatterns.add("http://192.168.0.18:5173");
         allowedOriginPatterns.add("https://tifyfreinds.com");
-        allowedOriginPatterns.add("https://tify-client.vercel.app");
         /*
         Todo: 도메인 나오면 추가예정
          */

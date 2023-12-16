@@ -19,6 +19,4 @@ public interface NeighborRepository
     boolean existsByFromUserIdAndToUserId(Long userId, Long neighborId);
 
     List<Neighbor> findAllByFromUserIdAndIsView(Long fromUserId, boolean isView);
-
-    List<Neighbor> findAllByFromUserIdOrderByOrder(Long fromUserId);
 }

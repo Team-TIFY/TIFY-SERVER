@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.product.model.dto.ProductFilterCondition;
-import tify.server.api.product.model.vo.ProductRetrieveVo;
 import tify.server.api.product.service.CrawlingUseCase;
 import tify.server.api.product.service.ProductSearchUseCase;
 import tify.server.api.product.service.RetrieveProductListUseCase;
@@ -63,7 +62,7 @@ public class ProductController {
 
     @Operation(summary = "SmallCategory(FE기준 중분류) 별 상품을 조회합니다.")
     @GetMapping("/products/small-category")
-    public List<ProductRetrieveVo> getCategoricalProduct(
+    public List<ProductRetrieveDTO> getCategoricalProduct(
             @ParameterObject ProductFilterCondition productFilterCondition) {
         return retrieveProductListUseCase.executeToSmallCategory(productFilterCondition);
     }

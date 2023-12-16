@@ -37,12 +37,14 @@ public class User extends AbstractTimeStamp {
 
     private String expoToken;
 
+    private String appleRefreshToken;
+
     @OneToMany(
             mappedBy = "user",
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<UserFavor> userFavors = new ArrayList<>();
+    private List<UserTag> userTags = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "onBoardingStatusId")
@@ -85,21 +87,19 @@ public class User extends AbstractTimeStamp {
             String userId,
             String birth,
             Gender gender,
-            UserOnBoardingStatus onBoardingStatus,
-            List<UserFavor> userFavorList) {
+            UserOnBoardingStatus onBoardingStatus) {
         //        this.profile.onBoardingProfile(username, birth, gender);
         this.profile = Profile.builder().userName(username).birth(birth).gender(gender).build();
         this.userId = userId;
         this.onBoardingStatus = onBoardingStatus;
-        this.userFavors = userFavorList;
     }
 
     public void updateFavor() {
         setUpdatedAt();
     }
 
-    public void updateUserFavors(List<UserFavor> userFavors) {
-        this.userFavors = userFavors;
+    public void updateAppleRefreshToken(String appleRefreshToken) {
+        this.appleRefreshToken = appleRefreshToken;
     }
 
     public void updateUserId(String userId) {

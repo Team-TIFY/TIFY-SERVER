@@ -75,8 +75,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.characteristic,
                                         product.price,
                                         product.productOption,
-                                        product.imageUrl,
-                                        product.crawlUrl))
+                                        product.imageUrl))
                         .from(product)
                         .where(product.name.contains(productCondition.getKeyword()))
                         .orderBy(product.id.asc())
@@ -101,8 +100,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                         product.characteristic,
                                         product.price,
                                         product.productOption,
-                                        product.imageUrl,
-                                        product.crawlUrl))
+                                        product.imageUrl))
                         .from(product)
                         .where(
                                 product.favorQuestionCategoryId.in(
@@ -116,20 +114,13 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public List<ProductRetrieveDTO> findAllBySmallCategory(
-            ProductCategoryCondition productCategoryCondition) {
+    public List<Product> findAllBySmallCategory(ProductCategoryCondition productCategoryCondition) {
         return queryFactory
-                .select(
-                        Projections.constructor(
-                                ProductRetrieveDTO.class, product, favorQuestionCategory))
-                .from(product)
-                .join(favorQuestionCategory)
-                .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))
+                .selectFrom(product)
                 .where(
                         product.favorQuestionCategoryId.in(
                                 productCategoryCondition.getCategoryIdList()),
                         priceBetween(productCategoryCondition.getPriceFilter()))
-                .orderBy(orderByPrice(productCategoryCondition.getPriceOrder()))
                 .fetch();
     }
 

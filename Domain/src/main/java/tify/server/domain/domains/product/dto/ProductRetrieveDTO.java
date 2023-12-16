@@ -5,14 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import tify.server.domain.domains.product.domain.Product;
-import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 
 @Getter
 @AllArgsConstructor
 @Builder
 public class ProductRetrieveDTO {
 
-    private Product product;
+    private Long productId;
+    private String name;
+    private String brand;
+    private String characteristic;
+    private Long price;
+    private String productOption;
+    private String imageUrl;
+    private String siteUrl;
 
-    private FavorQuestionCategory favorQuestionCategory;
+    public static ProductRetrieveDTO from(Product product) {
+        return ProductRetrieveDTO.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .brand(product.getBrand())
+                .characteristic(product.getCharacteristic())
+                .price(product.getPrice())
+                .productOption(product.getProductOption())
+                .imageUrl(product.getImageUrl())
+                .siteUrl(product.getCrawlUrl())
+                .build();
+    }
 }
