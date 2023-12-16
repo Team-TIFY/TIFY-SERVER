@@ -27,10 +27,10 @@ public class UserFavorBoxVo {
 
     public static UserFavorBoxVo from(UserFavorVo userFavorVo) {
         return UserFavorBoxVo.builder()
-            .userFavorId(userFavorVo.getUserFavor().getId())
-            .largeCategory(userFavorVo.getLargeCategory())
-            .smallCategory(userFavorVo.getUserFavor().getDetailCategory().getSmallCategory())
-            .detailCategory(userFavorVo.getUserFavor().getDetailCategory())
-            .build();
+                .userFavorId(userFavorVo.getUserFavor().getId())
+                .largeCategory(userFavorVo.getLargeCategory())
+                .smallCategory(userFavorVo.getUserFavor().getDetailCategory().getSmallCategory())
+                .detailCategory(userFavorVo.getUserFavor().getDetailCategory())
+                .build();
     }
 }

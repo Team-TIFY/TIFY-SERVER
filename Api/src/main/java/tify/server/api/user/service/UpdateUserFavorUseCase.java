@@ -28,14 +28,14 @@ public class UpdateUserFavorUseCase {
         User user = userAdaptor.query(userId);
 
         List<UserFavor> updateFavors =
-            body.getUserFavorDtoList().stream()
-                .map(
-                    dto ->
-                        UserFavor.builder()
-                            .user(user)
-                            .detailCategory(dto.getDetailCategory())
-                            .build())
-                .toList();
+                body.getUserFavorDtoList().stream()
+                        .map(
+                                dto ->
+                                        UserFavor.builder()
+                                                .user(user)
+                                                .detailCategory(dto.getDetailCategory())
+                                                .build())
+                        .toList();
         user.updateUserFavors(updateFavors);
     }
 }

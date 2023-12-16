@@ -51,18 +51,18 @@ public class ProductRetrieveVo {
 
     public static ProductRetrieveVo from(ProductRetrieveDTO dto) {
         return ProductRetrieveVo.builder()
-            .productId(dto.getProduct().getId())
-            .name(dto.getProduct().getName())
-            .brand(dto.getProduct().getBrand())
-            .characteristic(dto.getProduct().getCharacteristic())
-            .price(dto.getProduct().getPrice())
-            .productOption(dto.getProduct().getProductOption())
-            .imageUrl(dto.getProduct().getImageUrl())
-            .siteUrl(dto.getProduct().getCrawlUrl())
-            .largeCategory(dto.getFavorQuestionCategory().getLargeCategory())
-            .smallCategory(dto.getFavorQuestionCategory().getSmallCategory())
-            .detailCategory(dto.getFavorQuestionCategory().getDetailCategory())
-            .categoryName(dto.getFavorQuestionCategory().getName())
-            .build();
+                .productId(dto.getProduct().getId())
+                .name(dto.getProduct().getName())
+                .brand(dto.getProduct().getBrand())
+                .characteristic(dto.getProduct().getCharacteristic())
+                .price(dto.getProduct().getPrice())
+                .productOption(dto.getProduct().getProductOption())
+                .imageUrl(dto.getProduct().getImageUrl())
+                .siteUrl(dto.getProduct().getCrawlUrl())
+                .largeCategory(dto.getFavorQuestionCategory().getLargeCategory())
+                .smallCategory(dto.getFavorQuestionCategory().getSmallCategory())
+                .detailCategory(dto.getFavorQuestionCategory().getDetailCategory())
+                .categoryName(dto.getFavorQuestionCategory().getName())
+                .build();
     }
 }
