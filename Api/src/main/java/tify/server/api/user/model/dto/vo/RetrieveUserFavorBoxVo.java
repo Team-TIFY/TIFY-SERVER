@@ -15,41 +15,41 @@ import tify.server.domain.domains.user.dto.model.RetrieveNeighborFavorBoxDTO;
 public class RetrieveUserFavorBoxVo {
 
     @Schema(description = "친구의 pk값입니다.", example = "1")
-    private final Long id;
+    private final Long neighborId;
 
     @Schema(description = "친구의 프로필 이미지입니다.")
-    private final String thumbnail;
+    private final String neighborThumbnail;
 
-    @Schema(description = "친구의 id입니다.", example = "@aaa")
-    private final String userId;
+    @Schema(description = "친구의 생일입니다.", example = "19990101")
+    private final String neighborBirth;
 
     @Schema(description = "친구의 이름입니다.", example = "홍길동")
-    private final String userName;
+    private final String neighborName;
 
     @Schema(description = "친구의 취향 상자 정보입니다.", example = "PLACE, TOP, FAS_PRODUCT")
     private final List<DetailCategory> userFavorList;
 
     @Schema(description = "친구의 온보딩 상태 정보입니다.")
-    private final String userOnBoardingStatus;
+    private final String onBoardingStatus;
 
     @Schema(description = "친구가 정보를 업데이트한 시점입니다.")
-    private final Timestamp updateAt;
+    private final Timestamp updatedAt;
 
     @Schema(description = "친구의 정보 업데이트를 조회한 시점입니다.")
     private final Timestamp viewedAt;
 
     public static RetrieveUserFavorBoxVo from(RetrieveNeighborFavorBoxDTO dto) {
         return RetrieveUserFavorBoxVo.builder()
-                .id(dto.getUser().getId())
-                .thumbnail(dto.getUser().getProfile().getThumbNail())
-                .userId(dto.getUser().getUserId())
-                .userName(dto.getUser().getProfile().getUserName())
+                .neighborId(dto.getUser().getId())
+                .neighborThumbnail(dto.getUser().getProfile().getThumbNail())
+                .neighborBirth(dto.getUser().getProfile().getBirth())
+                .neighborName(dto.getUser().getProfile().getUserName())
                 .userFavorList(
                         dto.getUser().getUserFavors().stream()
                                 .map(UserFavor::getDetailCategory)
                                 .toList())
-                .userOnBoardingStatus(dto.getUser().getOnBoardingStatus().getName())
-                .updateAt(dto.getUser().getUpdatedAt())
+                .onBoardingStatus(dto.getUser().getOnBoardingStatus().getName())
+                .updatedAt(dto.getUser().getUpdatedAt())
                 .viewedAt(dto.getViewedAt())
                 .build();
     }
