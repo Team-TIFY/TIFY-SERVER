@@ -7,9 +7,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.product.model.dto.ProductFilterCondition;
+import tify.server.api.product.model.vo.ProductRetrieveVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
-import tify.server.domain.domains.product.domain.Product;
+import tify.server.domain.domains.product.domain.PriceFilter;
+import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
@@ -23,7 +25,7 @@ public class RetrieveProductListUseCase {
     private final FavorQuestionAdaptor favorQuestionAdaptor;
 
     @Transactional(readOnly = true)
-    public List<ProductRetrieveDTO> executeToSmallCategory(
+    public List<ProductRetrieveVo> executeToSmallCategory(
             ProductFilterCondition productFilterCondition) {
         List<Long> categoryIdList = new ArrayList<>();
         productFilterCondition
@@ -35,14 +37,17 @@ public class RetrieveProductListUseCase {
                                             .map(FavorQuestionCategory::getId)
                                             .toList());
                         });
-        List<Product> results =
+        List<ProductRetrieveDTO> results =
                 productAdaptor.findAllBySmallCategoryId(
                         new ProductCategoryCondition(
                                 categoryIdList,
                                 productFilterCondition.getPriceOrder(),
                                 productFilterCondition.getPriceFilter(),
                                 null));
-        Collections.shuffle(results);
-        return results.stream().map(ProductRetrieveDTO::from).toList();
+        if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
+                && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
+            Collections.shuffle(results); // TODO : 추천 전략을 적용하는 부분일듯
+        }
+        return results.stream().map(ProductRetrieveVo::from).toList();
     }
 }

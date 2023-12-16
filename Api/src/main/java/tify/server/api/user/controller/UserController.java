@@ -11,9 +11,19 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
+import tify.server.api.user.model.dto.request.PatchUserFavorRequest;
 import tify.server.api.user.model.dto.request.PatchUserProfileRequest;
 import tify.server.api.user.model.dto.request.PostUserOpinionRequest;
 import tify.server.api.user.model.dto.request.UserOnBoardingRequest;
@@ -21,20 +31,42 @@ import tify.server.api.user.model.dto.response.OnBoardingStatusResponse;
 import tify.server.api.user.model.dto.response.UserReportResponse;
 import tify.server.api.user.model.dto.vo.MutualFriendsVo;
 import tify.server.api.user.model.dto.vo.MyDailyQuestionAnswerVo;
+import tify.server.api.user.model.dto.vo.RetrieveUserFavorBoxVo;
 import tify.server.api.user.model.dto.vo.UserDailyQuestionAnswerVo;
+import tify.server.api.user.model.dto.vo.UserFavorBoxVo;
 import tify.server.api.user.model.dto.vo.UserOpinionVo;
 import tify.server.api.user.model.dto.vo.UserReportInfoVo;
 import tify.server.api.user.model.dto.vo.UserSearchInfoVo;
-import tify.server.api.user.service.*;
+import tify.server.api.user.service.AcceptanceNeighborApplicationUseCase;
 import tify.server.api.user.service.CreateNeighborUseCase;
+import tify.server.api.user.service.CreateUserOpinionUseCase;
+import tify.server.api.user.service.CreateUserReportUseCase;
+import tify.server.api.user.service.NeighborInfoUseCase;
+import tify.server.api.user.service.RejectNeighborApplicationUseCase;
+import tify.server.api.user.service.RemoveNeighborUseCase;
+import tify.server.api.user.service.RetrieveBirthdayNeighborUseCase;
+import tify.server.api.user.service.RetrieveMutualFriendsUseCase;
+import tify.server.api.user.service.RetrieveMyDailyAnswerUseCase;
+import tify.server.api.user.service.RetrieveNeighborApplicationUseCase;
+import tify.server.api.user.service.RetrieveNeighborFavorBoxUseCase;
+import tify.server.api.user.service.RetrieveNeighborListUseCase;
+import tify.server.api.user.service.RetrieveUserListUseCase;
+import tify.server.api.user.service.RetrieveUserOpinionUseCase;
+import tify.server.api.user.service.RetrieveUserReportUseCase;
+import tify.server.api.user.service.UpdateNeighborUseCase;
+import tify.server.api.user.service.UpdateUserFavorUseCase;
+import tify.server.api.user.service.UpdateUserProfileUseCase;
+import tify.server.api.user.service.UserBlockUseCase;
+import tify.server.api.user.service.UserFavorFilterUseCase;
+import tify.server.api.user.service.UserFavorUseCase;
+import tify.server.api.user.service.UserInfoUseCase;
+import tify.server.api.user.service.UserOnBoardingUseCase;
 import tify.server.domain.domains.question.domain.DailyQuestionCategory;
-import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.SmallCategory;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
 import tify.server.domain.domains.user.dto.model.GetNeighborApplicationDTO;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 import tify.server.domain.domains.user.vo.UserAnswerVo;
-import tify.server.domain.domains.user.vo.UserFavorVo;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
 
@@ -49,6 +81,7 @@ public class UserController {
     private final UserFavorUseCase userFavorUseCase;
     private final UpdateUserProfileUseCase updateUserProfileUseCase;
     private final UserFavorFilterUseCase userFavorFilterUseCase;
+    private final UpdateUserFavorUseCase updateUserFavorUseCase;
     private final UserOnBoardingUseCase userOnBoardingUseCase;
     private final NeighborInfoUseCase neighborInfoUseCase;
     private final RetrieveNeighborListUseCase retrieveNeighborListUseCase;
@@ -67,6 +100,7 @@ public class UserController {
     private final RetrieveMyDailyAnswerUseCase retrieveMyDailyAnswerUseCase;
     private final CreateUserOpinionUseCase createUserOpinionUseCase;
     private final RetrieveUserOpinionUseCase retrieveUserOpinionUseCase;
+    private final RetrieveNeighborFavorBoxUseCase retrieveNeighborFavorBoxUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -87,7 +121,7 @@ public class UserController {
     }
 
     @Operation(summary = "유저 취향 답변 중분류 별 조회")
-    @GetMapping("/{userId}/tags")
+    @GetMapping("/{userId}/favors")
     public List<UserAnswerVo> getUserTags(
             @PathVariable Long userId,
             @RequestParam @Parameter(description = "필터로 쓰일 중분류입니다.")
@@ -108,11 +142,18 @@ public class UserController {
         return userInfoUseCase.executeByToken();
     }
 
-    @Operation(summary = "대분류 별 유저 취향 조회 필터")
-    @GetMapping("/{userId}/category")
-    public List<UserFavorVo> getUserTagsByLargeCategory(
-            @PathVariable Long userId, @RequestParam LargeCategory largeCategory) {
-        return userFavorFilterUseCase.execute(userId, largeCategory);
+    @Operation(summary = "유저 취향 상자 조회")
+    @GetMapping("/{userId}/tags")
+    public List<UserFavorBoxVo> getUserFavorsByUserId(@PathVariable Long userId) {
+        return userFavorFilterUseCase.execute(userId);
+    }
+
+    @Operation(summary = "유저 취향 상자 수정")
+    @PatchMapping("/{userId}/tags")
+    public void patchUserFavorsByUserId(
+            @PathVariable Long userId,
+            @RequestBody @Valid PatchUserFavorRequest patchUserFavorRequest) {
+        updateUserFavorUseCase.execute(userId, patchUserFavorRequest);
     }
 
     @Operation(summary = "온보딩")
@@ -282,5 +323,11 @@ public class UserController {
     @GetMapping("/opinion/all")
     public List<UserOpinionVo> getMyAllOpinion() {
         return retrieveUserOpinionUseCase.executeAll();
+    }
+
+    @Operation(summary = "친구들의 취향 상자 정보와 프로필 리스트를 조회합니다.")
+    @GetMapping("/neighbors/favors")
+    public List<RetrieveUserFavorBoxVo> getNeighborsFavorBox() {
+        return retrieveNeighborFavorBoxUseCase.execute();
     }
 }

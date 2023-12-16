@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
-import tify.server.domain.domains.user.adaptor.UserTagAdaptor;
+import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.User;
 
 @Component
@@ -13,7 +13,7 @@ import tify.server.domain.domains.user.domain.User;
 public class UserUtils {
 
     private final UserAdaptor userAdaptor;
-    private final UserTagAdaptor userTagAdaptor;
+    private final UserBlockAdaptor userBlockAdaptor;
 
     public Long getUserId() {
         return SecurityUtils.getCurrentUserId();

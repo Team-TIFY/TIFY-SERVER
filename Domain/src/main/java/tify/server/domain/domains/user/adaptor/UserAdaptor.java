@@ -13,6 +13,7 @@ import tify.server.domain.domains.user.domain.OauthInfo;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.domain.UserOnBoardingStatus;
 import tify.server.domain.domains.user.dto.condition.UserCondition;
+import tify.server.domain.domains.user.dto.model.RetrieveNeighborFavorBoxDTO;
 import tify.server.domain.domains.user.exception.UserNotFoundException;
 import tify.server.domain.domains.user.repository.UserOnBoardingStatusRepository;
 import tify.server.domain.domains.user.repository.UserRepository;
@@ -54,5 +55,9 @@ public class UserAdaptor {
 
     public Slice<User> searchUsers(Pageable pageable, UserCondition condition, Long currentUserId) {
         return userRepository.searchUsers(pageable, condition, currentUserId);
+    }
+
+    public List<RetrieveNeighborFavorBoxDTO> queryUserFavorBox(Long userId) {
+        return userRepository.findNeighbors(userId);
     }
 }

@@ -22,5 +22,6 @@ public interface ProductCustomRepository {
     Slice<ProductRetrieveDTO> searchBySmallCategory(
             ProductCategoryCondition productCategoryCondition);
 
-    List<Product> findAllBySmallCategory(ProductCategoryCondition productCategoryCondition);
+    List<ProductRetrieveDTO> findAllBySmallCategory(
+            ProductCategoryCondition productCategoryCondition);
 }

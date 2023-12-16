@@ -47,7 +47,6 @@ public class GlobalExceptionHandler {
         //                e.getMessage(),
         //                e.getCause());
         log.error(String.valueOf(e));
-        e.printStackTrace();
         GlobalException internalServerError = GlobalException.INTERNAL_SERVER_ERROR;
         ErrorResponse errorResponse = new ErrorResponse(internalServerError.getErrorDetail());
 

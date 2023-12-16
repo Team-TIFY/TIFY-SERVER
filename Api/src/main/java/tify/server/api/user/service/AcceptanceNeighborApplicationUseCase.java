@@ -39,7 +39,8 @@ public class AcceptanceNeighborApplicationUseCase {
             throw AlreadyExistNeighborRelationshipException.EXCEPTION;
         }
 
-        List<Neighbor> neighbors = neighborAdaptor.queryAllByFromUserId(currentUserId);
+        List<Neighbor> fromNeighbors = neighborAdaptor.queryAllByFromUserId(currentUserId);
+        List<Neighbor> toNeighbors = neighborAdaptor.queryAllByFromUserId(toUserId);
 
         neighborAdaptor.save(
                 Neighbor.builder()
@@ -47,7 +48,16 @@ public class AcceptanceNeighborApplicationUseCase {
                         .toUserId(toUserId)
                         .isView(true)
                         .isNew(true)
-                        .order((long) neighbors.size() + 1L)
+                        .order((long) fromNeighbors.size() + 1L)
+                        .build());
+
+        neighborAdaptor.save(
+                Neighbor.builder()
+                        .fromUserId(toUserId)
+                        .toUserId(currentUserId)
+                        .isView(true)
+                        .isNew(true)
+                        .order((long) toNeighbors.size() + 1L)
                         .build());
     }
 }
