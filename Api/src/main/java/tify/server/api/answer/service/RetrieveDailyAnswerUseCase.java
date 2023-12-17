@@ -56,7 +56,7 @@ public class RetrieveDailyAnswerUseCase {
                         dto -> {
                             Optional<Answer> answer =
                                     answerAdaptor.optionalQueryByQuestionAndUser(
-                                            questionId, dto.getNeighborId());
+                                            questionId, dto.getNeighborUserId());
                             return NeighborAnswerInfoDTO.builder()
                                     .neighborInfo(dto)
                                     .answerInfo(AnswerInfoVo.from(answer.orElse(null)))
