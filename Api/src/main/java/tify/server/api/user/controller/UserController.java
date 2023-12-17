@@ -306,8 +306,7 @@ public class UserController {
 
     @Operation(summary = "운영진에 의견을 보냅니다.")
     @PostMapping("/opinion/new")
-    public void postUserOpinion(
-            @RequestBody @ParameterObject PostUserOpinionRequest postUserOpinionRequest) {
+    public void postUserOpinion(@RequestBody PostUserOpinionRequest postUserOpinionRequest) {
         createUserOpinionUseCase.execute(postUserOpinionRequest);
     }
 
