@@ -16,6 +16,7 @@ public enum SmallCategory {
     FRAGRANCE("프레그런스", BEAUTY),
     CLOTHES("의류", FASHION),
     FASHION_PRODUCT("패션 소품", FASHION),
+    DIGITAL_PRODUCT("디지털 소품", FASHION),
     BAG("가방", FASHION),
     ACCESSORY("악세서리", FASHION),
     COOKING("요리", HOBBY),
