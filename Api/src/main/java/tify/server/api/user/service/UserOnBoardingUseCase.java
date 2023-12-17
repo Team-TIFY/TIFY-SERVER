@@ -38,11 +38,11 @@ public class UserOnBoardingUseCase {
 
         body.getUserFavorDtoList()
                 .forEach(
-                        userFavorDto -> {
+                        detailCategory -> {
                             UserFavor userFavor =
                                     UserFavor.builder()
                                             .user(user)
-                                            .detailCategory(userFavorDto.getDetailCategory())
+                                            .detailCategory(detailCategory)
                                             .build();
                             userFavorAdaptor.save(userFavor);
                         });

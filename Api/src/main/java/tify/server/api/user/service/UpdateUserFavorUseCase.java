@@ -30,10 +30,10 @@ public class UpdateUserFavorUseCase {
         List<UserFavor> updateFavors =
                 body.getUserFavorDtoList().stream()
                         .map(
-                                dto ->
+                                detailCategory ->
                                         UserFavor.builder()
                                                 .user(user)
-                                                .detailCategory(dto.getDetailCategory())
+                                                .detailCategory(detailCategory)
                                                 .build())
                         .toList();
         user.updateUserFavors(updateFavors);

@@ -5,11 +5,11 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tify.server.api.user.model.dto.UserFavorDto;
+import tify.server.domain.domains.user.domain.DetailCategory;
 
 @Getter
 @NoArgsConstructor
 public class PatchUserFavorRequest {
 
-    @NotNull private List<UserFavorDto> userFavorDtoList;
+    @NotNull private List<DetailCategory> userFavorDtoList;
 }

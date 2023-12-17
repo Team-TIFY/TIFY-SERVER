@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import tify.server.api.user.model.dto.UserFavorDto;
+import tify.server.domain.domains.user.domain.DetailCategory;
 
 @Getter
 @NoArgsConstructor
@@ -34,5 +34,5 @@ public class UserOnBoardingRequest {
 
     @Schema(description = "유저 취향 상자에 들어갈 소분류들입니다.")
     @NotNull
-    private List<UserFavorDto> userFavorDtoList;
+    private List<DetailCategory> userFavorDtoList;
 }
