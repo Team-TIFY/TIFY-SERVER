@@ -13,7 +13,6 @@ import tify.server.domain.domains.AbstractTimeStamp;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
 
-@Slf4j
 @Getter
 @Entity
 @Table(name = "tbl_user")
