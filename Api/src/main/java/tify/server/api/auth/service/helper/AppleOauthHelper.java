@@ -42,7 +42,7 @@ public class AppleOauthHelper {
                 + oauthProperties.getAppleClientUrl()
                 + "&redirect_uri="
                 + oauthProperties.getAppleRedirectUrl()
-                + "&response_type=code%20id_token&scope=name%20email&response_mode=form_post";
+                + "&response_type=code&response_mode=query";
     }
 
     public AppleTokenResponse getOauthToken(String code)
