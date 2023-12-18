@@ -140,7 +140,7 @@ public class AuthController {
     }
 
     @Operation(summary = "apple에서 발급한 idToken, refreshToken 이용하여 회원가입")
-    @GetMapping("/oauth/apple/register")
+    @PostMapping("/oauth/apple/register")
     public AuthResponse registerUserByApple(
             @RequestParam("id_token") String idToken,
             @RequestParam("refresh_token") String refreshToken,
