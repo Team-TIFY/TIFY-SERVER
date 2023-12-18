@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import tify.server.domain.domains.AbstractTimeStamp;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
@@ -92,7 +91,8 @@ public class User extends AbstractTimeStamp {
         this.profile = Profile.builder().userName(username).birth(birth).gender(gender).build();
         this.userId = userId;
         this.onBoardingStatus = onBoardingStatus;
-        this.userFavors = userFavorList;
+        this.userFavors.clear();
+        this.userFavors.addAll(userFavorList);
     }
 
     public void updateFavor() {
@@ -100,7 +100,8 @@ public class User extends AbstractTimeStamp {
     }
 
     public void updateUserFavors(List<UserFavor> userFavors) {
-        this.userFavors = userFavors;
+        this.userFavors.clear();
+        this.userFavors.addAll(userFavors);
     }
 
     public void updateAppleRefreshToken(String appleRefreshToken) {
