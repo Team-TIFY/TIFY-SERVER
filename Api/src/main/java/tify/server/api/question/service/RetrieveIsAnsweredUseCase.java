@@ -42,18 +42,12 @@ public class RetrieveIsAnsweredUseCase {
                     favorAnswerCategoryDTOs.stream()
                             .filter(dto -> dto.getSmallCategory().equals(smallCategory))
                             .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의
-            // 개수
-            int size =
-                    favorQuestionCategories.stream()
-                            .filter(category -> category.getSmallCategory().equals(smallCategory))
-                            .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
+                            .size();
+            // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의 개수
 
             categoryIsAnsweredDTOS.add(
-                    RetrieveCategoryIsAnsweredDTO.of(
-                            smallCategory, userAnswerCategorySize == size));
-            // 두 size가 같으면 true, 아니면 false
+                    RetrieveCategoryIsAnsweredDTO.of(smallCategory, userAnswerCategorySize > 0));
+            // smallCategory를 중분류로 가지는 DetailCategory에 대한 취향 답변이 된 set이 하나라도 있다면 true
         }
 
         return categoryIsAnsweredDTOS;
