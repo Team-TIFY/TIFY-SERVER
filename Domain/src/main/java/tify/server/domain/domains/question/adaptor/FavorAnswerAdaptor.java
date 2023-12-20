@@ -46,7 +46,7 @@ public class FavorAnswerAdaptor {
         return favorAnswerRepository.getFavorAnswerBySmallCategory(userId, smallCategory);
     }
 
-    public List<FavorAnswer> searchByUserIdAndSmallCategory(
+    public List<FavorAnswer> queryByUserIdAndSmallCategory(
             Long userId, SmallCategory smallCategory) {
         return favorAnswerRepository.getFavorAnswerByUserIdAndSmallCategory(userId, smallCategory);
     }

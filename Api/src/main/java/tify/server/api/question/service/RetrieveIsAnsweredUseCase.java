@@ -42,13 +42,15 @@ public class RetrieveIsAnsweredUseCase {
                     favorAnswerCategoryDTOs.stream()
                             .filter(dto -> dto.getSmallCategory().equals(smallCategory))
                             .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의
-            // 개수
+                            .size();
+            // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의 개수
+
             int size =
                     favorQuestionCategories.stream()
                             .filter(category -> category.getSmallCategory().equals(smallCategory))
                             .toList()
-                            .size(); // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
+                            .size();
+            // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
 
             categoryIsAnsweredDTOS.add(
                     RetrieveCategoryIsAnsweredDTO.of(
