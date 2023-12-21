@@ -94,16 +94,10 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 queryFactory
                         .select(
                                 Projections.constructor(
-                                        ProductRetrieveDTO.class,
-                                        product.id,
-                                        product.name,
-                                        product.brand,
-                                        product.characteristic,
-                                        product.price,
-                                        product.productOption,
-                                        product.imageUrl,
-                                        product.crawlUrl))
+                                        ProductRetrieveDTO.class, product, favorQuestionCategory))
                         .from(product)
+                        .join(favorQuestionCategory)
+                        .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))
                         .where(
                                 product.favorQuestionCategoryId.in(
                                         productCategoryCondition.getCategoryIdList()),

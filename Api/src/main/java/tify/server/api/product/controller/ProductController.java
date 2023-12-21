@@ -4,7 +4,6 @@ package tify.server.api.product.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.product.model.dto.ProductFilterCondition;
-import tify.server.api.product.model.vo.ProductRetrieveVo;
 import tify.server.api.product.service.CrawlingUseCase;
 import tify.server.api.product.service.ProductSearchUseCase;
 import tify.server.api.product.service.RetrieveProductListUseCase;
@@ -61,10 +59,10 @@ public class ProductController {
         return productSearchUseCase.execute(keyword, pageable);
     }
 
-    @Operation(summary = "SmallCategory(FE기준 중분류) 별 상품을 조회합니다.")
+    @Operation(summary = "SmallCategory(FE기준 중분류) 별 상품을 조회합니다. (무한스크롤 X)")
     @GetMapping("/products/small-category")
-    public List<ProductRetrieveVo> getCategoricalProduct(
-            @ParameterObject ProductFilterCondition productFilterCondition) {
-        return retrieveProductListUseCase.executeToSmallCategory(productFilterCondition);
+    public SliceResponse<ProductRetrieveDTO> getCategoricalProduct(
+            @ParameterObject ProductFilterCondition productFilterCondition, Pageable pageable) {
+        return retrieveProductListUseCase.executeToSmallCategory(productFilterCondition, pageable);
     }
 }
