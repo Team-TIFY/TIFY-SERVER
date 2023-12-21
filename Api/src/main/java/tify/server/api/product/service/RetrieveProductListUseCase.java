@@ -42,23 +42,34 @@ public class RetrieveProductListUseCase {
                                             .toList());
                         });
 
-        Slice<ProductRetrieveDTO> productRetrieveDTOS =
-                productAdaptor.searchBySmallCategoryId(
-                        new ProductCategoryCondition(
-                                categoryIdList,
-                                productFilterCondition.getPriceOrder(),
-                                productFilterCondition.getPriceFilter(),
-                                pageable));
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
                 && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
             // TODO : 추천 전략을 적용하는 부분일듯
-            List<ProductRetrieveDTO> list = productRetrieveDTOS.toList();
+            List<ProductRetrieveDTO> list =
+                    productAdaptor.findAllBySmallCategoryId(
+                            new ProductCategoryCondition(
+                                    categoryIdList,
+                                    productFilterCondition.getPriceOrder(),
+                                    productFilterCondition.getPriceFilter(),
+                                    pageable));
             Collections.shuffle(list);
             return SliceResponse.of(
-                    new SliceImpl<>(list.stream().map(ProductRetrieveVo::from).toList()));
+                    new SliceImpl<>(
+                            list.stream().map(ProductRetrieveVo::from).toList(), pageable, true));
+        } else {
+            Slice<ProductRetrieveDTO> productRetrieveDTOS =
+                    productAdaptor.searchBySmallCategoryId(
+                            new ProductCategoryCondition(
+                                    categoryIdList,
+                                    productFilterCondition.getPriceOrder(),
+                                    productFilterCondition.getPriceFilter(),
+                                    pageable));
+
+            return SliceResponse.of(
+                    new SliceImpl<>(
+                            productRetrieveDTOS.stream().map(ProductRetrieveVo::from).toList(),
+                            pageable,
+                            true));
         }
-        return SliceResponse.of(
-                new SliceImpl<>(
-                        productRetrieveDTOS.stream().map(ProductRetrieveVo::from).toList()));
     }
 }

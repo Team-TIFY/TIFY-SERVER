@@ -124,6 +124,8 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                 productCategoryCondition.getCategoryIdList()),
                         priceBetween(productCategoryCondition.getPriceFilter()))
                 .orderBy(orderByPrice(productCategoryCondition.getPriceOrder()))
+                .offset(productCategoryCondition.getPageable().getOffset())
+                .limit(productCategoryCondition.getPageable().getPageSize() + 1)
                 .fetch();
     }
 
