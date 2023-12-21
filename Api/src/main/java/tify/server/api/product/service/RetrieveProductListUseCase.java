@@ -11,6 +11,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.common.slice.SliceResponse;
 import tify.server.api.product.model.dto.ProductFilterCondition;
+import tify.server.api.product.model.vo.ProductRetrieveVo;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.PriceFilter;
@@ -28,7 +29,7 @@ public class RetrieveProductListUseCase {
     private final FavorQuestionAdaptor favorQuestionAdaptor;
 
     @Transactional(readOnly = true)
-    public SliceResponse<ProductRetrieveDTO> executeToSmallCategory(
+    public SliceResponse<ProductRetrieveVo> executeToSmallCategory(
             ProductFilterCondition productFilterCondition, Pageable pageable) {
         List<Long> categoryIdList = new ArrayList<>();
         productFilterCondition
@@ -50,12 +51,14 @@ public class RetrieveProductListUseCase {
                                 pageable));
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
                 && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
-            List<ProductRetrieveDTO> result = productRetrieveDTOS.toList();
-            Collections.shuffle(result);
-
-            Slice<ProductRetrieveDTO> shuffledResult = new SliceImpl<>(result, pageable, true);
-            return SliceResponse.of(shuffledResult);
+            // TODO : 추천 전략을 적용하는 부분일듯
+            List<ProductRetrieveDTO> list = productRetrieveDTOS.toList();
+            Collections.shuffle(list);
+            return SliceResponse.of(
+                    new SliceImpl<>(list.stream().map(ProductRetrieveVo::from).toList()));
         }
-        return SliceResponse.of(productRetrieveDTOS);
+        return SliceResponse.of(
+                new SliceImpl<>(
+                        productRetrieveDTOS.stream().map(ProductRetrieveVo::from).toList()));
     }
 }
