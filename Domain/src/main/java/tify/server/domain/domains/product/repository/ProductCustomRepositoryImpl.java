@@ -132,12 +132,12 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     @Override
     public List<Product> searchAllByCategoryName(String categoryName) {
         return queryFactory
-            .selectFrom(product)
-            .innerJoin(favorQuestionCategory)
-            .on(
-                favorQuestionCategory.id.eq(product.favorQuestionCategoryId),
-                favorQuestionCategory.name.eq(categoryName))
-            .fetch();
+                .selectFrom(product)
+                .innerJoin(favorQuestionCategory)
+                .on(
+                        favorQuestionCategory.id.eq(product.favorQuestionCategoryId),
+                        favorQuestionCategory.name.eq(categoryName))
+                .fetch();
     }
 
     private OrderSpecifier[] orderByPrice(PriceOrder priceOrder) {
