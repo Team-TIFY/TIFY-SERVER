@@ -24,4 +24,6 @@ public interface ProductCustomRepository {
 
     List<ProductRetrieveDTO> findAllBySmallCategory(
             ProductCategoryCondition productCategoryCondition);
+
+    List<Product> searchAllByCategoryName(String categoryName);
 }

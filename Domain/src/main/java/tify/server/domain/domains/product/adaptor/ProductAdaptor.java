@@ -52,4 +52,8 @@ public class ProductAdaptor {
             ProductCategoryCondition productCategoryCondition) {
         return productRepository.findAllBySmallCategory(productCategoryCondition);
     }
+
+    public List<Product> queryAllByCategoryName(String categoryName) {
+        return productRepository.searchAllByCategoryName(categoryName);
+    }
 }
