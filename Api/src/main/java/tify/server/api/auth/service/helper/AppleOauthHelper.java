@@ -41,7 +41,8 @@ public class AppleOauthHelper {
                 + "?client_id="
                 + oauthProperties.getAppleClientUrl()
                 + "&redirect_uri="
-                + oauthProperties.getAppleRedirectUrl()
+                + referer
+                + "apple/callback"
                 + "&response_type=code&response_mode=query";
     }
 
