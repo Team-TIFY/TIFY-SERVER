@@ -36,6 +36,7 @@ public class OauthProperties {
         private String clientUrl;
         private String redirectUrl;
         private String keyPath;
+        private String key;
     }
 
     // base url
@@ -85,5 +86,9 @@ public class OauthProperties {
 
     public String getAppleKeyPath() {
         return apple.getKeyPath();
+    }
+
+    public String getAppleKey() {
+        return apple.getKey();
     }
 }
