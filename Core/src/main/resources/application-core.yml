@@ -21,3 +21,4 @@ oauth2:
     log-in-key: ${APPLE_LOGIN_KEY}
     redirect-url: ${APPLE_REDIRECT}
     key-path: ${APPLE_KEY_PATH}
+    key: ${APPLE_KEY}

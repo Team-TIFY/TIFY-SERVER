@@ -33,6 +33,13 @@ public enum DetailCategory {
         return Arrays.stream(DetailCategory.values()).toList();
     }
 
+    public static List<DetailCategory> getDetailCategoriesBySmallCategory(
+            SmallCategory smallCategory) {
+        return Arrays.stream(DetailCategory.values())
+                .filter(detailCategory -> detailCategory.getSmallCategory().equals(smallCategory))
+                .toList();
+    }
+
     final String value;
     final SmallCategory smallCategory;
 }

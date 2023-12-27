@@ -11,6 +11,7 @@ import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 import tify.server.domain.domains.question.dto.model.FavorAnswerCategoryDto;
+import tify.server.domain.domains.user.domain.DetailCategory;
 import tify.server.domain.domains.user.domain.SmallCategory;
 import tify.server.domain.domains.user.vo.FavorAnswerContentVo;
 import tify.server.domain.domains.user.vo.UserAnswerVo;
@@ -50,30 +51,35 @@ public class UserFavorUseCase {
                                                                     .getFavorQuestion()
                                                                     .getNumber(),
                                                             favorAnswer.getAnswerContent())));
-                            int userAnswerCategorySize =
+
+                            List<FavorAnswerCategoryDto> userAnswerCategories =
                                     favorAnswerCategoryDTOs.stream()
                                             .filter(
                                                     dto ->
                                                             dto.getSmallCategory()
                                                                     .equals(smallCategory))
-                                            .toList()
-                                            .size();
-                            // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO의 개수
+                                            .toList();
+                            // smallCategory와 같은 smallCategory를 가지는 favorAnswerCategoryDTO
 
-                            int size =
-                                    favorQuestionCategories.stream()
+                            List<DetailCategory> answeredDetailCategories =
+                                    userAnswerCategories.stream()
+                                            .map(FavorAnswerCategoryDto::getDetailCategory)
+                                            .toList();
+
+                            List<DetailCategory> notAnsweredDetailCategories =
+                                    DetailCategory.getDetailCategoriesBySmallCategory(smallCategory)
+                                            .stream()
                                             .filter(
-                                                    category ->
-                                                            category.getSmallCategory()
-                                                                    .equals(smallCategory))
-                                            .toList()
-                                            .size();
-                            // smallCategory와 같은 smallCategory를 가지는 detailCategory의 개수
+                                                    detailCategory ->
+                                                            !answeredDetailCategories.contains(
+                                                                    detailCategory))
+                                            .toList();
 
                             return UserAnswerVo.of(
                                     smallCategory,
                                     favorAnswerContentList,
-                                    userAnswerCategorySize == size);
+                                    notAnsweredDetailCategories.isEmpty(),
+                                    notAnsweredDetailCategories);
                         })
                 .toList();
     }
