@@ -11,8 +11,6 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-data-redis'
     api 'org.redisson:redisson:3.19.0'
     api 'org.seleniumhq.selenium:selenium-java:4.1.2'
-    api 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
-    api 'com.amazonaws:aws-java-sdk-s3'
     api project(':Core')
 }
 

@@ -1,6 +1,8 @@
 package tify.server.api.image.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +19,12 @@ import tify.server.infrastructure.outer.s3.dto.PreSignedDTO;
 @RequiredArgsConstructor
 @Tag(name = "8. [이미지]")
 @RequestMapping(value = "/images")
+@SecurityRequirement(name = "access-token")
 public class ImageController {
 
     private final S3Service s3Service;
 
+    @Operation(summary = "presigned url을 확인합니다.")
     @PostMapping
     public PreSignedDTO getPreSignedUrl(@RequestBody @Valid PreSignedUrlRequest request) {
         return s3Service.getPreSignedUrl(
