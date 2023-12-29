@@ -17,7 +17,6 @@ public class S3Config {
 
     private final S3Properties s3Properties;
 
-
     @Value("${cloud.aws.credentials.accessKey}")
     private String accessKey;
 
@@ -29,8 +28,7 @@ public class S3Config {
 
     @Bean
     public AmazonS3Client amazonS3Client() {
-        BasicAWSCredentials awsCredentials =
-                new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
         return (AmazonS3Client)
                 AmazonS3ClientBuilder.standard()
                         .withRegion(region)
