@@ -5,7 +5,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import tify.server.infrastructure.outer.api.oauth.config.AppleAuthFeignConfig;
 import tify.server.infrastructure.outer.api.oauth.dto.AppleRevokeRequest;
-import tify.server.infrastructure.outer.api.oauth.dto.AppleTokenResponse;
 
 @FeignClient(
         name = "AppleRevokeClient",
@@ -14,5 +13,5 @@ import tify.server.infrastructure.outer.api.oauth.dto.AppleTokenResponse;
 public interface AppleRevokeClient {
 
     @PostMapping(value = "/auth/revoke", consumes = "application/x-www-form-urlencoded")
-    AppleTokenResponse appleRevoke(AppleRevokeRequest request);
+    void appleRevoke(AppleRevokeRequest request);
 }

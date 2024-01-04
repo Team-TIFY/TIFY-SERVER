@@ -60,4 +60,10 @@ public class UserAdaptor {
     public List<RetrieveNeighborFavorBoxDTO> queryUserFavorBox(Long userId) {
         return userRepository.findNeighbors(userId);
     }
+
+    public User queryByOauthInfo(OauthInfo oauthInfo) {
+        return userRepository
+                .findByOauthInfo(oauthInfo)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
 }

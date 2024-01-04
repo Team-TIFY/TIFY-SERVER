@@ -10,6 +10,7 @@ import java.security.spec.InvalidKeySpecException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -27,11 +28,11 @@ import tify.server.api.auth.service.LogoutUseCase;
 import tify.server.api.auth.service.ResignUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
-@RestController
 @Slf4j
+@RestController
+@Tag(name = "1. [인증]")
 @RequestMapping(value = "/auth")
 @RequiredArgsConstructor
-@Tag(name = "1. [인증]")
 public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
@@ -176,10 +177,22 @@ public class AuthController {
         return loginUseCase.getCredentialFromApple(refreshToken);
     }
 
-    @Operation(summary = "애플 로그인 연동 해제")
-    @GetMapping("oauth/apple/revoke")
+    @Operation(summary = "애플 로그인 연동 해제", description = "애플 로그인 연동 해제 후에는 회원 탈퇴를 실행해야 합니다.")
+    @PostMapping("oauth/apple/revoke")
     public void revokeAppleLogin(@RequestParam Long userId)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         resignUseCase.revokeAppleToken(userId);
+    }
+
+    @Operation(summary = "회원 탈퇴")
+    @PostMapping("oauth/resign")
+    public void resign(@RequestParam Long userId) {
+        resignUseCase.execute(userId);
+    }
+
+    @Operation(summary = "회원 탈퇴 해제")
+    @DeleteMapping("oauth/resign")
+    public void deleteResign(@RequestParam Long userId) {
+        resignUseCase.delete(userId);
     }
 }
