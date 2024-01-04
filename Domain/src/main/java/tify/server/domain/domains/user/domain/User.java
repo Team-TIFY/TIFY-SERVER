@@ -115,4 +115,8 @@ public class User extends AbstractTimeStamp {
     public void updateOnBoardingStatus(UserOnBoardingStatus userOnBoardingStatus) {
         this.onBoardingStatus = userOnBoardingStatus;
     }
+
+    public void updateUserExpoToken(String expoToken) {
+        this.expoToken = expoToken;
+    }
 }
