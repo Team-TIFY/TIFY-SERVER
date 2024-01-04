@@ -24,6 +24,7 @@ import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.model.response.UserRefreshTokenResponse;
 import tify.server.api.auth.service.LoginUseCase;
 import tify.server.api.auth.service.LogoutUseCase;
+import tify.server.api.auth.service.ResignUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
 @RestController
@@ -36,6 +37,7 @@ public class AuthController {
     private final SignUpUseCase signUpUseCase;
     private final LoginUseCase loginUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final ResignUseCase resignUseCase;
 
     @Deprecated
     @Operation(summary = "kakao oauth 링크발급 (백엔드용)", description = "kakao 링크를 받아볼수 있습니다.")
@@ -174,5 +176,10 @@ public class AuthController {
         return loginUseCase.getCredentialFromApple(refreshToken);
     }
 
-    // Todo: 회원 탈퇴 구현
+    @Operation(summary = "애플 로그인 연동 해제")
+    @GetMapping("oauth/apple/revoke")
+    public void revokeAppleLogin(@RequestParam Long userId)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        resignUseCase.revokeAppleToken(userId);
+    }
 }
