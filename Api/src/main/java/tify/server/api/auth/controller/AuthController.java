@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -178,21 +179,21 @@ public class AuthController {
     }
 
     @Operation(summary = "애플 로그인 연동 해제", description = "애플 로그인 연동 해제 후에는 회원 탈퇴를 실행해야 합니다.")
-    @PostMapping("oauth/apple/revoke")
-    public void revokeAppleLogin(@RequestParam Long userId)
+    @PostMapping("/oauth/apple/revoke/{userId}")
+    public void revokeAppleLogin(@PathVariable Long userId)
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
         resignUseCase.revokeAppleToken(userId);
     }
 
     @Operation(summary = "회원 탈퇴")
-    @PostMapping("oauth/resign")
-    public void resign(@RequestParam Long userId) {
+    @PostMapping("/oauth/resign/{userId}")
+    public void resign(@PathVariable Long userId) {
         resignUseCase.execute(userId);
     }
 
     @Operation(summary = "회원 탈퇴 해제")
-    @DeleteMapping("oauth/resign")
-    public void deleteResign(@RequestParam Long userId) {
+    @DeleteMapping("/oauth/resign/{userId}")
+    public void deleteResign(@PathVariable Long userId) {
         resignUseCase.delete(userId);
     }
 }

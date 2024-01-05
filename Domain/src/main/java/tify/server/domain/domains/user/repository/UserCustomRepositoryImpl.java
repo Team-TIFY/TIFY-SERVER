@@ -4,6 +4,7 @@ import static tify.server.domain.domains.user.domain.QNeighbor.*;
 import static tify.server.domain.domains.user.domain.QUser.user;
 import static tify.server.domain.domains.user.domain.QUserBlock.userBlock;
 import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.*;
+import static tify.server.domain.domains.user.domain.QUserResign.*;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -30,9 +31,12 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                         .selectFrom(user)
                         .leftJoin(userBlock)
                         .on(user.id.eq(userBlock.fromUserId), userBlock.toUserId.eq(currentUserId))
+                        .leftJoin(userResign)
+                        .on(user.id.eq(userResign.userId))
                         .where(
                                 userBlock.fromUserId.isNull(),
-                                userIdEquals(userCondition.getUserId()))
+                                userIdEquals(userCondition.getUserId()),
+                                userResign.userId.isNull())
                         .orderBy(user.id.desc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize() + 1)
@@ -42,7 +46,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     }
 
     @Override
-    public List<RetrieveNeighborFavorBoxDTO> findNeighbors(Long userId) {
+    public List<RetrieveNeighborFavorBoxDTO> findNeighborsFavorBox(Long userId) {
         return jpaQueryFactory
                 .select(
                         Projections.constructor(
@@ -50,7 +54,9 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 .from(user)
                 .join(neighbor)
                 .on(user.id.eq(neighbor.toUserId))
-                .where(neighbor.fromUserId.eq(userId))
+                .leftJoin(userResign)
+                .on(user.id.eq(userResign.userId))
+                .where(neighbor.fromUserId.eq(userId), userResign.userId.isNull())
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }

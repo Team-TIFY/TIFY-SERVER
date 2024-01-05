@@ -32,6 +32,9 @@ public class UserValidator {
     }
 
     public void isNeighbor(Long userId, Long neighborId) {
+        userResignAdaptor
+                .optionalQueryByUserId(neighborId)
+                .orElseThrow(() -> new BaseException(USER_RESIGNED_ERROR));
         neighborAdaptor
                 .queryByFromUserIdAndToUserId(userId, neighborId)
                 .orElseThrow(() -> new BaseException(NOT_NEIGHBOR_ERROR));
@@ -52,6 +55,12 @@ public class UserValidator {
     public void isNewResign(OauthInfo oauthInfo) {
         if (userResignAdaptor.existByOauthInfo(oauthInfo)) {
             throw new BaseException(ALREADY_RESIGNED_USER_ERROR);
+        }
+    }
+
+    public void isResignedUser(Long userId) {
+        if (userResignAdaptor.existsByUserId(userId)) {
+            throw new BaseException(USER_RESIGNED_ERROR);
         }
     }
 

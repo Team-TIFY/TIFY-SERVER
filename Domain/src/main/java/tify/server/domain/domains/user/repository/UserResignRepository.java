@@ -13,4 +13,6 @@ public interface UserResignRepository extends JpaRepository<UserResign, Long> {
     Optional<UserResign> findByOauthInfo(OauthInfo oauthInfo);
 
     boolean existsByOauthInfo(OauthInfo oauthInfo);
+
+    boolean existsByUserId(Long userId);
 }

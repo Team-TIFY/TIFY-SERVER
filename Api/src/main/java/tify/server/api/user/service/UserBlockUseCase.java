@@ -46,6 +46,7 @@ public class UserBlockUseCase {
     public void delete(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
         userValidator.isBlocked(userId, toUserId);
+        userValidator.isResignedUser(toUserId);
         userBlockAdaptor.delete(userId, toUserId);
     }
 }

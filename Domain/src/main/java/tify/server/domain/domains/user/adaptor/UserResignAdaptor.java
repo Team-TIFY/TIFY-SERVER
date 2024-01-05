@@ -1,6 +1,7 @@
 package tify.server.domain.domains.user.adaptor;
 
 
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.Adaptor;
@@ -21,12 +22,20 @@ public class UserResignAdaptor {
                 .orElseThrow(() -> UserResignNotFoundException.EXCEPTION);
     }
 
+    public List<UserResign> queryAll() {
+        return userResignRepository.findAll();
+    }
+
     public void save(UserResign userResign) {
         userResignRepository.save(userResign);
     }
 
     public boolean existByOauthInfo(OauthInfo oauthInfo) {
         return userResignRepository.existsByOauthInfo(oauthInfo);
+    }
+
+    public boolean existsByUserId(Long userId) {
+        return userResignRepository.existsByUserId(userId);
     }
 
     public Optional<UserResign> optionalQueryByUserId(Long userId) {

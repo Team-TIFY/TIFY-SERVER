@@ -10,16 +10,19 @@ import tify.server.api.answer.model.vo.KnockToMeInfoVo;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.KnockAdaptor;
+import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
 @RequiredArgsConstructor
 public class RetrieveKnockUseCase {
 
     private final KnockAdaptor knockAdaptor;
+    private final UserValidator userValidator;
 
     @Transactional(readOnly = true)
     public KnockCountVo executeCount(Long questionId, Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isResignedUser(userId);
         int size =
                 knockAdaptor
                         .queryAllByDailyQuestionIdAndUserIdAndKnockedUserId(

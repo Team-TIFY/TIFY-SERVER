@@ -64,7 +64,7 @@ public class AnswerAdaptor {
                 dailyQuestionRepository.findAllByCategory(dailyQuestionCategory).stream()
                         .map(DailyQuestion::getId)
                         .toList();
-        return answerRepository.countMyAnswerByDailyQuestionCategory(userId, dailyQuestionIdList);
+        return answerRepository.countAnswersByDailyQuestionCategory(userId, dailyQuestionIdList);
     }
 
     public Long countAllUserAnswer(Long userId) {

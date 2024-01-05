@@ -58,7 +58,7 @@ public class UserAdaptor {
     }
 
     public List<RetrieveNeighborFavorBoxDTO> queryUserFavorBox(Long userId) {
-        return userRepository.findNeighbors(userId);
+        return userRepository.findNeighborsFavorBox(userId);
     }
 
     public User queryByOauthInfo(OauthInfo oauthInfo) {
