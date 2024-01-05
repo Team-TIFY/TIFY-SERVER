@@ -27,6 +27,7 @@ public class UserFavorUseCase {
     private final FavorQuestionAdaptor favorQuestionAdaptor;
 
     public List<UserAnswerVo> execute(Long userId, List<SmallCategory> smallCategoryList) {
+        userValidator.isValidUser(userId);
         userValidator.isResignedUser(userId);
 
         List<FavorAnswerCategoryDto> favorAnswerCategoryDTOs =

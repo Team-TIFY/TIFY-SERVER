@@ -28,6 +28,7 @@ public class UserInfoUseCase {
 
     public UserProfileVo execute(Long searchedUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(searchedUserId);
         userValidator.isResignedUser(searchedUserId);
         Optional<Neighbor> fromNeighbor =
                 neighborAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);

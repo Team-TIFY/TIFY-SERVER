@@ -24,6 +24,7 @@ public class CreateUserReportUseCase {
     @Transactional
     public UserReportResponse execute(Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(userId);
         userValidator.isResignedUser(userId);
         Optional<UserReport> report =
                 userReportAdaptor.optionalQueryByFromUserIdAndToUserId(currentUserId, userId);

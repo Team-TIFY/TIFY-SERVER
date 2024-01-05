@@ -23,6 +23,7 @@ public class UserFavorFilterUseCase {
 
     @Transactional(readOnly = true)
     public List<UserFavorBoxVo> execute(Long userId) {
+        userValidator.isValidUser(userId);
         userValidator.isResignedUser(userId);
         User user = userAdaptor.query(userId);
         return userFavorAdaptor.queryAllByUser(user).stream()

@@ -66,4 +66,8 @@ public class UserAdaptor {
                 .findByOauthInfo(oauthInfo)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
+
+    public Boolean existByUserId(Long userId) {
+        return userRepository.findById(userId).isPresent();
+    }
 }

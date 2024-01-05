@@ -23,6 +23,7 @@ public class CreateKnockUseCase {
     @Transactional
     public void execute(Long questionId, Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(userId);
         userValidator.isResignedUser(userId); // 탈퇴한 유저인지 검증
         userValidator.isNeighbor(currentUserId, userId); // 친구인지를 검증
         questionValidator.isValidateAnswerToQuestion(

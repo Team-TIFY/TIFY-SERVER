@@ -70,4 +70,8 @@ public class AnswerAdaptor {
     public Long countAllUserAnswer(Long userId) {
         return answerRepository.countAllByUserId(userId);
     }
+
+    public Boolean existByAnswerId(Long answerId) {
+        return answerRepository.existsById(answerId);
+    }
 }

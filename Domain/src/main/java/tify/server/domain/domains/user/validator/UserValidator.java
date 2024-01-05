@@ -5,6 +5,7 @@ import static tify.server.domain.domains.user.exception.UserException.ALREADY_EX
 import static tify.server.domain.domains.user.exception.UserException.ALREADY_RESIGNED_USER_ERROR;
 import static tify.server.domain.domains.user.exception.UserException.NOT_NEIGHBOR_ERROR;
 import static tify.server.domain.domains.user.exception.UserException.USER_BLOCK_NOT_FOUND_ERROR;
+import static tify.server.domain.domains.user.exception.UserException.USER_NOT_FOUND_ERROR;
 import static tify.server.domain.domains.user.exception.UserException.USER_RESIGNED_ERROR;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,12 @@ public class UserValidator {
     private final NeighborAdaptor neighborAdaptor;
     private final UserBlockAdaptor userBlockAdaptor;
     private final UserResignAdaptor userResignAdaptor;
+
+    public void isValidUser(Long userId) {
+        if (!userAdaptor.existByUserId(userId)) {
+            throw new BaseException(USER_NOT_FOUND_ERROR);
+        }
+    }
 
     public void isNewUser(OauthInfo oauthInfo) {
         if (userAdaptor.existByOauthInfo(oauthInfo)) {

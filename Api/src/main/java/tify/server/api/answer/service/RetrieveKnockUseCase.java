@@ -22,6 +22,7 @@ public class RetrieveKnockUseCase {
     @Transactional(readOnly = true)
     public KnockCountVo executeCount(Long questionId, Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(userId);
         userValidator.isResignedUser(userId);
         int size =
                 knockAdaptor
