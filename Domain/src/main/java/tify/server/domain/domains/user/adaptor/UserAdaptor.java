@@ -58,6 +58,16 @@ public class UserAdaptor {
     }
 
     public List<RetrieveNeighborFavorBoxDTO> queryUserFavorBox(Long userId) {
-        return userRepository.findNeighbors(userId);
+        return userRepository.findNeighborsFavorBox(userId);
+    }
+
+    public User queryByOauthInfo(OauthInfo oauthInfo) {
+        return userRepository
+                .findByOauthInfo(oauthInfo)
+                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    public Boolean existByUserId(Long userId) {
+        return userRepository.findById(userId).isPresent();
     }
 }

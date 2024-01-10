@@ -9,6 +9,7 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserFavorAdaptor;
 import tify.server.domain.domains.user.domain.User;
+import tify.server.domain.domains.user.validator.UserValidator;
 import tify.server.domain.domains.user.vo.UserFavorVo;
 
 @UseCase
@@ -18,9 +19,12 @@ public class UserFavorFilterUseCase {
 
     private final UserAdaptor userAdaptor;
     private final UserFavorAdaptor userFavorAdaptor;
+    private final UserValidator userValidator;
 
     @Transactional(readOnly = true)
     public List<UserFavorBoxVo> execute(Long userId) {
+        userValidator.isValidUser(userId);
+        userValidator.isResignedUser(userId);
         User user = userAdaptor.query(userId);
         return userFavorAdaptor.queryAllByUser(user).stream()
                 .map(UserFavorVo::from)

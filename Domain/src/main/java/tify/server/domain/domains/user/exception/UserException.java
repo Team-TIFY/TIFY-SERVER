@@ -35,6 +35,9 @@ public enum UserException implements BaseErrorCode {
     USER_FAVOR_UPDATE_ERROR(BAD_REQUEST, "User_Favor_400_1", "유저 취향 상자의 개수가 3개를 초과합니다."),
     USER_ON_BOARDING_STATUS_NOT_FOUND_ERROR(
             NOT_FOUND, "User_OnBoardingStatus_404_1", "유저 온보딩 상태값을 찾을 수 없습니다."),
+    USER_RESIGNED_ERROR(BAD_REQUEST, "User_400_3", "탈퇴한 유저입니다."),
+    ALREADY_RESIGNED_USER_ERROR(BAD_REQUEST, "User_Resign_400_1", "이미 탈퇴한 유저입니다."),
+    USER_RESIGN_NOT_FOUND_ERROR(NOT_FOUND, "User_Resign_404_1", "유저 탈퇴 정보를 찾을 수 없습니다."),
     ;
 
     private final Integer statusCode;

@@ -24,6 +24,7 @@ public class NeighborInfoUseCase {
 
     public UserProfileVo execute(Long neighborId) {
         Long userId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(neighborId);
         userValidator.isNeighbor(userId, neighborId);
         User neighbor = userAdaptor.query(neighborId);
         return neighbor.toUserProfileVo();
@@ -32,6 +33,7 @@ public class NeighborInfoUseCase {
     @Transactional
     public void updateViewedAt(Long neighborId) {
         Long userId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(neighborId);
         userValidator.isNeighbor(userId, neighborId);
         Neighbor neighbor =
                 neighborAdaptor

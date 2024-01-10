@@ -12,5 +12,5 @@ public interface UserCustomRepository {
 
     Slice<User> searchUsers(Pageable pageable, UserCondition userCondition, Long currentUserId);
 
-    List<RetrieveNeighborFavorBoxDTO> findNeighbors(Long userId);
+    List<RetrieveNeighborFavorBoxDTO> findNeighborsFavorBox(Long userId);
 }

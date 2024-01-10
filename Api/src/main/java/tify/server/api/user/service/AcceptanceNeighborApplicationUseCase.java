@@ -11,6 +11,7 @@ import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.exception.AlreadyExistNeighborRelationshipException;
 import tify.server.domain.domains.user.validator.NeighborValidator;
+import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class AcceptanceNeighborApplicationUseCase {
 
     private final NeighborAdaptor neighborAdaptor;
     private final NeighborValidator neighborValidator;
+    private final UserValidator userValidator;
 
     public void execute(Long neighborApplicationId) {
 
@@ -33,6 +35,7 @@ public class AcceptanceNeighborApplicationUseCase {
 
         // 상대방 (친구 신청을 보낸 사람)
         Long toUserId = neighborApplication.getFromUserId();
+        userValidator.isValidUser(toUserId);
 
         // 친구 맺기 (toUserId, fromUserId inversion)
         if (neighborAdaptor.existsNeighbor(currentUserId, toUserId)) {

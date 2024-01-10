@@ -19,7 +19,9 @@ import tify.server.domain.domains.question.domain.Answer;
 import tify.server.domain.domains.question.domain.DailyQuestion;
 import tify.server.domain.domains.question.dto.condition.AnswerCondition;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
+import tify.server.domain.domains.user.adaptor.UserResignAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
+import tify.server.domain.domains.user.domain.UserResign;
 import tify.server.domain.domains.user.dto.model.RetrieveNeighborDTO;
 
 @Slf4j
@@ -31,15 +33,19 @@ public class RetrieveDailyAnswerUseCase {
     private final NeighborAdaptor neighborAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
     private final KnockAdaptor knockAdaptor;
+    private final UserResignAdaptor userResignAdaptor;
 
     @Transactional(readOnly = true)
     public List<RetrieveAnswerVo> execute(Long questionId) {
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.query(questionId);
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        List<Long> resignedUserId =
+                userResignAdaptor.queryAll().stream().map(UserResign::getUserId).toList();
         List<Long> userIdList =
                 new ArrayList<>(
                         neighborAdaptor.queryAllByFromUserIdAndIsView(currentUserId, true).stream()
                                 .map(Neighbor::getToUserId)
+                                .filter(id -> !resignedUserId.contains(id))
                                 .toList());
         userIdList.add(currentUserId);
         AnswerCondition answerCondition = new AnswerCondition(dailyQuestion.getId(), userIdList);
