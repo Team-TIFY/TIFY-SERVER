@@ -20,6 +20,7 @@ public class UserBlockUseCase {
     @Transactional
     public void execute(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(toUserId);
 
         // 원래 차단되어있는 유저인지 검증하고 차단
         userValidator.isNewBlock(userId, toUserId);
@@ -45,7 +46,9 @@ public class UserBlockUseCase {
     @Transactional
     public void delete(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(toUserId);
         userValidator.isBlocked(userId, toUserId);
+        userValidator.isResignedUser(toUserId);
         userBlockAdaptor.delete(userId, toUserId);
     }
 }

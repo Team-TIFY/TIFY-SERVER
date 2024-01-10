@@ -13,7 +13,7 @@ public interface AnswerCustomRepository {
 
     Long countAnswer(Long questionId);
 
-    Long countMyAnswerByDailyQuestionCategory(Long userId, List<Long> dailyQuestionIdList);
+    Long countAnswersByDailyQuestionCategory(Long userId, List<Long> dailyQuestionIdList);
 
     List<DailyQuestionAnswerVo> searchMyAnswerToPage(
             Long userId, DailyQuestionCategory dailyQuestionCategory, int month);

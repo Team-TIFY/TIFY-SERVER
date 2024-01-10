@@ -4,6 +4,7 @@ import static tify.server.core.consts.Status.N;
 import static tify.server.domain.domains.question.domain.QAnswer.answer;
 import static tify.server.domain.domains.question.domain.QDailyQuestion.*;
 import static tify.server.domain.domains.user.domain.QUser.user;
+import static tify.server.domain.domains.user.domain.QUserResign.*;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -44,17 +45,24 @@ public class AnswerCustomRepositoryImpl implements AnswerCustomRepository {
         return queryFactory
                 .select(answer.count())
                 .from(answer)
-                .where(questionIdEq(questionId), answer.isDeleted.eq(N))
+                .leftJoin(userResign)
+                .on(answer.userId.eq(userResign.userId))
+                .where(questionIdEq(questionId), answer.isDeleted.eq(N), userResign.userId.isNull())
                 .fetchOne();
     }
 
     @Override
-    public Long countMyAnswerByDailyQuestionCategory(Long userId, List<Long> dailyQuestionIdList) {
+    public Long countAnswersByDailyQuestionCategory(Long userId, List<Long> dailyQuestionIdList) {
 
         return queryFactory
                 .select(answer.count())
                 .from(answer)
-                .where(answer.questionId.in(dailyQuestionIdList), answer.userId.eq(userId))
+                .leftJoin(userResign)
+                .on(answer.userId.eq(userResign.userId))
+                .where(
+                        answer.questionId.in(dailyQuestionIdList),
+                        answer.userId.eq(userId),
+                        userResign.userId.isNull())
                 .fetchOne();
     }
 

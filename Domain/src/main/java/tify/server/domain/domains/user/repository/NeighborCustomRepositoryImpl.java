@@ -4,6 +4,7 @@ import static tify.server.domain.domains.user.domain.QNeighbor.neighbor;
 import static tify.server.domain.domains.user.domain.QUser.user;
 import static tify.server.domain.domains.user.domain.QUserFavor.*;
 import static tify.server.domain.domains.user.domain.QUserOnBoardingStatus.*;
+import static tify.server.domain.domains.user.domain.QUserResign.*;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,7 +42,9 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .from(neighbor)
                 .join(user)
                 .on(user.id.eq(neighbor.toUserId))
-                .where(neighbor.fromUserId.eq(userId))
+                .leftJoin(userResign)
+                .on(neighbor.toUserId.eq(userResign.userId))
+                .where(neighbor.fromUserId.eq(userId), userResign.userId.isNull())
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }
@@ -70,7 +73,12 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                 .from(neighbor)
                 .join(user)
                 .on(user.id.eq(neighbor.toUserId))
-                .where(neighbor.fromUserId.eq(userId), user.profile.birth.contains(monthAndYear))
+                .leftJoin(userResign)
+                .on(neighbor.toUserId.eq(userResign.userId))
+                .where(
+                        neighbor.fromUserId.eq(userId),
+                        user.profile.birth.contains(monthAndYear),
+                        userResign.userId.isNull())
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }
@@ -97,7 +105,9 @@ public class NeighborCustomRepositoryImpl implements NeighborCustomRepository {
                         .from(neighbor)
                         .join(user)
                         .on(user.id.eq(neighbor.toUserId))
-                        .where(neighbor.fromUserId.eq(userId))
+                        .leftJoin(userResign)
+                        .on(neighbor.toUserId.eq(userResign.userId))
+                        .where(neighbor.fromUserId.eq(userId), userResign.userId.isNull())
                         .orderBy(neighbor.order.asc())
                         .offset(pageable.getOffset())
                         .limit(pageable.getPageSize())

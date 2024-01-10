@@ -11,6 +11,7 @@ import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.exception.AlreadyExistNeighborRelationshipException;
 import tify.server.domain.domains.user.exception.SelfNeighborException;
+import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
 @RequiredArgsConstructor
@@ -19,13 +20,16 @@ public class CreateNeighborUseCase {
 
     private final UserAdaptor userAdaptor;
     private final NeighborAdaptor neighborAdaptor;
+    private final UserValidator userValidator;
 
     public void execute(Long toUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+
         if (currentUserId.equals(toUserId)) {
             throw SelfNeighborException.EXCEPTION;
         }
 
+        userValidator.isValidUser(toUserId);
         User toUser = userAdaptor.query(toUserId);
 
         if (neighborAdaptor.existsNeighbor(currentUserId, toUser.getId())) {

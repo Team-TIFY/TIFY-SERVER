@@ -10,7 +10,9 @@ import java.security.spec.InvalidKeySpecException;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,18 +26,20 @@ import tify.server.api.auth.model.response.UserCanRegisterResponse;
 import tify.server.api.auth.model.response.UserRefreshTokenResponse;
 import tify.server.api.auth.service.LoginUseCase;
 import tify.server.api.auth.service.LogoutUseCase;
+import tify.server.api.auth.service.ResignUseCase;
 import tify.server.api.auth.service.SignUpUseCase;
 
-@RestController
 @Slf4j
+@RestController
+@Tag(name = "1. [인증]")
 @RequestMapping(value = "/auth")
 @RequiredArgsConstructor
-@Tag(name = "1. [인증]")
 public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
     private final LoginUseCase loginUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final ResignUseCase resignUseCase;
 
     @Deprecated
     @Operation(summary = "kakao oauth 링크발급 (백엔드용)", description = "kakao 링크를 받아볼수 있습니다.")
@@ -174,5 +178,22 @@ public class AuthController {
         return loginUseCase.getCredentialFromApple(refreshToken);
     }
 
-    // Todo: 회원 탈퇴 구현
+    @Operation(summary = "애플 로그인 연동 해제", description = "애플 로그인 연동 해제 후에는 회원 탈퇴를 실행해야 합니다.")
+    @PostMapping("/oauth/apple/revoke/{userId}")
+    public void revokeAppleLogin(@PathVariable Long userId)
+            throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+        resignUseCase.revokeAppleToken(userId);
+    }
+
+    @Operation(summary = "회원 탈퇴")
+    @PostMapping("/oauth/resign/{userId}")
+    public void resign(@PathVariable Long userId) {
+        resignUseCase.execute(userId);
+    }
+
+    @Operation(summary = "회원 탈퇴 해제")
+    @DeleteMapping("/oauth/resign/{userId}")
+    public void deleteResign(@PathVariable Long userId) {
+        resignUseCase.delete(userId);
+    }
 }
