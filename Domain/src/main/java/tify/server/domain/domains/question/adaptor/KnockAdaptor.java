@@ -43,4 +43,10 @@ public class KnockAdaptor {
     public List<KnockedVo> queryKnockToMeList(Long questionId, Long userId) {
         return knockRepository.searchKnockToMeList(questionId, userId);
     }
+
+    public List<Knock> queryAllByKnockedUserIdAndDailyQuestionId(
+            Long knockedUserId, Long dailyQuestionId) {
+        return knockRepository.findAllByKnockedUserIdAndDailyQuestionId(
+                knockedUserId, dailyQuestionId);
+    }
 }

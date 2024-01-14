@@ -39,6 +39,10 @@ public class UserAdaptor {
         return userRepository.findById(userId).orElseThrow(() -> UserNotFoundException.EXCEPTION);
     }
 
+    public List<User> queryAll() {
+        return userRepository.findAll();
+    }
+
     public Optional<User> queryByUserId(String userId) {
         return userRepository.findByUserId(userId);
     }
@@ -58,7 +62,7 @@ public class UserAdaptor {
     }
 
     public List<RetrieveNeighborFavorBoxDTO> queryUserFavorBox(Long userId) {
-        return userRepository.findNeighborsFavorBox(userId);
+        return userRepository.getNeighborsFavorBox(userId);
     }
 
     public User queryByOauthInfo(OauthInfo oauthInfo) {
@@ -69,5 +73,21 @@ public class UserAdaptor {
 
     public Boolean existByUserId(Long userId) {
         return userRepository.findById(userId).isPresent();
+    }
+
+    public List<User> queryNotAnsweredUsers(Long questionId) {
+        return userRepository.getNotDailyAnsweredUserList(questionId);
+    }
+
+    public List<User> queryBirthDayUsers() {
+        return userRepository.getBirthDayUserList();
+    }
+
+    public List<User> queryBirthDayNeighbors(Long userId, String monthAndYear) {
+        return userRepository.getBirthDayNeighborList(userId, monthAndYear);
+    }
+
+    public List<User> queryNotTotallyFavorAnsweredUsers(int favorQuestionSize) {
+        return userRepository.getNotFavorAnsweredUserList(favorQuestionSize);
     }
 }

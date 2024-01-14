@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import tify.server.api.common.slice.SliceResponse;
+import tify.server.api.user.model.dto.request.PatchExpoTokenRequest;
 import tify.server.api.user.model.dto.request.PatchNeighborsOrdersRequest;
 import tify.server.api.user.model.dto.request.PatchUserFavorRequest;
 import tify.server.api.user.model.dto.request.PatchUserProfileRequest;
@@ -54,6 +55,7 @@ import tify.server.api.user.service.RetrieveUserListUseCase;
 import tify.server.api.user.service.RetrieveUserOpinionUseCase;
 import tify.server.api.user.service.RetrieveUserReportUseCase;
 import tify.server.api.user.service.UpdateNeighborUseCase;
+import tify.server.api.user.service.UpdateUserExpoTokenUseCase;
 import tify.server.api.user.service.UpdateUserFavorUseCase;
 import tify.server.api.user.service.UpdateUserProfileUseCase;
 import tify.server.api.user.service.UserBlockUseCase;
@@ -101,6 +103,7 @@ public class UserController {
     private final CreateUserOpinionUseCase createUserOpinionUseCase;
     private final RetrieveUserOpinionUseCase retrieveUserOpinionUseCase;
     private final RetrieveNeighborFavorBoxUseCase retrieveNeighborFavorBoxUseCase;
+    private final UpdateUserExpoTokenUseCase updateUserExpoTokenUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -328,5 +331,12 @@ public class UserController {
     @GetMapping("/neighbors/favors")
     public List<RetrieveUserFavorBoxVo> getNeighborsFavorBox() {
         return retrieveNeighborFavorBoxUseCase.execute();
+    }
+
+    @Operation(summary = "유저의 expo 토큰을 업데이트합니다.")
+    @PatchMapping("/expo-token")
+    public void patchExpoToken(
+            @RequestParam Long userId, @RequestBody @Valid PatchExpoTokenRequest request) {
+        updateUserExpoTokenUseCase.execute(userId, request);
     }
 }

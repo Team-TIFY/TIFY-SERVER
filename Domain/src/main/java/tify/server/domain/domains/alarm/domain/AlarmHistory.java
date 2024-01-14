@@ -25,6 +25,8 @@ public class AlarmHistory {
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
 
+    @NotNull private String title;
+
     @NotNull private String content;
 
     @NotNull
@@ -32,10 +34,11 @@ public class AlarmHistory {
     private Status isRead;
 
     @Builder
-    public AlarmHistory(Long id, Long userId, AlarmType alarmType, String content) {
+    public AlarmHistory(Long id, Long userId, AlarmType alarmType, String title, String content) {
         this.id = id;
         this.userId = userId;
         this.alarmType = alarmType;
+        this.title = title;
         this.content = content;
         this.isRead = Status.N;
     }

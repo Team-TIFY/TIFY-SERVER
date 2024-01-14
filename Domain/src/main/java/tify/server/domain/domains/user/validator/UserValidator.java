@@ -39,9 +39,9 @@ public class UserValidator {
     }
 
     public void isNeighbor(Long userId, Long neighborId) {
-        userResignAdaptor
-                .optionalQueryByUserId(neighborId)
-                .orElseThrow(() -> new BaseException(USER_RESIGNED_ERROR));
+        if (userResignAdaptor.optionalQueryByUserId(neighborId).isPresent()) {
+            throw new BaseException(USER_RESIGNED_ERROR);
+        }
         neighborAdaptor
                 .queryByFromUserIdAndToUserId(userId, neighborId)
                 .orElseThrow(() -> new BaseException(NOT_NEIGHBOR_ERROR));

@@ -9,6 +9,7 @@ import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.domain.FavorQuestion;
 import tify.server.domain.domains.question.dto.model.FavorAnswerDto;
+import tify.server.domain.domains.question.exception.MultipleAnswerException;
 import tify.server.domain.domains.question.validator.FavorQuestionValidator;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.User;
@@ -33,6 +34,12 @@ public class FavorQuestionDomainService {
 
         // 답변 가능 여부 검증
         favorQuestionValidator.isValidateFavorAnswerToQuestion(favorQuestions, userId);
+
+        // 한 질문에 여러 개의 답변이 작성된 경우 검증
+        List<Integer> numList = answers.stream().map(FavorAnswerDto::getNum).toList();
+        if (numList.stream().distinct().toList().size() < numList.size()) {
+            throw MultipleAnswerException.EXCEPTION;
+        }
 
         List<FavorAnswer> favorAnswers =
                 answers.stream()
