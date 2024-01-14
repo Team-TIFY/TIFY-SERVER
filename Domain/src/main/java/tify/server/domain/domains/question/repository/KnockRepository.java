@@ -13,4 +13,6 @@ public interface KnockRepository extends JpaRepository<Knock, Long>, KnockCustom
             Long questionId, Long userId, Long knockedUserId);
 
     List<Knock> findDistinctByDailyQuestionIdAndKnockedUserId(Long questionId, Long knockedUserId);
+
+    List<Knock> findAllByKnockedUserIdAndDailyQuestionId(Long knockedUserId, Long dailyQuestionId);
 }
