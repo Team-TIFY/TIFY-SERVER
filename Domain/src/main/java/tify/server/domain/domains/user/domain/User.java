@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import tify.server.domain.domains.AbstractTimeStamp;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
@@ -34,6 +35,9 @@ public class User extends AbstractTimeStamp {
     private AccountRole accountRole;
 
     private String expoToken;
+
+    @ColumnDefault("false")
+    private Boolean receiveAlarm;
 
     private String appleRefreshToken;
 
@@ -69,6 +73,7 @@ public class User extends AbstractTimeStamp {
         this.oauthInfo = oauthInfo;
         this.accountRole = AccountRole.USER;
         this.expoToken = expoToken;
+        this.receiveAlarm = false;
     }
 
     public void updateProfile(Profile profile) {
@@ -93,6 +98,7 @@ public class User extends AbstractTimeStamp {
         this.onBoardingStatus = onBoardingStatus;
         this.userFavors.clear();
         this.userFavors.addAll(userFavorList);
+        this.receiveAlarm = false;
     }
 
     public void updateFavor() {

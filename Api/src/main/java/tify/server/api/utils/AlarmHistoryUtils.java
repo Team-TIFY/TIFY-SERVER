@@ -121,4 +121,22 @@ public class AlarmHistoryUtils {
             throw ExpoPushTicketException.EXCEPTION;
         }
     }
+
+    public Boolean checkUserReceiveAlarm(
+            User user, String title, String content, AlarmType alarmType) {
+        if ((!user.getReceiveAlarm()
+                || user.getExpoToken() == null
+                || !user.getExpoToken().startsWith("ExponentPushToken"))) {
+            AlarmHistory alarm =
+                    AlarmHistory.builder()
+                            .userId(user.getId())
+                            .title(title)
+                            .content(content)
+                            .alarmType(alarmType)
+                            .build();
+            alarmHistoryAdaptor.save(alarm);
+            return false;
+        }
+        return true;
+    }
 }

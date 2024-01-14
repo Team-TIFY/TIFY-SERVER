@@ -12,5 +12,13 @@ public interface UserCustomRepository {
 
     Slice<User> searchUsers(Pageable pageable, UserCondition userCondition, Long currentUserId);
 
-    List<RetrieveNeighborFavorBoxDTO> findNeighborsFavorBox(Long userId);
+    List<RetrieveNeighborFavorBoxDTO> getNeighborsFavorBox(Long userId);
+
+    List<User> getNotDailyAnsweredUserList(Long questionId);
+
+    List<User> getBirthDayUserList();
+
+    List<User> getBirthDayNeighborList(Long userId, String monthAndYear);
+
+    List<User> getNotFavorAnsweredUserList(int favorQuestionSize);
 }
