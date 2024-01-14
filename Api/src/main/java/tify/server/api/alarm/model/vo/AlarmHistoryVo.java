@@ -11,17 +11,17 @@ import tify.server.domain.domains.alarm.domain.AlarmType;
 @Builder
 public class AlarmHistoryVo {
 
-    private Long id;
+    private final Long id;
 
-    private AlarmType alarmType;
+    private final AlarmType alarmType;
 
-    private String title;
+    private final String title;
 
-    private String content;
+    private final String content;
 
-    private Long userId;
+    private final Long userId;
 
-    private Status isRead;
+    private final Status isRead;
 
     public static AlarmHistoryVo from(AlarmHistory alarmHistory) {
         return AlarmHistoryVo.builder()

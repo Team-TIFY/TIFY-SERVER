@@ -7,8 +7,11 @@ import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
+import tify.server.api.alarm.model.dto.ReceiveApplicationEventDto;
+import tify.server.api.alarm.model.dto.SendApplicationEventDto;
 import tify.server.api.utils.AlarmHistoryUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
@@ -33,9 +36,10 @@ public class CreateAlarmHistoryUseCase {
     private final AlarmHistoryUtils alarmHistoryUtils;
 
     @Async
-    public void executeToReceiveFriendApplicationAlarm(Long sendUserId, Long receiveUserId) {
-        User sender = userAdaptor.query(sendUserId);
-        User receiver = userAdaptor.query(receiveUserId);
+    @EventListener
+    public void executeToReceiveFriendApplicationAlarm(SendApplicationEventDto dto) {
+        User sender = userAdaptor.query(dto.getFromUserId());
+        User receiver = userAdaptor.query(dto.getToUserId());
         String title = String.format("%s님의 친구맺기 요청!", sender.getUserId());
         String content = String.format("수락하고 %s님 취향 살펴보기 >", sender.getUserId());
         HashMap<String, Object> newMap = new HashMap<>();
@@ -48,10 +52,11 @@ public class CreateAlarmHistoryUseCase {
     }
 
     @Async
-    public void executeToAcceptFriendApplicationAlarm(Long sendUserId, Long receiveUserId) {
-        // sender : 요청을 보낸 사람, receiver : 오청을 받은 사람(수락을 누른 사람)
-        User sender = userAdaptor.query(sendUserId);
-        User receiver = userAdaptor.query(receiveUserId);
+    @EventListener
+    public void executeToAcceptFriendApplicationAlarm(ReceiveApplicationEventDto dto) {
+        // sender : 요청을 보낸 사람, receiver : 요청을 받은 사람(수락을 누른 사람)
+        User sender = userAdaptor.query(dto.getFromUserId());
+        User receiver = userAdaptor.query(dto.getToUserId());
         String title = String.format("%s님의 친구맺기 수락!", receiver.getUserId());
         String content = String.format("%s님 취향 살펴보기 >", receiver.getUserId());
         HashMap<String, Object> newMap = new HashMap<>();
@@ -59,7 +64,7 @@ public class CreateAlarmHistoryUseCase {
         newMap.put("receiveUserId", receiver.getUserId());
 
         if (alarmHistoryUtils.checkUserReceiveAlarm(sender, title, content, FRIEND)) {
-            alarmHistoryUtils.sendMessage(receiver, title, content, newMap, FRIEND);
+            alarmHistoryUtils.sendMessage(sender, title, content, newMap, FRIEND);
         }
     }
 

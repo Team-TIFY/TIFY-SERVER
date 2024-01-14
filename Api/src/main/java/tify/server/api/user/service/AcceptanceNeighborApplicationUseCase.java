@@ -3,7 +3,9 @@ package tify.server.api.user.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
+import tify.server.api.alarm.model.dto.ReceiveApplicationEventDto;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
@@ -21,6 +23,8 @@ public class AcceptanceNeighborApplicationUseCase {
     private final NeighborAdaptor neighborAdaptor;
     private final NeighborValidator neighborValidator;
     private final UserValidator userValidator;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public void execute(Long neighborApplicationId) {
 
@@ -62,5 +66,8 @@ public class AcceptanceNeighborApplicationUseCase {
                         .isNew(true)
                         .order((long) toNeighbors.size() + 1L)
                         .build());
+
+        applicationEventPublisher.publishEvent(
+                ReceiveApplicationEventDto.from(neighborApplication));
     }
 }
