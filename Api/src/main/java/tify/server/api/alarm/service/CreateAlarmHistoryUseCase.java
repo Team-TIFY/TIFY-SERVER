@@ -4,8 +4,10 @@ import static tify.server.domain.domains.alarm.domain.AlarmType.*;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
@@ -85,7 +87,10 @@ public class CreateAlarmHistoryUseCase {
                 String.format("%s님이 %d번 쿡 찔렀어요 \uD83D\uDC49", sender.getUserId(), knockCount);
         String content =
                 String.format(
-                        "%s요일 질문 답변하러 가기 >", question.getLoadingDate().getDayOfWeek().toString());
+                        "%s 질문 답변하러 가기 >",
+                        question.getLoadingDate()
+                                .getDayOfWeek()
+                                .getDisplayName(TextStyle.FULL, Locale.KOREA));
         HashMap<String, Object> newMap = new HashMap<>();
         newMap.put("knockUserId", sender.getUserId());
         newMap.put("knockedUserId", receiver.getUserId());
