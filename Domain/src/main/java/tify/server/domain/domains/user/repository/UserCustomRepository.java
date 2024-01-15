@@ -18,7 +18,9 @@ public interface UserCustomRepository {
 
     List<User> getBirthDayUserList();
 
-    List<User> getBirthDayNeighborList(Long userId, String monthAndYear);
+    List<User> getBirthDayUserListByDate(String monthAndYear);
+
+    List<User> getNeighborListByUserId(Long userId);
 
     List<User> getNotFavorAnsweredUserList(int favorQuestionSize);
 }

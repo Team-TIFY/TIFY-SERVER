@@ -1,4 +1,4 @@
-package tify.server.api.utils;
+package tify.server.domain.common.util;
 
 
 import io.github.jav.exposerversdk.ExpoPushMessage;

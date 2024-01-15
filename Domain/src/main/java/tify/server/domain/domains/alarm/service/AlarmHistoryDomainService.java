@@ -1,9 +1,10 @@
-package tify.server.api.alarm.service;
+package tify.server.domain.domains.alarm.service;
 
-import static tify.server.domain.domains.alarm.domain.AlarmType.*;
+import static tify.server.domain.domains.alarm.domain.AlarmType.ANNIVERSARY;
+import static tify.server.domain.domains.alarm.domain.AlarmType.FAVOR;
+import static tify.server.domain.domains.alarm.domain.AlarmType.FRIEND;
+import static tify.server.domain.domains.alarm.domain.AlarmType.TODAY;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.TextStyle;
 import java.util.HashMap;
 import java.util.List;
@@ -12,26 +13,28 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
-import tify.server.api.alarm.model.dto.AnswerKnockEventDto;
-import tify.server.api.alarm.model.dto.CreateKnockEventDto;
-import tify.server.api.alarm.model.dto.ReceiveApplicationEventDto;
-import tify.server.api.alarm.model.dto.SendApplicationEventDto;
-import tify.server.api.utils.AlarmHistoryUtils;
-import tify.server.core.annotation.UseCase;
+import tify.server.core.annotation.DomainService;
+import tify.server.domain.common.util.AlarmHistoryUtils;
+import tify.server.domain.domains.alarm.dto.AnswerKnockEventDto;
+import tify.server.domain.domains.alarm.dto.CreateKnockEventDto;
+import tify.server.domain.domains.alarm.dto.ReceiveApplicationEventDto;
+import tify.server.domain.domains.alarm.dto.SendApplicationEventDto;
 import tify.server.domain.domains.question.adaptor.AnswerAdaptor;
 import tify.server.domain.domains.question.adaptor.DailyQuestionAdaptor;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.adaptor.KnockAdaptor;
 import tify.server.domain.domains.question.domain.DailyQuestion;
+import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.User;
 
-@UseCase
+@DomainService
 @Transactional
 @RequiredArgsConstructor
-public class CreateAlarmHistoryUseCase {
+public class AlarmHistoryDomainService {
 
     private final UserAdaptor userAdaptor;
+    private final NeighborAdaptor neighborAdaptor;
     private final DailyQuestionAdaptor dailyQuestionAdaptor;
     private final AnswerAdaptor answerAdaptor;
     private final KnockAdaptor knockAdaptor;
@@ -137,25 +140,26 @@ public class CreateAlarmHistoryUseCase {
     }
 
     @Async
-    public void executeToFriendBirthDayAlarm(Long userId) {
-        LocalDateTime today = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        String monthAndYear =
-                String.format("%02d%02d", today.getMonth().getValue(), today.getDayOfMonth() + 4);
+    public void executeToFriendBirthDayAlarm(List<User> expectedBirthdayUserList) {
         String content = "취향에 딱 맞는 선물을 받을 확률을 올려보세요!\n티피 프로필 공유하러 가기 >";
 
-        List<User> birthDayNeighbors = userAdaptor.queryBirthDayNeighbors(userId, monthAndYear);
-
-        birthDayNeighbors.forEach(
+        expectedBirthdayUserList.forEach(
                 user -> {
                     String title =
                             String.format(
                                     "%s님의 생일이 4일 밖에 안남았대요! ", user.getProfile().getUserName());
-                    if (alarmHistoryUtils.checkUserReceiveAlarm(
-                            user, title, content, ANNIVERSARY)) {
-                        HashMap<String, Object> newMap = new HashMap<>();
-                        newMap.put("neighborUserId", user.getUserId());
-                        alarmHistoryUtils.sendMessage(user, title, content, newMap, ANNIVERSARY);
-                    }
+                    userAdaptor
+                            .queryNeighborsByUserId(user.getId())
+                            .forEach(
+                                    neighbor -> {
+                                        if (alarmHistoryUtils.checkUserReceiveAlarm(
+                                                neighbor, title, content, ANNIVERSARY)) {
+                                            HashMap<String, Object> newMap = new HashMap<>();
+                                            newMap.put("neighborUserId", neighbor.getUserId());
+                                            alarmHistoryUtils.sendMessage(
+                                                    neighbor, title, content, newMap, ANNIVERSARY);
+                                        }
+                                    });
                 });
     }
 

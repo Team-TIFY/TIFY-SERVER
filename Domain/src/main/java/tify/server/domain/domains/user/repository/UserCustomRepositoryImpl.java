@@ -86,17 +86,22 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
     }
 
     @Override
-    public List<User> getBirthDayNeighborList(Long userId, String monthAndYear) {
+    public List<User> getBirthDayUserListByDate(String monthAndYear) {
+        return jpaQueryFactory
+                .selectFrom(user)
+                .where(user.profile.birth.contains(monthAndYear))
+                .fetch();
+    }
+
+    @Override
+    public List<User> getNeighborListByUserId(Long userId) {
         return jpaQueryFactory
                 .selectFrom(user)
                 .join(neighbor)
                 .on(user.id.eq(neighbor.toUserId))
                 .leftJoin(userResign)
                 .on(neighbor.toUserId.eq(userResign.userId))
-                .where(
-                        neighbor.fromUserId.eq(userId),
-                        user.profile.birth.contains(monthAndYear),
-                        userResign.userId.isNull())
+                .where(neighbor.fromUserId.eq(userId), userResign.userId.isNull())
                 .orderBy(neighbor.order.asc())
                 .fetch();
     }

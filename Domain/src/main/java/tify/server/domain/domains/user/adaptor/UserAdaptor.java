@@ -83,11 +83,15 @@ public class UserAdaptor {
         return userRepository.getBirthDayUserList();
     }
 
-    public List<User> queryBirthDayNeighbors(Long userId, String monthAndYear) {
-        return userRepository.getBirthDayNeighborList(userId, monthAndYear);
+    public List<User> queryNeighborsByUserId(Long userId) {
+        return userRepository.getNeighborListByUserId(userId);
     }
 
     public List<User> queryNotTotallyFavorAnsweredUsers(int favorQuestionSize) {
         return userRepository.getNotFavorAnsweredUserList(favorQuestionSize);
+    }
+
+    public List<User> queryExpectedBirthdayUsers(String monthAndYear) {
+        return userRepository.getBirthDayUserListByDate(monthAndYear);
     }
 }

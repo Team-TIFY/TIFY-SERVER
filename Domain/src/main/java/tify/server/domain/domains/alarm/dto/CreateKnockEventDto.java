@@ -1,4 +1,4 @@
-package tify.server.api.alarm.model.dto;
+package tify.server.domain.domains.alarm.dto;
 
 
 import lombok.Builder;
@@ -7,16 +7,19 @@ import tify.server.domain.domains.question.domain.Knock;
 
 @Getter
 @Builder
-public class AnswerKnockEventDto {
+public class CreateKnockEventDto {
 
     private final Long fromUserId;
 
     private final Long toUserId;
 
-    public static AnswerKnockEventDto from(Knock knock) {
-        return AnswerKnockEventDto.builder()
+    private final Long questionId;
+
+    public static CreateKnockEventDto from(Knock knock) {
+        return CreateKnockEventDto.builder()
                 .fromUserId(knock.getUserId())
                 .toUserId(knock.getKnockedUserId())
+                .questionId(knock.getDailyQuestionId())
                 .build();
     }
 }
