@@ -1,4 +1,4 @@
-package tify.server.domain.scheduling.user;
+package tify.server.domain.scheduler.user;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import tify.server.domain.domains.question.repository.AnswerReportRepository;
 import tify.server.domain.domains.question.repository.AnswerRepository;
 import tify.server.domain.domains.question.repository.FavorAnswerRepository;
 import tify.server.domain.domains.question.repository.KnockRepository;
-import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.repository.NeighborRepository;
 import tify.server.domain.domains.user.repository.UserBlockRepository;
