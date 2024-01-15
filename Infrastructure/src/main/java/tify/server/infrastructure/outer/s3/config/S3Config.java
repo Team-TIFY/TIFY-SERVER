@@ -6,7 +6,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tify.server.core.properties.S3Properties;
@@ -17,21 +16,13 @@ public class S3Config {
 
     private final S3Properties s3Properties;
 
-    @Value("${cloud.aws.credentials.accessKey}")
-    private String accessKey;
-
-    @Value("${cloud.aws.credentials.secretKey}")
-    private String secretKey;
-
-    @Value("${cloud.aws.region.static}")
-    private String region;
-
     @Bean
     public AmazonS3Client amazonS3Client() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
+        BasicAWSCredentials awsCredentials =
+                new BasicAWSCredentials(s3Properties.getAccessKey(), s3Properties.getSecretKey());
         return (AmazonS3Client)
                 AmazonS3ClientBuilder.standard()
-                        .withRegion(region)
+                        .withRegion(s3Properties.getRegion())
                         .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                         .build();
     }
