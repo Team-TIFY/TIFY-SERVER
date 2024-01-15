@@ -13,4 +13,6 @@ public interface FavorAnswerRepository
 
     boolean existsByFavorQuestion_FavorQuestionCategory_DetailCategoryAndUserId(
             DetailCategory detailCategory, Long userId);
+
+    void deleteAllByUserId(Long userId);
 }

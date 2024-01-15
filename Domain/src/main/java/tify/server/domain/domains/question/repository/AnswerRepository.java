@@ -10,4 +10,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long>, AnswerCus
     Optional<Answer> findByQuestionIdAndUserId(Long questionId, Long userId);
 
     Long countAllByUserId(Long userId);
+
+    void deleteAllByUserId(Long userId);
 }

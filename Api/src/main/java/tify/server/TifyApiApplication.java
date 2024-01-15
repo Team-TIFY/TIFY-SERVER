@@ -11,10 +11,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EntityScan("tify.server.domain")
 @RequiredArgsConstructor
 @SpringBootApplication
+@EnableScheduling
+@EnableAsync
 @Slf4j
 public class TifyApiApplication implements ApplicationListener<ApplicationReadyEvent> {
 

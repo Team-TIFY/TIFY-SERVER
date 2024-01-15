@@ -21,4 +21,6 @@ public interface NeighborRepository
     List<Neighbor> findAllByFromUserIdAndIsView(Long fromUserId, boolean isView);
 
     List<Neighbor> findAllByFromUserIdOrderByOrder(Long fromUserId);
+
+    void deleteAllByFromUserIdOrToUserId(Long fromUserId, Long toUserId);
 }

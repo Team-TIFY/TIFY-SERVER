@@ -8,4 +8,6 @@ import tify.server.domain.domains.question.domain.AnswerReport;
 public interface AnswerReportRepository extends JpaRepository<AnswerReport, Long> {
 
     Optional<AnswerReport> findByAnswerIdAndReportUserId(Long answerId, Long reportUserId);
+
+    void deleteAllByReportUserId(Long userId);
 }
