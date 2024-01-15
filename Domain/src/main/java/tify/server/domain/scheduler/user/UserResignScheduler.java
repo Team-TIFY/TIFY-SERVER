@@ -1,5 +1,6 @@
 package tify.server.domain.scheduler.user;
 
+
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,15 +36,17 @@ public class UserResignScheduler {
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
     public void deleteResignedUsers() {
         List<User> resignedUserList = userDomainService.getResignedUsers();
-        resignedUserList.forEach(user -> {
-            answerRepository.deleteAllByUserId(user.getId());
-            answerReportRepository.deleteAllByReportUserId(user.getId());
-            favorAnswerRepository.deleteAllByUserId(user.getId());
-            knockRepository.deleteAllByUserIdOrKnockedUserId(user.getId(), user.getId());
-            neighborRepository.deleteAllByFromUserIdOrToUserId(user.getId(), user.getId());
-            userBlockRepository.deleteAllByFromUserIdOrToUserId(user.getId(), user.getId());
-            userReportRepository.deleteAllByFromUserIdOrToUserId(user.getId(), user.getId());
-            userRepository.delete(user);
-        });
+        resignedUserList.forEach(
+                user -> {
+                    answerRepository.deleteAllByUserId(user.getId());
+                    answerReportRepository.deleteAllByReportUserId(user.getId());
+                    favorAnswerRepository.deleteAllByUserId(user.getId());
+                    knockRepository.deleteAllByUserIdOrKnockedUserId(user.getId(), user.getId());
+                    neighborRepository.deleteAllByFromUserIdOrToUserId(user.getId(), user.getId());
+                    userBlockRepository.deleteAllByFromUserIdOrToUserId(user.getId(), user.getId());
+                    userReportRepository.deleteAllByFromUserIdOrToUserId(
+                            user.getId(), user.getId());
+                    userRepository.delete(user);
+                });
     }
 }
