@@ -141,13 +141,14 @@ public class AlarmHistoryDomainService {
 
     @Async
     public void executeToFriendBirthDayAlarm(List<User> expectedBirthdayUserList) {
-        String content = "취향에 딱 맞는 선물을 받을 확률을 올려보세요!\n티피 프로필 공유하러 가기 >";
-
         expectedBirthdayUserList.forEach(
                 user -> {
                     String title =
                             String.format(
                                     "%s님의 생일이 4일 밖에 안남았대요! ", user.getProfile().getUserName());
+                    String content =
+                            String.format(
+                                    "티피에서 %s님 취향저격 선물 고르러 가기 >", user.getProfile().getUserName());
                     userAdaptor
                             .queryNeighborsByUserId(user.getId())
                             .forEach(
