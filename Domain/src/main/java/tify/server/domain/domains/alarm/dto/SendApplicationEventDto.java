@@ -1,4 +1,4 @@
-package tify.server.api.alarm.model.dto;
+package tify.server.domain.domains.alarm.dto;
 
 
 import lombok.Builder;
