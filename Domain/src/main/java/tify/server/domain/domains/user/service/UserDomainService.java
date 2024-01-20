@@ -1,6 +1,9 @@
 package tify.server.domain.domains.user.service;
 
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.annotation.DomainService;
@@ -62,5 +65,25 @@ public class UserDomainService {
     public boolean userCanRegister(OauthInfo oauthInfo) {
         return !userAdaptor.existByOauthInfo(oauthInfo)
                 || userResignAdaptor.existByOauthInfo(oauthInfo);
+    }
+
+    public List<User> getResignedUsers() {
+        return userResignAdaptor.queryAll().stream()
+                .map(
+                        resign -> {
+                            LocalDateTime resignedTime =
+                                    resign.getCreatedAt()
+                                            .toLocalDateTime()
+                                            .withHour(0)
+                                            .withMinute(0)
+                                            .withSecond(0)
+                                            .withNano(0);
+                            if (resignedTime.isEqual(LocalDateTime.now().minusMonths(6))) {
+                                return userAdaptor.query(resign.getUserId());
+                            }
+                            return null;
+                        })
+                .filter(Objects::nonNull)
+                .toList();
     }
 }
