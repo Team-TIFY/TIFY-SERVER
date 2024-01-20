@@ -8,12 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.core.consts.Status;
+import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
 @Entity
 @Table(name = "tbl_alarmhistory")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlarmHistory {
+public class AlarmHistory extends AbstractTimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
