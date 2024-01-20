@@ -45,7 +45,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         return queryFactory
                 .select(new QProductCrawlingDto(product.name, product.crawlUrl))
                 .from(product)
-                .where(product.crawlUrl.contains(site.getValue()))
+                .where(product.crawlUrl.contains(site.getValue()), product.imageUrl.isNull())
                 .groupBy(product.name)
                 .fetch();
     }
@@ -94,16 +94,10 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 queryFactory
                         .select(
                                 Projections.constructor(
-                                        ProductRetrieveDTO.class,
-                                        product.id,
-                                        product.name,
-                                        product.brand,
-                                        product.characteristic,
-                                        product.price,
-                                        product.productOption,
-                                        product.imageUrl,
-                                        product.crawlUrl))
+                                        ProductRetrieveDTO.class, product, favorQuestionCategory))
                         .from(product)
+                        .join(favorQuestionCategory)
+                        .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))
                         .where(
                                 product.favorQuestionCategoryId.in(
                                         productCategoryCondition.getCategoryIdList()),
@@ -130,6 +124,19 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                                 productCategoryCondition.getCategoryIdList()),
                         priceBetween(productCategoryCondition.getPriceFilter()))
                 .orderBy(orderByPrice(productCategoryCondition.getPriceOrder()))
+                .offset(productCategoryCondition.getPageable().getOffset())
+                .limit(productCategoryCondition.getPageable().getPageSize() + 1)
+                .fetch();
+    }
+
+    @Override
+    public List<Product> searchAllByCategoryName(String categoryName) {
+        return queryFactory
+                .selectFrom(product)
+                .innerJoin(favorQuestionCategory)
+                .on(
+                        favorQuestionCategory.id.eq(product.favorQuestionCategoryId),
+                        favorQuestionCategory.name.eq(categoryName))
                 .fetch();
     }
 

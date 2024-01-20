@@ -21,3 +21,23 @@ oauth2:
     log-in-key: ${APPLE_LOGIN_KEY}
     redirect-url: ${APPLE_REDIRECT}
     key-path: ${APPLE_KEY_PATH}
+    key: ${APPLE_KEY}
+
+#s3:
+#  region: ${S3_REGION}
+#  access-key: ${S3_ACCESS_KEY}
+#  secret-key: ${S3_SECRET_KEY}
+#  bucket-name: ${S3_BUCKET_NAME}
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    region:
+      name: ${S3_REGION}
+      static: ap-northeast-2
+    stack:
+      auto: false

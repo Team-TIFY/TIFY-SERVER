@@ -12,6 +12,7 @@ import tify.server.domain.domains.user.adaptor.UserBlockAdaptor;
 import tify.server.domain.domains.user.domain.Neighbor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.UserBlock;
+import tify.server.domain.domains.user.validator.UserValidator;
 import tify.server.domain.domains.user.vo.UserInfoVo;
 import tify.server.domain.domains.user.vo.UserProfileVo;
 
@@ -21,11 +22,14 @@ import tify.server.domain.domains.user.vo.UserProfileVo;
 public class UserInfoUseCase {
 
     private final UserAdaptor userAdaptor;
+    private final UserValidator userValidator;
     private final NeighborAdaptor neighborAdaptor;
     private final UserBlockAdaptor userBlockAdaptor;
 
     public UserProfileVo execute(Long searchedUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(searchedUserId);
+        userValidator.isResignedUser(searchedUserId);
         Optional<Neighbor> fromNeighbor =
                 neighborAdaptor.queryByFromUserIdAndToUserId(currentUserId, searchedUserId);
         Optional<Neighbor> toNeighbor =

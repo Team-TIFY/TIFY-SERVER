@@ -2,15 +2,18 @@ package tify.server.api.user.service;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.api.config.security.SecurityUtils;
 import tify.server.core.annotation.UseCase;
+import tify.server.domain.domains.alarm.dto.SendApplicationEventDto;
 import tify.server.domain.domains.user.adaptor.NeighborAdaptor;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.domain.NeighborApplication;
 import tify.server.domain.domains.user.domain.User;
 import tify.server.domain.domains.user.exception.AlreadyExistNeighborRelationshipException;
 import tify.server.domain.domains.user.exception.SelfNeighborException;
+import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
 @RequiredArgsConstructor
@@ -19,13 +22,18 @@ public class CreateNeighborUseCase {
 
     private final UserAdaptor userAdaptor;
     private final NeighborAdaptor neighborAdaptor;
+    private final UserValidator userValidator;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public void execute(Long toUserId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+
         if (currentUserId.equals(toUserId)) {
             throw SelfNeighborException.EXCEPTION;
         }
 
+        userValidator.isValidUser(toUserId);
         User toUser = userAdaptor.query(toUserId);
 
         if (neighborAdaptor.existsNeighbor(currentUserId, toUser.getId())) {
@@ -36,11 +44,13 @@ public class CreateNeighborUseCase {
         if (!neighborAdaptor
                 .queryByFromUserIdAndToUserId(toUser.getId(), currentUserId)
                 .isPresent()) {
-            neighborAdaptor.saveNeighborApplication(
+            NeighborApplication application =
                     NeighborApplication.builder()
                             .fromUserId(SecurityUtils.getCurrentUserId())
                             .toUserId(toUserId)
-                            .build());
+                            .build();
+            neighborAdaptor.saveNeighborApplication(application);
+            applicationEventPublisher.publishEvent(SendApplicationEventDto.from(application));
         }
     }
 }

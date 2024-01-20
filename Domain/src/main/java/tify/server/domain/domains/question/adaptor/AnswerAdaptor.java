@@ -64,10 +64,14 @@ public class AnswerAdaptor {
                 dailyQuestionRepository.findAllByCategory(dailyQuestionCategory).stream()
                         .map(DailyQuestion::getId)
                         .toList();
-        return answerRepository.countMyAnswerByDailyQuestionCategory(userId, dailyQuestionIdList);
+        return answerRepository.countAnswersByDailyQuestionCategory(userId, dailyQuestionIdList);
     }
 
     public Long countAllUserAnswer(Long userId) {
         return answerRepository.countAllByUserId(userId);
+    }
+
+    public Boolean existByAnswerId(Long answerId) {
+        return answerRepository.existsById(answerId);
     }
 }

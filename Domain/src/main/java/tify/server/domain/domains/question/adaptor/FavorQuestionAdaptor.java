@@ -83,4 +83,8 @@ public class FavorQuestionAdaptor {
     public List<FavorQuestionCategory> queryBySmallCategory(SmallCategory smallCategory) {
         return favorQuestionCategoryRepository.findBySmallCategory(smallCategory);
     }
+
+    public List<FavorQuestion> queryAll() {
+        return favorQuestionRepository.findAll();
+    }
 }

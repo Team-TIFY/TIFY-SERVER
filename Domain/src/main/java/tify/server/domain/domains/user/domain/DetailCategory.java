@@ -21,7 +21,7 @@ public enum DetailCategory {
     PLACE("공간향", FRAGRANCE),
     TOP("상의", CLOTHES),
     FAS_PRODUCT("패션소품", FASHION_PRODUCT),
-    DIG_PRODUCT("디지털/테크소품", FASHION_PRODUCT),
+    DIG_PRODUCT("디지털/테크소품", DIGITAL_PRODUCT),
     BAG("가방", SmallCategory.BAG),
     ACCESSORY("액세서리", SmallCategory.ACCESSORY),
     DISH("식기", COOKING),
@@ -31,6 +31,13 @@ public enum DetailCategory {
 
     public static List<DetailCategory> getDetailCategories() {
         return Arrays.stream(DetailCategory.values()).toList();
+    }
+
+    public static List<DetailCategory> getDetailCategoriesBySmallCategory(
+            SmallCategory smallCategory) {
+        return Arrays.stream(DetailCategory.values())
+                .filter(detailCategory -> detailCategory.getSmallCategory().equals(smallCategory))
+                .toList();
     }
 
     final String value;

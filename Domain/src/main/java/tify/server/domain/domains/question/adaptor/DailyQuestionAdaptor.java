@@ -29,4 +29,8 @@ public class DailyQuestionAdaptor {
                 .findByLoadingDate(loadingDate)
                 .orElseThrow(() -> DailyQuestionNotFoundException.EXCEPTION);
     }
+
+    public Boolean existByQuestionId(Long dailyQuestionId) {
+        return dailyQuestionRepository.existsById(dailyQuestionId);
+    }
 }

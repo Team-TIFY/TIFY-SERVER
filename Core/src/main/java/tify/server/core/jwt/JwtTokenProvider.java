@@ -8,10 +8,8 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.security.Key;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -167,19 +165,8 @@ public class JwtTokenProvider {
 
     public PrivateKey getPrivateKey()
             throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String result = "";
 
-        if (hashMap.get("apple") == null) {
-            File file = new File(appleKeyPath);
-            result = new String(Files.readAllBytes(file.toPath()));
-            hashMap.put("apple", result);
-        } else {
-            result = hashMap.get("apple");
-        }
-
-        String key =
-                result.replace("-----BEGIN PRIVATE KEY-----\n", "")
-                        .replace("-----END PRIVATE KEY-----", "");
+        String key = oauthProperties.getAppleKey();
 
         byte[] encoded = Base64.decodeBase64(key.getBytes());
 

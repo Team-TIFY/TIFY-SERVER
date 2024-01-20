@@ -1,11 +1,9 @@
 package tify.server.domain.domains.question.strategy;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -24,13 +22,13 @@ public class HEEXERecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "HEEXE";
 
     @Override
-    public List<Product> recommendation(Long userId, String categoryName,
-        List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(
+        Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendDTO(userId);
 
-        List<String> splitAnswer = Arrays.stream(recommendationDTO.get(0).getAnswer().split(", "))
-            .toList();
+        List<String> splitAnswer =
+            Arrays.stream(recommendationDTO.get(0).getAnswer().split(", ")).toList();
 
         if (splitAnswer.contains("그 외")) {
             return etcStep(splitAnswer);
@@ -58,13 +56,16 @@ public class HEEXERecommendationStrategy implements ProductRecommendationStrateg
     private List<Product> specificStep(List<String> splitAnswer) { // 그 외 라는 답변 존재하지 않을 때
         List<Product> result = new ArrayList<>();
         if (splitAnswer.size() > 1) { // ex) 헬스, 요가&필라테스
-            result.addAll(productAdaptor.queryAllByCategoryNameAndCharacter(CATEGORY_NAME,
-                splitAnswer.get(0)));
-            result.addAll(productAdaptor.queryAllByCategoryNameAndCharacter(CATEGORY_NAME,
-                splitAnswer.get(1)));
+            result.addAll(
+                productAdaptor.queryAllByCategoryNameAndCharacter(
+                    CATEGORY_NAME, splitAnswer.get(0)));
+            result.addAll(
+                productAdaptor.queryAllByCategoryNameAndCharacter(
+                    CATEGORY_NAME, splitAnswer.get(1)));
         } else { // ex) 헬스
-            result.addAll(productAdaptor.queryAllByCategoryNameAndCharacter(CATEGORY_NAME,
-                splitAnswer.get(0)));
+            result.addAll(
+                productAdaptor.queryAllByCategoryNameAndCharacter(
+                    CATEGORY_NAME, splitAnswer.get(0)));
         }
         return result;
     }

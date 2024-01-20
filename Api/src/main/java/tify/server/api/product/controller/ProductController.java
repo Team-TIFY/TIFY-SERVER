@@ -4,7 +4,6 @@ package tify.server.api.product.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.api.annotations.ParameterObject;
@@ -63,8 +62,9 @@ public class ProductController {
 
     @Operation(summary = "SmallCategory(FE기준 중분류) 별 상품을 조회합니다.")
     @GetMapping("/products/small-category")
-    public List<ProductRetrieveVo> getCategoricalProduct(
-            @ParameterObject ProductFilterCondition productFilterCondition) {
-        return retrieveProductListUseCase.executeToSmallCategory(productFilterCondition);
+    public SliceResponse<ProductRetrieveVo> getCategoricalProduct(
+            @ParameterObject ProductFilterCondition productFilterCondition,
+            @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+        return retrieveProductListUseCase.executeToSmallCategory(productFilterCondition, pageable);
     }
 }

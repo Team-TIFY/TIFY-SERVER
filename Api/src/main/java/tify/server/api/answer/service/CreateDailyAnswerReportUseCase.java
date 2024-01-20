@@ -10,6 +10,7 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.question.adaptor.AnswerReportAdaptor;
 import tify.server.domain.domains.question.domain.AnswerReport;
 import tify.server.domain.domains.question.validator.AnswerReportValidator;
+import tify.server.domain.domains.question.validator.AnswerValidator;
 
 @UseCase
 @RequiredArgsConstructor
@@ -17,10 +18,12 @@ public class CreateDailyAnswerReportUseCase {
 
     private final AnswerReportAdaptor answerReportAdaptor;
     private final AnswerReportValidator answerReportValidator;
+    private final AnswerValidator answerValidator;
 
     @Transactional
     public AnswerReportResponse execute(Long answerId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        answerValidator.isValidAnswer(answerId);
         Optional<AnswerReport> report =
                 answerReportAdaptor.optionalQueryByUserIdAndAnswerId(currentUserId, answerId);
         if (report.isPresent()) {

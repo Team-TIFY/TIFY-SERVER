@@ -11,6 +11,7 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.user.adaptor.UserAdaptor;
 import tify.server.domain.domains.user.adaptor.UserReportAdaptor;
 import tify.server.domain.domains.user.domain.UserReport;
+import tify.server.domain.domains.user.validator.UserValidator;
 
 @UseCase
 @RequiredArgsConstructor
@@ -18,10 +19,13 @@ public class CreateUserReportUseCase {
 
     private final UserReportAdaptor userReportAdaptor;
     private final UserAdaptor userAdaptor;
+    private final UserValidator userValidator;
 
     @Transactional
     public UserReportResponse execute(Long userId) {
         Long currentUserId = SecurityUtils.getCurrentUserId();
+        userValidator.isValidUser(userId);
+        userValidator.isResignedUser(userId);
         Optional<UserReport> report =
                 userReportAdaptor.optionalQueryByFromUserIdAndToUserId(currentUserId, userId);
         if (report.isPresent()) { // 이미 신고가 존재할 때

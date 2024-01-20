@@ -16,6 +16,7 @@ public enum QuestionException implements BaseErrorCode {
     KNOCK_NOT_FOUND_ERROR(NOT_FOUND, "Knock_404_1", "찌르기에 대한 답변 정보를 찾을 수 없습니다."),
     NOT_VALID_TODAY_QUESTION_ERROR(BAD_REQUEST, "Answer_400_1", "오늘의 질문이 아닙니다."),
     ALREADY_ANSWERED_QUESTION_ERROR(BAD_REQUEST, "Answer_400_2", "이미 답변하신 질문입니다."),
+    MULTIPLE_ANSWER_ERROR(BAD_REQUEST, "Answer_400_3", "한 질문에 여러번 답할 수 없습니다."),
     FAVOR_QUESTION_NOT_FOUND_ERROR(NOT_FOUND, "FavorQuestion_404_1", "취향 질문 정보를 찾을 수 없습니다."),
     FAVOR_ANSWER_NOT_FOUND_ERROR(NOT_FOUND, "FavorAnswer_404_1", "취향 질문 답변 정보를 찾을 수 없습니다."),
     ALREADY_ANSWERED_FAVOR_QUESTION_ERROR(BAD_REQUEST, "FavorAnswer_400_2", "이미 답변하신 취향 질문입니다."),

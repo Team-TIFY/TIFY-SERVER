@@ -19,6 +19,7 @@ public class RemoveNeighborUseCase {
     public void execute(Long toUserId) {
         Long userId = SecurityUtils.getCurrentUserId();
         userValidator.isNeighbor(userId, toUserId);
+        userValidator.isResignedUser(toUserId);
         neighborAdaptor
                 .queryByFromUserIdAndToUserId(userId, toUserId)
                 .ifPresent(neighborAdaptor::delete);

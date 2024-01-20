@@ -8,12 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import tify.server.core.consts.Status;
+import tify.server.domain.domains.AbstractTimeStamp;
 
 @Getter
 @Entity
 @Table(name = "tbl_alarmhistory")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AlarmHistory {
+public class AlarmHistory extends AbstractTimeStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +26,8 @@ public class AlarmHistory {
     @Enumerated(EnumType.STRING)
     private AlarmType alarmType;
 
+    @NotNull private String title;
+
     @NotNull private String content;
 
     @NotNull
@@ -32,10 +35,11 @@ public class AlarmHistory {
     private Status isRead;
 
     @Builder
-    public AlarmHistory(Long id, Long userId, AlarmType alarmType, String content) {
+    public AlarmHistory(Long id, Long userId, AlarmType alarmType, String title, String content) {
         this.id = id;
         this.userId = userId;
         this.alarmType = alarmType;
+        this.title = title;
         this.content = content;
         this.isRead = Status.N;
     }
