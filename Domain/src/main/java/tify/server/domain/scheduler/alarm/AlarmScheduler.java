@@ -22,7 +22,7 @@ public class AlarmScheduler {
     private final AlarmHistoryDomainService alarmHistoryDomainService;
 
     @Transactional
-    @Scheduled(cron = "0 0 17-21 ? * SUN", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 17 * * SUN", zone = "Asia/Seoul")
     public void executeToNotAnsweredQuestionAlarm() {
         LocalDate today = LocalDate.now();
         DailyQuestion dailyQuestion = dailyQuestionAdaptor.queryByLoadingDate(today);
@@ -30,7 +30,7 @@ public class AlarmScheduler {
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 17-21 ? *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 21 * *", zone = "Asia/Seoul")
     public void executeToFriendBirthDayAlarm() {
         LocalDate fourDaysLater = LocalDate.now().plusDays(4);
         String monthAndYear =
@@ -48,7 +48,7 @@ public class AlarmScheduler {
     }
 
     @Transactional
-    @Scheduled(cron = "0 0 17-21 7 *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 0 18 7 *", zone = "Asia/Seoul")
     public void executeToFavorAlarm() {
         alarmHistoryDomainService.executeToFavorAlarm();
     }
