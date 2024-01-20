@@ -45,7 +45,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         return queryFactory
                 .select(new QProductCrawlingDto(product.name, product.crawlUrl))
                 .from(product)
-                .where(product.crawlUrl.contains(site.getValue()))
+                .where(product.crawlUrl.contains(site.getValue()), product.imageUrl.isNull())
                 .groupBy(product.name)
                 .fetch();
     }
