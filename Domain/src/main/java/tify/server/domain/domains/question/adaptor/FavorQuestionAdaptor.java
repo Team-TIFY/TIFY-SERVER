@@ -89,7 +89,8 @@ public class FavorQuestionAdaptor {
     }
 
     public FavorQuestionCategory queryCategory(Long favorQuestionCategory) {
-        return favorQuestionCategoryRepository.findById(favorQuestionCategory)
-            .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
+        return favorQuestionCategoryRepository
+                .findById(favorQuestionCategory)
+                .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
     }
 }

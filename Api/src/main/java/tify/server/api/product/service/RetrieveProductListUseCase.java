@@ -2,9 +2,7 @@ package tify.server.api.product.service;
 
 import static tify.server.domain.domains.question.strategy.StrategyName.*;
 
-import java.security.Security;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,6 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.PriceFilter;
 import tify.server.domain.domains.product.domain.PriceOrder;
-import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
@@ -54,17 +51,24 @@ public class RetrieveProductListUseCase {
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
                 && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
             List<ProductRetrieveDTO> list = new ArrayList<>();
-            strategies.forEach(strategy -> {
-                list.addAll(strategy.recommendation(
-                            SecurityUtils.getCurrentUserId(),
-                            strategy.getStrategyName().getValue())
-                        .stream().map(product -> {
-                            return ProductRetrieveDTO.of(product,
-                                favorQuestionAdaptor.queryCategory(
-                                    product.getFavorQuestionCategoryId()));
-                        }).toList());
-                }
-            );
+            strategies.forEach(
+                    strategy -> {
+                        list.addAll(
+                                strategy
+                                        .recommendation(
+                                                SecurityUtils.getCurrentUserId(),
+                                                strategy.getStrategyName().getValue())
+                                        .stream()
+                                        .map(
+                                                product -> {
+                                                    return ProductRetrieveDTO.of(
+                                                            product,
+                                                            favorQuestionAdaptor.queryCategory(
+                                                                    product
+                                                                            .getFavorQuestionCategoryId()));
+                                                })
+                                        .toList());
+                    });
             return SliceResponse.of(
                     new SliceImpl<>(
                             list.stream().map(ProductRetrieveVo::from).toList(), pageable, true));
