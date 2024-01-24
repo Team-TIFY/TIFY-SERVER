@@ -87,4 +87,9 @@ public class FavorQuestionAdaptor {
     public List<FavorQuestion> queryAll() {
         return favorQuestionRepository.findAll();
     }
+
+    public FavorQuestionCategory queryCategory(Long favorQuestionCategory) {
+        return favorQuestionCategoryRepository.findById(favorQuestionCategory)
+            .orElseThrow(() -> FavorQuestionCategoryNotFoundException.EXCEPTION);
+    }
 }

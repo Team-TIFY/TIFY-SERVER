@@ -15,4 +15,10 @@ public class ProductRetrieveDTO {
     private Product product;
 
     private FavorQuestionCategory favorQuestionCategory;
+
+    public static ProductRetrieveDTO of(Product product,
+        FavorQuestionCategory favorQuestionCategory) {
+        return ProductRetrieveDTO.builder().product(product)
+            .favorQuestionCategory(favorQuestionCategory).build();
+    }
 }
