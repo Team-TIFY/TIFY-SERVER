@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -14,6 +15,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FCTOPRecommendationStrategy implements ProductRecommendationStrategy {
@@ -25,10 +27,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FCTOP";
 
     @Override
-    public List<Product> recommendation(
-            Long userId,
-            String categoryName,
-            List<FavorRecommendationDTO> dto) { // 필요없는 파라미터들 날릴 예정
+    public List<Product> recommendation(Long userId, String categoryName) { // 필요없는 파라미터들 날릴 예정
 
         List<FavorRecommendationDTO> dtos = getRecommendDTO(userId);
 
@@ -52,6 +51,11 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
 
         // 4번 스텝
         return fourthStep(thirdProducts, dtos.get(3).getAnswer());
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<FavorRecommendationDTO> getRecommendDTO(Long userId) {

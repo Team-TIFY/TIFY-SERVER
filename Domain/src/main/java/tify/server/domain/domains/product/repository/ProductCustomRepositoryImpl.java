@@ -140,17 +140,6 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 .fetch();
     }
 
-    @Override
-    public List<Product> searchAllByCategoryName(String categoryName) {
-        return queryFactory
-            .selectFrom(product)
-            .innerJoin(favorQuestionCategory)
-            .on(
-                favorQuestionCategory.id.eq(product.favorQuestionCategoryId),
-                favorQuestionCategory.name.eq(categoryName))
-            .fetch();
-    }
-
     private OrderSpecifier[] orderByPrice(PriceOrder priceOrder) {
         List<OrderSpecifier> orderSpecifiers = new ArrayList<>();
         if (priceOrder.equals(PRICE_ASC)) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -14,6 +15,7 @@ import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 import tify.server.domain.domains.question.exception.QuestionException;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FEBAGRecommendationStrategy implements ProductRecommendationStrategy {
@@ -26,8 +28,7 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FEBAG";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
 
@@ -41,6 +42,11 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
             return secondProducts;
         }
         return secondStep(secondProducts, recommendationDTO.get(2).getAnswer());
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {

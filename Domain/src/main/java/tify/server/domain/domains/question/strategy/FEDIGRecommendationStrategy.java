@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 public class FEDIGRecommendationStrategy implements ProductRecommendationStrategy {
 
@@ -22,8 +24,7 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
     private static List<Product> fedigProducts = new ArrayList<>();
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> initRecommendationDTO = getInitRecommendationDTO(userId);
         List<String> productAnswer =
@@ -46,6 +47,11 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         }
 
         return fedigProducts;
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<FavorRecommendationDTO> getInitRecommendationDTO(Long userId) {

@@ -4,11 +4,13 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 public class BMPERRecommendationStrategy implements ProductRecommendationStrategy {
 
@@ -18,8 +20,7 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "BMPER";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
         List<Product> productList = new ArrayList<>();
@@ -45,6 +46,11 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
                                             .contains(recommendationDTO.get(1).getAnswer()))
                     .toList();
         }
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<Product> filterStep(String categoryName, String answer) {

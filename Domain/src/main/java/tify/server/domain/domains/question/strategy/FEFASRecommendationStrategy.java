@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -12,6 +13,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FEFASRecommendationStrategy implements ProductRecommendationStrategy {
@@ -22,8 +24,7 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FEFAS";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
         List<Product> fefasProducts = new ArrayList<>();
         List<FavorRecommendationDTO> initRecommendationDTO = getInitRecommendationDTO(userId);
         if (!initRecommendationDTO.get(0).getAnswer().contains("거의 안씀")
@@ -49,6 +50,11 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
         products.addAll(gloveStep(userId, fefasProducts));
 
         return products;
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     // 모자, 목도리, 장갑 을 특별한 경우, 거의 안씀을 골랐는지를 판별하는 답변들

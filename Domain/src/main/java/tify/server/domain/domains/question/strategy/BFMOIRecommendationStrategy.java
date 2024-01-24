@@ -4,6 +4,7 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -11,6 +12,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BFMOIRecommendationStrategy implements ProductRecommendationStrategy {
@@ -20,8 +22,7 @@ public class BFMOIRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "BFMOI";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
         List<Product> productList = new ArrayList<>();
@@ -72,6 +73,11 @@ public class BFMOIRecommendationStrategy implements ProductRecommendationStrateg
                                             .contains(secondFavorRecommendationDTO.getAnswer()))
                     .toList();
         }
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.BFMOI;
     }
 
     private List<Product> filterStep(String categoryName, String answer) {

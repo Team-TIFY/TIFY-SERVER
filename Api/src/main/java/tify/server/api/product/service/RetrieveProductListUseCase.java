@@ -1,5 +1,6 @@
 package tify.server.api.product.service;
 
+import static tify.server.domain.domains.question.strategy.StrategyName.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,7 @@ import tify.server.domain.domains.product.dto.ProductCategoryCondition;
 import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.domain.FavorQuestionCategory;
+import tify.server.domain.domains.question.strategy.ProductRecommendationStrategyFactory;
 
 @UseCase
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ public class RetrieveProductListUseCase {
 
     private final ProductAdaptor productAdaptor;
     private final FavorQuestionAdaptor favorQuestionAdaptor;
+    private final ProductRecommendationStrategyFactory strategyFactory;
 
     @Transactional(readOnly = true)
     public SliceResponse<ProductRetrieveVo> executeToSmallCategory(

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -12,6 +13,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class HEEXERecommendationStrategy implements ProductRecommendationStrategy {
@@ -22,13 +24,12 @@ public class HEEXERecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "HEEXE";
 
     @Override
-    public List<Product> recommendation(
-        Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendDTO(userId);
 
         List<String> splitAnswer =
-            Arrays.stream(recommendationDTO.get(0).getAnswer().split(", ")).toList();
+                Arrays.stream(recommendationDTO.get(0).getAnswer().split(", ")).toList();
 
         if (splitAnswer.contains("그 외")) {
             return etcStep(splitAnswer);
@@ -37,10 +38,15 @@ public class HEEXERecommendationStrategy implements ProductRecommendationStrateg
         }
     }
 
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
+    }
+
     private List<FavorRecommendationDTO> getRecommendDTO(Long userId) {
         List<FavorAnswer> favorAnswers = new ArrayList<>();
         favorAnswers.add(
-            favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
+                favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L));
         return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 
@@ -57,15 +63,15 @@ public class HEEXERecommendationStrategy implements ProductRecommendationStrateg
         List<Product> result = new ArrayList<>();
         if (splitAnswer.size() > 1) { // ex) 헬스, 요가&필라테스
             result.addAll(
-                productAdaptor.queryAllByCategoryNameAndCharacter(
-                    CATEGORY_NAME, splitAnswer.get(0)));
+                    productAdaptor.queryAllByCategoryNameAndCharacter(
+                            CATEGORY_NAME, splitAnswer.get(0)));
             result.addAll(
-                productAdaptor.queryAllByCategoryNameAndCharacter(
-                    CATEGORY_NAME, splitAnswer.get(1)));
+                    productAdaptor.queryAllByCategoryNameAndCharacter(
+                            CATEGORY_NAME, splitAnswer.get(1)));
         } else { // ex) 헬스
             result.addAll(
-                productAdaptor.queryAllByCategoryNameAndCharacter(
-                    CATEGORY_NAME, splitAnswer.get(0)));
+                    productAdaptor.queryAllByCategoryNameAndCharacter(
+                            CATEGORY_NAME, splitAnswer.get(0)));
         }
         return result;
     }
