@@ -12,12 +12,12 @@ import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
 @Component
 @RequiredArgsConstructor
-public class BMPERRecommendationStrategy implements ProductRecommendationStrategy {
+public class BFPERRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
-    private static final String CATEGORY_NAME = "BMPER";
+    private static final String CATEGORY_NAME = "BFPER";
 
     @Override
     public List<Product> recommendation(Long userId, String categoryName) {

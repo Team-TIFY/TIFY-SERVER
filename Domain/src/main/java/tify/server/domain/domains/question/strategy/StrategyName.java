@@ -13,7 +13,7 @@ public enum StrategyName {
     BFPLA("BFPLA", PLACE),
     BMEYE("BMEYE", EYE),
     BMLIP("BMLIP", LIP),
-    BMPER("BMPER", PERFUME),
+    BFPER("BFPER", PERFUME),
     FAACC("FAACC", ACCESSORY),
     FCTOP("FCTOP", TOP),
     FEBAG("FEBAG", BAG),
