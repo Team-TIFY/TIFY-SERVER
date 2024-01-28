@@ -16,8 +16,8 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.PriceFilter;
 import tify.server.domain.domains.product.domain.PriceOrder;
-import tify.server.domain.domains.product.dto.ProductCategoryCondition;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
+import tify.server.domain.domains.product.dto.condition.ProductCategoryCondition;
+import tify.server.domain.domains.product.dto.model.ProductRetrieveDto;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 
@@ -45,7 +45,7 @@ public class RetrieveProductListUseCase {
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
                 && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
             // TODO : 추천 전략을 적용하는 부분일듯
-            List<ProductRetrieveDTO> list =
+            List<ProductRetrieveDto> list =
                     productAdaptor.findAllBySmallCategoryId(
                             new ProductCategoryCondition(
                                     categoryIdList,
@@ -57,7 +57,7 @@ public class RetrieveProductListUseCase {
                     new SliceImpl<>(
                             list.stream().map(ProductRetrieveVo::from).toList(), pageable, true));
         } else {
-            Slice<ProductRetrieveDTO> productRetrieveDTOS =
+            Slice<ProductRetrieveDto> productRetrieveDTOS =
                     productAdaptor.searchBySmallCategoryId(
                             new ProductCategoryCondition(
                                     categoryIdList,

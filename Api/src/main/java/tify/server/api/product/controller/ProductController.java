@@ -20,7 +20,7 @@ import tify.server.api.product.model.vo.ProductRetrieveVo;
 import tify.server.api.product.service.CrawlingUseCase;
 import tify.server.api.product.service.ProductSearchUseCase;
 import tify.server.api.product.service.RetrieveProductListUseCase;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
+import tify.server.domain.domains.product.dto.model.ProductVo;
 
 @RestController
 @Slf4j
@@ -54,7 +54,7 @@ public class ProductController {
 
     @Operation(summary = "키워드를 이용하여 관련된 상품을 검색합니다.")
     @GetMapping()
-    public SliceResponse<ProductRetrieveDTO> productSearch(
+    public SliceResponse<ProductVo> productSearch(
             @RequestParam String keyword,
             @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
         return productSearchUseCase.execute(keyword, pageable);

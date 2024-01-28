@@ -1,4 +1,4 @@
-package tify.server.domain.domains.product.dto;
+package tify.server.domain.domains.product.dto.condition;
 
 
 import java.util.List;
@@ -13,7 +13,10 @@ import tify.server.domain.domains.product.domain.PriceOrder;
 public class ProductCategoryCondition {
 
     private List<Long> categoryIdList;
+
     private PriceOrder priceOrder;
+
     private PriceFilter priceFilter;
+
     private Pageable pageable;
 }

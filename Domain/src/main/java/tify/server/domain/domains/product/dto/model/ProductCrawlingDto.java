@@ -1,4 +1,4 @@
-package tify.server.domain.domains.product.dto;
+package tify.server.domain.domains.product.dto.model;
 
 
 import com.querydsl.core.annotations.QueryProjection;

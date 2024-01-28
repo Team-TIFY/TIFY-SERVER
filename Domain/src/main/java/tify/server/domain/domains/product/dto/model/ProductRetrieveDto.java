@@ -1,4 +1,4 @@
-package tify.server.domain.domains.product.dto;
+package tify.server.domain.domains.product.dto.model;
 
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 @Getter
 @AllArgsConstructor
 @Builder
-public class ProductRetrieveDTO {
+public class ProductRetrieveDto {
 
     private Product product;
 
