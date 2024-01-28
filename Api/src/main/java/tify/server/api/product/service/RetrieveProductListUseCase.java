@@ -1,8 +1,7 @@
 package tify.server.api.product.service;
 
-import static tify.server.domain.domains.question.strategy.StrategyName.*;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +16,8 @@ import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.PriceFilter;
 import tify.server.domain.domains.product.domain.PriceOrder;
-import tify.server.domain.domains.product.dto.ProductCategoryCondition;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
+import tify.server.domain.domains.product.dto.condition.ProductCategoryCondition;
+import tify.server.domain.domains.product.dto.model.ProductRetrieveDto;
 import tify.server.domain.domains.question.adaptor.FavorQuestionAdaptor;
 import tify.server.domain.domains.question.domain.FavorQuestionCategory;
 import tify.server.domain.domains.question.strategy.ProductRecommendationStrategy;
@@ -50,7 +49,7 @@ public class RetrieveProductListUseCase {
 
         if (productFilterCondition.getPriceOrder().equals(PriceOrder.DEFAULT)
                 && productFilterCondition.getPriceFilter().equals(PriceFilter.DEFAULT)) {
-            List<ProductRetrieveDTO> list = new ArrayList<>();
+            List<ProductRetrieveDto> list = new ArrayList<>();
             strategies.forEach(
                     strategy -> {
                         list.addAll(
@@ -61,7 +60,7 @@ public class RetrieveProductListUseCase {
                                         .stream()
                                         .map(
                                                 product -> {
-                                                    return ProductRetrieveDTO.of(
+                                                    return ProductRetrieveDto.of(
                                                             product,
                                                             favorQuestionAdaptor.queryCategory(
                                                                     product
@@ -73,7 +72,7 @@ public class RetrieveProductListUseCase {
                     new SliceImpl<>(
                             list.stream().map(ProductRetrieveVo::from).toList(), pageable, true));
         } else {
-            Slice<ProductRetrieveDTO> productRetrieveDTOS =
+            Slice<ProductRetrieveDto> productRetrieveDTOS =
                     productAdaptor.searchBySmallCategoryId(
                             new ProductCategoryCondition(
                                     categoryIdList,

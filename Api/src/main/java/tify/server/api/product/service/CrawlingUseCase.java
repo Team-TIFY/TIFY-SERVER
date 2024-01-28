@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import tify.server.core.annotation.UseCase;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Site;
-import tify.server.domain.domains.product.dto.ProductCrawlingDto;
+import tify.server.domain.domains.product.dto.model.ProductCrawlingDto;
 import tify.server.infrastructure.outer.crawling.MusinsaCrawl;
 import tify.server.infrastructure.outer.crawling.OliveYoungCrawl;
 import tify.server.infrastructure.outer.crawling.TwentyNineCrawl;

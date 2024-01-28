@@ -20,11 +20,11 @@ import tify.server.domain.domains.product.domain.PriceFilter;
 import tify.server.domain.domains.product.domain.PriceOrder;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.domain.Site;
-import tify.server.domain.domains.product.dto.ProductCategoryCondition;
-import tify.server.domain.domains.product.dto.ProductCondition;
-import tify.server.domain.domains.product.dto.ProductCrawlingDto;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
-import tify.server.domain.domains.product.dto.QProductCrawlingDto;
+import tify.server.domain.domains.product.dto.condition.ProductCategoryCondition;
+import tify.server.domain.domains.product.dto.condition.ProductCondition;
+import tify.server.domain.domains.product.dto.model.ProductCrawlingDto;
+import tify.server.domain.domains.product.dto.model.ProductRetrieveDto;
+import tify.server.domain.domains.product.dto.model.ProductVo;
 
 @RequiredArgsConstructor
 public class ProductCustomRepositoryImpl implements ProductCustomRepository {
@@ -34,7 +34,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     @Override
     public List<ProductCrawlingDto> search() {
         return queryFactory
-                .select(new QProductCrawlingDto(product.name, product.crawlUrl))
+                .select(
+                        Projections.constructor(
+                                ProductCrawlingDto.class, product.name, product.crawlUrl))
                 .from(product)
                 .groupBy(product.name)
                 .fetch();
@@ -43,7 +45,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     @Override
     public List<ProductCrawlingDto> searchByCompany(Site site) {
         return queryFactory
-                .select(new QProductCrawlingDto(product.name, product.crawlUrl))
+                .select(
+                        Projections.constructor(
+                                ProductCrawlingDto.class, product.name, product.crawlUrl))
                 .from(product)
                 .where(product.crawlUrl.contains(site.getValue()), product.imageUrl.isNull())
                 .groupBy(product.name)
@@ -63,12 +67,12 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public Slice<ProductRetrieveDTO> searchByKeyword(ProductCondition productCondition) {
-        List<ProductRetrieveDTO> products =
+    public Slice<ProductVo> searchByKeyword(ProductCondition productCondition) {
+        List<ProductVo> products =
                 queryFactory
                         .select(
                                 Projections.constructor(
-                                        ProductRetrieveDTO.class,
+                                        ProductVo.class,
                                         product.id,
                                         product.name,
                                         product.brand,
@@ -88,13 +92,13 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public Slice<ProductRetrieveDTO> searchBySmallCategory(
+    public Slice<ProductRetrieveDto> searchBySmallCategory(
             ProductCategoryCondition productCategoryCondition) {
-        List<ProductRetrieveDTO> products =
+        List<ProductRetrieveDto> products =
                 queryFactory
                         .select(
                                 Projections.constructor(
-                                        ProductRetrieveDTO.class, product, favorQuestionCategory))
+                                        ProductRetrieveDto.class, product, favorQuestionCategory))
                         .from(product)
                         .join(favorQuestionCategory)
                         .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))
@@ -110,12 +114,12 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public List<ProductRetrieveDTO> findAllBySmallCategory(
+    public List<ProductRetrieveDto> findAllBySmallCategory(
             ProductCategoryCondition productCategoryCondition) {
         return queryFactory
                 .select(
                         Projections.constructor(
-                                ProductRetrieveDTO.class, product, favorQuestionCategory))
+                                ProductRetrieveDto.class, product, favorQuestionCategory))
                 .from(product)
                 .join(favorQuestionCategory)
                 .on(product.favorQuestionCategoryId.eq(favorQuestionCategory.id))

@@ -4,7 +4,7 @@ package tify.server.api.product.model.vo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
+import tify.server.domain.domains.product.dto.model.ProductRetrieveDto;
 import tify.server.domain.domains.user.domain.DetailCategory;
 import tify.server.domain.domains.user.domain.LargeCategory;
 import tify.server.domain.domains.user.domain.SmallCategory;
@@ -49,7 +49,7 @@ public class ProductRetrieveVo {
     @Schema(description = "상품 질문의 카테고리 이름입니다.", example = "BMLIP")
     private final String categoryName;
 
-    public static ProductRetrieveVo from(ProductRetrieveDTO dto) {
+    public static ProductRetrieveVo from(ProductRetrieveDto dto) {
         return ProductRetrieveVo.builder()
                 .productId(dto.getProduct().getId())
                 .name(dto.getProduct().getName())

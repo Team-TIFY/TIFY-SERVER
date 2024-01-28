@@ -7,10 +7,11 @@ import org.springframework.data.domain.Slice;
 import tify.server.core.annotation.Adaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.product.domain.Site;
-import tify.server.domain.domains.product.dto.ProductCategoryCondition;
-import tify.server.domain.domains.product.dto.ProductCondition;
-import tify.server.domain.domains.product.dto.ProductCrawlingDto;
-import tify.server.domain.domains.product.dto.ProductRetrieveDTO;
+import tify.server.domain.domains.product.dto.condition.ProductCategoryCondition;
+import tify.server.domain.domains.product.dto.condition.ProductCondition;
+import tify.server.domain.domains.product.dto.model.ProductCrawlingDto;
+import tify.server.domain.domains.product.dto.model.ProductRetrieveDto;
+import tify.server.domain.domains.product.dto.model.ProductVo;
 import tify.server.domain.domains.product.repository.ProductRepository;
 
 @Adaptor
@@ -39,16 +40,16 @@ public class ProductAdaptor {
         return productRepository.searchAllToRecommendation(categoryName, character);
     }
 
-    public Slice<ProductRetrieveDTO> searchByKeyword(ProductCondition productCondition) {
+    public Slice<ProductVo> searchByKeyword(ProductCondition productCondition) {
         return productRepository.searchByKeyword(productCondition);
     }
 
-    public Slice<ProductRetrieveDTO> searchBySmallCategoryId(
+    public Slice<ProductRetrieveDto> searchBySmallCategoryId(
             ProductCategoryCondition productCategoryCondition) {
         return productRepository.searchBySmallCategory(productCategoryCondition);
     }
 
-    public List<ProductRetrieveDTO> findAllBySmallCategoryId(
+    public List<ProductRetrieveDto> findAllBySmallCategoryId(
             ProductCategoryCondition productCategoryCondition) {
         return productRepository.findAllBySmallCategory(productCategoryCondition);
     }
