@@ -44,35 +44,42 @@ public class BFPLARecommendationStrategy implements ProductRecommendationStrateg
             productList.addAll(filterStep(CATEGORY_NAME, firstFavorRecommendationDTO.getAnswer()));
         }
 
+        return productList;
+
         /**
          * 2번 스텝(원하는 우리집의 이미지?) 1번 스텝과 거의 동일함 answer가 최대 2개 선택이므로 경우를 나눈다 1개인 경우 productList를 답변으로
          * 필터한다 2개인 경우 필터를 두번 거친다
+         *
+         * <p>// TODO : 질문에 대한 답변을 포함하는 상품이 아직 없음.. 나중에 상품 업데이트 후 다시 활성화
          */
-        FavorRecommendationDTO secondFavorRecommendationDTO = recommendationDTO.get(1);
-        List<Product> resultProductList = new ArrayList<>();
-        if (secondFavorRecommendationDTO.getAnswer().split(", ").length > 1) {
-            return productList.stream()
-                    .filter(
-                            product ->
-                                    product.getCharacteristic()
-                                            .contains(
-                                                    secondFavorRecommendationDTO.getAnswer()
-                                                            .split(", ")[0]))
-                    .filter(
-                            product ->
-                                    product.getCharacteristic()
-                                            .contains(
-                                                    secondFavorRecommendationDTO.getAnswer()
-                                                            .split(", ")[1]))
-                    .toList();
-        } else {
-            return productList.stream()
-                    .filter(
-                            product ->
-                                    product.getCharacteristic()
-                                            .contains(secondFavorRecommendationDTO.getAnswer()))
-                    .toList();
-        }
+        //        FavorRecommendationDTO secondFavorRecommendationDTO = recommendationDTO.get(1);
+        //        List<Product> resultProductList = new ArrayList<>();
+        //        if (secondFavorRecommendationDTO.getAnswer().split(", ").length > 1) {
+        //            return productList.stream()
+        //                    .filter(
+        //                            product ->
+        //                                    product.getCharacteristic()
+        //                                            .contains(
+        //
+        // secondFavorRecommendationDTO.getAnswer()
+        //                                                            .split(", ")[0]))
+        //                    .filter(
+        //                            product ->
+        //                                    product.getCharacteristic()
+        //                                            .contains(
+        //
+        // secondFavorRecommendationDTO.getAnswer()
+        //                                                            .split(", ")[1]))
+        //                    .toList();
+        //        } else {
+        //            return productList.stream()
+        //                    .filter(
+        //                            product ->
+        //                                    product.getCharacteristic()
+        //
+        // .contains(secondFavorRecommendationDTO.getAnswer()))
+        //                    .toList();
+        //        }
     }
 
     @Override

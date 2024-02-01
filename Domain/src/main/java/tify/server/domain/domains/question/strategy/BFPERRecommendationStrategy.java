@@ -33,6 +33,7 @@ public class BFPERRecommendationStrategy implements ProductRecommendationStrateg
 
         /** 2번 스텝(내가 원하는 나의 이미지?) 객관식 2개까지 가능이기 때문에 답변 개수별로 경우를 나눔 */
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
+
         if (splitAnswer.length > 1) {
             return productList.stream()
                     .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
@@ -63,10 +64,14 @@ public class BFPERRecommendationStrategy implements ProductRecommendationStrateg
                 favorAnswerAdaptor
                         .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
                         .getAnswerContent();
-        if (firstAnswer.equals("진한") || firstAnswer.equals("깊은")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "퍼퓸, 오드퍼퓸"));
-        } else if (firstAnswer.equals("은은한") || firstAnswer.equals("가벼운")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드뚜왈렛, 오드코롱, 샤워코롱"));
+        if (firstAnswer.equals("진한")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, " 퍼퓸"));
+        } else if (firstAnswer.equals("깊은")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드퍼퓸"));
+        } else if (firstAnswer.equals("은은한")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드뚜왈렛"));
+        } else if (firstAnswer.equals("가벼운")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드코롱•샤워코롱"));
         }
 
         favorRecommendationDTOs.add(
