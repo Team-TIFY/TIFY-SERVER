@@ -82,7 +82,7 @@ public class BMLIPRecommendationStrategy implements ProductRecommendationStrateg
                                 return product.getCharacteristic().contains(answerSplits.get(0));
                             } else if (answerSplits.size() == 2) {
                                 return product.getCharacteristic().contains(answerSplits.get(0))
-                                        && product.getCharacteristic()
+                                        || product.getCharacteristic()
                                                 .contains(answerSplits.get(1));
                             } else {
                                 return true;
