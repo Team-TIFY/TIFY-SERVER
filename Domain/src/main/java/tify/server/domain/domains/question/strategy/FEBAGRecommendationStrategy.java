@@ -29,19 +29,20 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
 
     @Override
     public List<Product> recommendation(Long userId, String categoryName) {
-
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
 
         validateAnswerSize(recommendationDTO);
 
         List<Product> firstProducts = firstStep(categoryName, recommendationDTO.get(0).getAnswer());
+
         List<Product> secondProducts =
                 secondStep(firstProducts, recommendationDTO.get(1).getAnswer());
 
         if (validateProductCount(secondProducts)) {
             return secondProducts;
         }
-        return secondStep(secondProducts, recommendationDTO.get(2).getAnswer());
+
+        return thirdStep(secondProducts, recommendationDTO.get(2).getAnswer());
     }
 
     @Override
@@ -67,12 +68,17 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
             return productAdaptor.queryAllByCategoryNameAndCharacter(
                     categoryName, answerSplits.get(0));
         } else {
-            List<Product> findProducts =
+            List<Product> productList = new ArrayList<>();
+            productList.addAll(
                     productAdaptor.queryAllByCategoryNameAndCharacter(
-                            categoryName, answerSplits.get(0));
-            return findProducts.stream()
-                    .filter(product -> product.getCharacteristic().contains(answerSplits.get(1)))
-                    .toList();
+                            categoryName, answerSplits.get(0)));
+            productList.addAll(
+                    productAdaptor
+                            .queryAllByCategoryNameAndCharacter(categoryName, answerSplits.get(1))
+                            .stream()
+                            .filter(product -> !productList.contains(product))
+                            .toList());
+            return productList;
         }
     }
 
@@ -92,6 +98,14 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
                                                     .contains(answerSplits.get(1)))
                     .toList();
         }
+    }
+
+    private List<Product> thirdStep(List<Product> findProducts, String answer) {
+        String str = answer.replaceAll(" 들어가면 충분", "");
+
+        return findProducts.stream()
+                .filter(product -> product.getCharacteristic().contains(str))
+                .toList();
     }
 
     private boolean validateProductCount(List<Product> products) {
