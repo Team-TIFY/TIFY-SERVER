@@ -120,10 +120,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
                                 return product.getCharacteristic().contains(splitAnswer.get(0));
                             } else {
                                 return product.getCharacteristic().contains(splitAnswer.get(0))
-                                        || (!product.getCharacteristic()
-                                                        .contains(splitAnswer.get(0))
-                                                && product.getCharacteristic()
-                                                        .contains(splitAnswer.get(1)));
+                                        || product.getCharacteristic().contains(splitAnswer.get(1));
                             }
                         })
                 .toList();
@@ -141,7 +138,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
         }
     }
 
-    // 4번째 스텝
+    // 4번째 스텝. 2번째 스텝과 로직은 동일하나 단계를 구별하기 위해 작성
     private List<Product> fourthStep(List<Product> products, String answer) {
         List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
         return products.stream()
@@ -151,10 +148,7 @@ public class FCTOPRecommendationStrategy implements ProductRecommendationStrateg
                                 return product.getCharacteristic().contains(splitAnswer.get(0));
                             } else {
                                 return product.getCharacteristic().contains(splitAnswer.get(0))
-                                        || (!product.getCharacteristic()
-                                                        .contains(splitAnswer.get(0)))
-                                                && product.getCharacteristic()
-                                                        .contains(splitAnswer.get(1));
+                                        || product.getCharacteristic().contains(splitAnswer.get(1));
                             }
                         })
                 .toList();
