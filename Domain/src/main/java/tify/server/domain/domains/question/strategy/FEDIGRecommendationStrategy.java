@@ -4,6 +4,8 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -21,6 +23,7 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
 
     private static final String CATEGORY_NAME = "FEDIG";
 
+    // TODO : 만약 취향 답변 수정 기능이 나오면 static List는 불가능할듯..
     private static List<Product> fedigProducts = new ArrayList<>();
 
     @Override
@@ -30,20 +33,19 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         List<String> productAnswer =
                 Arrays.stream(initRecommendationDTO.get(0).getAnswer().split(", ")).toList();
 
+        for (String string : productAnswer) {
+            System.out.println("answer = " + string);
+        }
+
         if (productAnswer.size() == 1) {
             List<Product> products =
                     productAdaptor.queryAllByCategoryNameAndCharacter(
                             categoryName, productAnswer.get(0));
             productFilter(products, productAnswer.get(0), userId);
         } else {
-            List<Product> firstProducts =
-                    productAdaptor.queryAllByCategoryNameAndCharacter(
-                            categoryName, productAnswer.get(0));
-            List<Product> secondProducts =
-                    productAdaptor.queryAllByCategoryNameAndCharacter(
-                            categoryName, productAnswer.get(1));
-            productFilter(firstProducts, productAnswer.get(0), userId);
-            productFilter(secondProducts, productAnswer.get(1), userId);
+            List<Product> findProducts = productAdaptor.queryAllByCategoryName(categoryName);
+            productFilter(findProducts, productAnswer.get(0), userId);
+            productFilter(findProducts, productAnswer.get(1), userId);
         }
 
         return fedigProducts;
@@ -61,29 +63,22 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
         return favorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 
-    private List<Product> singleFilterStep(List<Product> products, String answer) {
+    private List<Product> singleAnswerStep(List<Product> products, String answer) {
         return products.stream()
                 .filter(product -> product.getCharacteristic().contains(answer))
                 .toList();
     }
 
-    private List<Product> multiFilterStep(List<Product> products, String answer) {
-        return products.stream()
-                .filter(
-                        product -> {
-                            return isContainsProduct(product.getCharacteristic(), answer);
-                        })
-                .toList();
-    }
-
-    private boolean isContainsProduct(String productCharacter, String answer) {
-        List<String> selectWord = Arrays.stream(answer.split(",")).map(String::trim).toList();
-        for (String word : selectWord) {
-            if (productCharacter.contains(word)) {
-                return true;
-            }
+    private List<Product> multiAnswerStep(List<Product> products, String answer) {
+        List<String> splitAnswer = Arrays.stream(answer.split(", ")).toList();
+        if (splitAnswer.size() == 1) {
+            return singleAnswerStep(products, splitAnswer.get(0));
+        } else {
+            return splitAnswer.stream()
+                .map(str -> singleAnswerStep(products, str))
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
         }
-        return false;
     }
 
     private void productFilter(List<Product> products, String answer, Long userId) {
@@ -91,40 +86,40 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
             fedigProducts.addAll(products);
         } else if (answer.equals("그립톡") || answer.equals("파우치")) {
             fedigProducts.addAll(
-                    singleFilterStep(
+                    multiAnswerStep(
                             products,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
                                     .getAnswerContent()));
-        } else if (answer.equals("워치스트랩")) {
+        } else if (answer.equals("워치 스트랩")) {
             fedigProducts.addAll(
-                    singleFilterStep(
+                    singleAnswerStep(
                             products,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 5L)
-                                    .getAnswerContent()));
+                                    .getAnswerContent().contains("애플워치") ? "애플워치" : "갤럭시워치"));
         } else if (answer.equals("폰케이스")) {
             List<Product> products1 =
-                    singleFilterStep(
+                    singleAnswerStep(
                             products,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
-                                    .getAnswerContent());
+                                    .getAnswerContent().contains("iPhone") ? "아이폰" : "갤럭시");
             fedigProducts.addAll(
-                    singleFilterStep(
+                    multiAnswerStep(
                             products1,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
                                     .getAnswerContent()));
         } else if (answer.equals("이어폰 케이스")) {
             List<Product> products1 =
-                    singleFilterStep(
+                    singleAnswerStep(
                             products,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L)
-                                    .getAnswerContent());
+                                    .getAnswerContent().contains("에어팟") ? "에어팟" : "버즈");
             fedigProducts.addAll(
-                    singleFilterStep(
+                    multiAnswerStep(
                             products1,
                             favorAnswerAdaptor
                                     .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L)
