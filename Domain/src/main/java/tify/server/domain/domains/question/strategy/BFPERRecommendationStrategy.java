@@ -4,22 +4,23 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
 import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
-public class BMPERRecommendationStrategy implements ProductRecommendationStrategy {
+public class BFPERRecommendationStrategy implements ProductRecommendationStrategy {
 
     private final ProductAdaptor productAdaptor;
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
-    private static final String CATEGORY_NAME = "BMPER";
+    private static final String CATEGORY_NAME = "BFPER";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
         List<Product> productList = new ArrayList<>();
@@ -32,6 +33,7 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
 
         /** 2번 스텝(내가 원하는 나의 이미지?) 객관식 2개까지 가능이기 때문에 답변 개수별로 경우를 나눔 */
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
+
         if (splitAnswer.length > 1) {
             return productList.stream()
                     .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
@@ -47,6 +49,11 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
         }
     }
 
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
+    }
+
     private List<Product> filterStep(String categoryName, String answer) {
         return productAdaptor.queryAllByCategoryNameAndCharacter(categoryName, answer);
     }
@@ -57,10 +64,14 @@ public class BMPERRecommendationStrategy implements ProductRecommendationStrateg
                 favorAnswerAdaptor
                         .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
                         .getAnswerContent();
-        if (firstAnswer.equals("진한") || firstAnswer.equals("깊은")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "퍼퓸, 오드퍼퓸"));
-        } else if (firstAnswer.equals("은은한") || firstAnswer.equals("가벼운")) {
-            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드뚜왈렛, 오드코롱, 샤워코롱"));
+        if (firstAnswer.equals("진한")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, " 퍼퓸"));
+        } else if (firstAnswer.equals("깊은")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드퍼퓸"));
+        } else if (firstAnswer.equals("은은한")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드뚜왈렛"));
+        } else if (firstAnswer.equals("가벼운")) {
+            favorRecommendationDTOs.add(new FavorRecommendationDTO(1L, "오드코롱•샤워코롱"));
         }
 
         favorRecommendationDTOs.add(

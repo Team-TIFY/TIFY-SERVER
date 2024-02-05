@@ -4,6 +4,7 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -11,6 +12,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class HCDISRecommendationStrategy implements ProductRecommendationStrategy {
@@ -21,8 +23,7 @@ public class HCDISRecommendationStrategy implements ProductRecommendationStrateg
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
 
@@ -37,8 +38,10 @@ public class HCDISRecommendationStrategy implements ProductRecommendationStrateg
         String[] splitAnswer = recommendationDTO.get(1).getAnswer().split(", ");
         if (splitAnswer.length > 1) {
             return productList.stream()
-                    .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
-                    .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
+                    .filter(
+                            product ->
+                                    product.getCharacteristic().contains(splitAnswer[0])
+                                            || product.getCharacteristic().contains(splitAnswer[1]))
                     .toList();
         } else {
             return productList.stream()
@@ -48,6 +51,11 @@ public class HCDISRecommendationStrategy implements ProductRecommendationStrateg
                                             .contains(recommendationDTO.get(1).getAnswer()))
                     .toList();
         }
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<Product> filterStep(String categoryName, String answer) {

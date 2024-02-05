@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -14,6 +15,7 @@ import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 import tify.server.domain.domains.question.exception.QuestionException;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FEBAGRecommendationStrategy implements ProductRecommendationStrategy {
@@ -26,21 +28,26 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FEBAG";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
-
+    public List<Product> recommendation(Long userId, String categoryName) {
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
 
         validateAnswerSize(recommendationDTO);
 
         List<Product> firstProducts = firstStep(categoryName, recommendationDTO.get(0).getAnswer());
+
         List<Product> secondProducts =
                 secondStep(firstProducts, recommendationDTO.get(1).getAnswer());
 
         if (validateProductCount(secondProducts)) {
             return secondProducts;
         }
-        return secondStep(secondProducts, recommendationDTO.get(2).getAnswer());
+
+        return thirdStep(secondProducts, recommendationDTO.get(2).getAnswer());
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
@@ -61,12 +68,17 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
             return productAdaptor.queryAllByCategoryNameAndCharacter(
                     categoryName, answerSplits.get(0));
         } else {
-            List<Product> findProducts =
+            List<Product> productList = new ArrayList<>();
+            productList.addAll(
                     productAdaptor.queryAllByCategoryNameAndCharacter(
-                            categoryName, answerSplits.get(0));
-            return findProducts.stream()
-                    .filter(product -> product.getCharacteristic().contains(answerSplits.get(1)))
-                    .toList();
+                            categoryName, answerSplits.get(0)));
+            productList.addAll(
+                    productAdaptor
+                            .queryAllByCategoryNameAndCharacter(categoryName, answerSplits.get(1))
+                            .stream()
+                            .filter(product -> !productList.contains(product))
+                            .toList());
+            return productList;
         }
     }
 
@@ -86,6 +98,14 @@ public class FEBAGRecommendationStrategy implements ProductRecommendationStrateg
                                                     .contains(answerSplits.get(1)))
                     .toList();
         }
+    }
+
+    private List<Product> thirdStep(List<Product> findProducts, String answer) {
+        String str = answer.replaceAll(" 들어가면 충분", "");
+
+        return findProducts.stream()
+                .filter(product -> product.getCharacteristic().contains(str))
+                .toList();
     }
 
     private boolean validateProductCount(List<Product> products) {

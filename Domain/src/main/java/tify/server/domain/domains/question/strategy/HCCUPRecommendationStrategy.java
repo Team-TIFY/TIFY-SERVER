@@ -4,6 +4,7 @@ package tify.server.domain.domains.question.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -11,6 +12,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class HCCUPRecommendationStrategy implements ProductRecommendationStrategy {
@@ -21,8 +23,7 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
     private final FavorAnswerAdaptor favorAnswerAdaptor;
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
         List<Product> productList = new ArrayList<>();
@@ -35,7 +36,10 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
             productList.addAll(
                     filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer().split(", ")[0]));
             productList.addAll(
-                    filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer().split(", ")[1]));
+                    filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer().split(", ")[1])
+                            .stream()
+                            .filter(product -> !productList.contains(product))
+                            .toList());
         } else {
             productList.addAll(filterStep(CATEGORY_NAME, recommendationDTO.get(0).getAnswer()));
         }
@@ -46,16 +50,16 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
         if (splitAnswer.length > 1) {
             filteredProductList =
                     productList.stream()
-                            .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
-                            .filter(product -> product.getCharacteristic().contains(splitAnswer[1]))
+                            .filter(
+                                    product ->
+                                            product.getCharacteristic().contains(splitAnswer[0])
+                                                    || product.getCharacteristic()
+                                                            .contains(splitAnswer[1]))
                             .toList();
         } else {
             filteredProductList =
                     productList.stream()
-                            .filter(
-                                    product ->
-                                            product.getCharacteristic()
-                                                    .contains(recommendationDTO.get(1).getAnswer()))
+                            .filter(product -> product.getCharacteristic().contains(splitAnswer[0]))
                             .toList();
         }
 
@@ -71,19 +75,17 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
                         .filter(
                                 product ->
                                         product.getCharacteristic()
-                                                .contains(
-                                                        recommendationDTO
-                                                                .get(2)
-                                                                .getAnswer()
-                                                                .split(", ")[0]))
-                        .filter(
-                                product ->
-                                        product.getCharacteristic()
-                                                .contains(
-                                                        recommendationDTO
-                                                                .get(2)
-                                                                .getAnswer()
-                                                                .split(", ")[1]))
+                                                        .contains(
+                                                                recommendationDTO
+                                                                        .get(2)
+                                                                        .getAnswer()
+                                                                        .split(", ")[0])
+                                                || product.getCharacteristic()
+                                                        .contains(
+                                                                recommendationDTO
+                                                                        .get(2)
+                                                                        .getAnswer()
+                                                                        .split(", ")[1]))
                         .toList();
             } else {
                 return filteredProductList.stream()
@@ -94,6 +96,11 @@ public class HCCUPRecommendationStrategy implements ProductRecommendationStrateg
                         .toList();
             }
         }
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<Product> filterStep(String categoryName, String answer) {

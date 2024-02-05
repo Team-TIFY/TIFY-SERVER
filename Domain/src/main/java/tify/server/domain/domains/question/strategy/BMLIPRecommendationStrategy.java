@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.core.exception.BaseException;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -14,6 +15,7 @@ import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 import tify.server.domain.domains.question.exception.QuestionException;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BMLIPRecommendationStrategy implements ProductRecommendationStrategy {
@@ -26,8 +28,7 @@ public class BMLIPRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "BMLIP";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
 
         List<FavorRecommendationDTO> recommendationDTO = getRecommendationDTO(userId);
 
@@ -50,6 +51,11 @@ public class BMLIPRecommendationStrategy implements ProductRecommendationStrateg
 
         // 3번 스텝
         return otherStep(secondStepProducts, recommendationDTO.get(2).getAnswer());
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     private List<FavorRecommendationDTO> getRecommendationDTO(Long userId) {
@@ -76,7 +82,7 @@ public class BMLIPRecommendationStrategy implements ProductRecommendationStrateg
                                 return product.getCharacteristic().contains(answerSplits.get(0));
                             } else if (answerSplits.size() == 2) {
                                 return product.getCharacteristic().contains(answerSplits.get(0))
-                                        && product.getCharacteristic()
+                                        || product.getCharacteristic()
                                                 .contains(answerSplits.get(1));
                             } else {
                                 return true;

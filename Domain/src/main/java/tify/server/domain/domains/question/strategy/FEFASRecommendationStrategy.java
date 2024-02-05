@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
 import tify.server.domain.domains.product.domain.Product;
@@ -12,6 +14,7 @@ import tify.server.domain.domains.question.adaptor.FavorAnswerAdaptor;
 import tify.server.domain.domains.question.domain.FavorAnswer;
 import tify.server.domain.domains.question.dto.condition.FavorRecommendationDTO;
 
+@Component
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FEFASRecommendationStrategy implements ProductRecommendationStrategy {
@@ -22,8 +25,7 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
     private static final String CATEGORY_NAME = "FEFAS";
 
     @Override
-    public List<Product> recommendation(
-            Long userId, String categoryName, List<FavorRecommendationDTO> dto) {
+    public List<Product> recommendation(Long userId, String categoryName) {
         List<Product> fefasProducts = new ArrayList<>();
         List<FavorRecommendationDTO> initRecommendationDTO = getInitRecommendationDTO(userId);
         if (!initRecommendationDTO.get(0).getAnswer().contains("거의 안씀")
@@ -41,6 +43,7 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
             fefasProducts.addAll(
                     productAdaptor.queryAllByCategoryNameAndCharacter(categoryName, "장갑"));
         }
+        fefasProducts.addAll(productAdaptor.queryAllByCategoryNameAndCharacter(categoryName, "지갑"));
 
         List<Product> products = new ArrayList<>();
         products.addAll(hatStep(userId, fefasProducts));
@@ -49,6 +52,11 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
         products.addAll(gloveStep(userId, fefasProducts));
 
         return products;
+    }
+
+    @Override
+    public StrategyName getStrategyName() {
+        return StrategyName.valueOf(CATEGORY_NAME);
     }
 
     // 모자, 목도리, 장갑 을 특별한 경우, 거의 안씀을 골랐는지를 판별하는 답변들
@@ -65,6 +73,7 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
         // 장갑
         initFavorAnswers.add(
                 favorAnswerAdaptor.searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 7L));
+
         return initFavorAnswers.stream().map(FavorRecommendationDTO::from).toList();
     }
 
@@ -85,13 +94,29 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
                 products.stream()
                         .filter(product -> product.getCharacteristic().contains("모자"))
                         .toList();
-        String hatAnswer =
-                stringBuilder
-                        .append(dto.get(0).getAnswer())
-                        .append(", ")
-                        .append(dto.get(1).getAnswer())
-                        .toString();
-        return hatList.stream().filter(hat -> hat.getCharacteristic().contains(hatAnswer)).toList();
+
+        return hatList.stream()
+                .filter(
+                        product -> {
+                            String[] splitAnswer = dto.get(0).getAnswer().split(", ");
+                            if (splitAnswer.length == 1) {
+                                return product.getCharacteristic().contains(splitAnswer[0]);
+                            } else {
+                                return product.getCharacteristic().contains(splitAnswer[0])
+                                        || product.getCharacteristic().contains(splitAnswer[1]);
+                            }
+                        })
+                .filter(
+                        hat -> {
+                            String[] splitAnswer = dto.get(1).getAnswer().split(", ");
+                            if (splitAnswer.length == 1) {
+                                return hat.getCharacteristic().contains(splitAnswer[0]);
+                            } else {
+                                return hat.getCharacteristic().contains(splitAnswer[0])
+                                        || hat.getCharacteristic().contains(splitAnswer[1]);
+                            }
+                        })
+                .toList();
     }
 
     private List<Product> walletStep(Long userId, List<Product> products) {
@@ -104,38 +129,51 @@ public class FEFASRecommendationStrategy implements ProductRecommendationStrateg
                 products.stream()
                         .filter(product -> product.getCharacteristic().contains("지갑"))
                         .toList();
-        return walletList.stream()
-                .filter(wallet -> wallet.getCharacteristic().contains(answerContent))
-                .toList();
+
+        return getProducts(answerContent, walletList);
     }
 
     private List<Product> mufflerStep(Long userId, List<Product> products) {
-
         String answerContent =
                 favorAnswerAdaptor
                         .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 6L)
                         .getAnswerContent();
+
         List<Product> mufflerList =
                 products.stream()
                         .filter(product -> product.getCharacteristic().contains("목도리"))
                         .toList();
-        return mufflerList.stream()
-                .filter(muffler -> muffler.getCharacteristic().contains(answerContent))
-                .toList();
+
+        return getProducts(answerContent, mufflerList);
     }
 
     private List<Product> gloveStep(Long userId, List<Product> products) {
-
         String answerContent =
                 favorAnswerAdaptor
                         .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 8L)
                         .getAnswerContent();
+
         List<Product> gloveList =
                 products.stream()
                         .filter(product -> product.getCharacteristic().contains("장갑"))
                         .toList();
-        return gloveList.stream()
-                .filter(glove -> glove.getCharacteristic().contains(answerContent))
+
+        return getProducts(answerContent, gloveList);
+    }
+
+    @NotNull
+    private List<Product> getProducts(String answerContent, List<Product> productList) {
+        return productList.stream()
+                .filter(
+                        product -> {
+                            String[] splitAnswer = answerContent.split(", ");
+                            if (splitAnswer.length == 1) {
+                                return product.getCharacteristic().contains(splitAnswer[0]);
+                            } else {
+                                return product.getCharacteristic().contains(splitAnswer[0])
+                                        || product.getCharacteristic().contains(splitAnswer[1]);
+                            }
+                        })
                 .toList();
     }
 }
