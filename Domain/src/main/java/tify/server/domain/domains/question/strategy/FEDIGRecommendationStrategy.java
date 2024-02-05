@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tify.server.domain.domains.product.adaptor.ProductAdaptor;
@@ -75,9 +74,9 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
             return singleAnswerStep(products, splitAnswer.get(0));
         } else {
             return splitAnswer.stream()
-                .map(str -> singleAnswerStep(products, str))
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
+                    .map(str -> singleAnswerStep(products, str))
+                    .flatMap(List::stream)
+                    .collect(Collectors.toList());
         }
     }
 
@@ -96,15 +95,23 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
                     singleAnswerStep(
                             products,
                             favorAnswerAdaptor
-                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 5L)
-                                    .getAnswerContent().contains("애플워치") ? "애플워치" : "갤럭시워치"));
+                                            .searchByCategoryNameAndNumber(
+                                                    userId, CATEGORY_NAME, 5L)
+                                            .getAnswerContent()
+                                            .contains("애플워치")
+                                    ? "애플워치"
+                                    : "갤럭시워치"));
         } else if (answer.equals("폰케이스")) {
             List<Product> products1 =
                     singleAnswerStep(
                             products,
                             favorAnswerAdaptor
-                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 1L)
-                                    .getAnswerContent().contains("iPhone") ? "아이폰" : "갤럭시");
+                                            .searchByCategoryNameAndNumber(
+                                                    userId, CATEGORY_NAME, 1L)
+                                            .getAnswerContent()
+                                            .contains("iPhone")
+                                    ? "아이폰"
+                                    : "갤럭시");
             fedigProducts.addAll(
                     multiAnswerStep(
                             products1,
@@ -116,8 +123,12 @@ public class FEDIGRecommendationStrategy implements ProductRecommendationStrateg
                     singleAnswerStep(
                             products,
                             favorAnswerAdaptor
-                                    .searchByCategoryNameAndNumber(userId, CATEGORY_NAME, 2L)
-                                    .getAnswerContent().contains("에어팟") ? "에어팟" : "버즈");
+                                            .searchByCategoryNameAndNumber(
+                                                    userId, CATEGORY_NAME, 2L)
+                                            .getAnswerContent()
+                                            .contains("에어팟")
+                                    ? "에어팟"
+                                    : "버즈");
             fedigProducts.addAll(
                     multiAnswerStep(
                             products1,
