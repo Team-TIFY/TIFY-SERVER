@@ -54,6 +54,7 @@ import tify.server.api.user.service.RetrieveNeighborListUseCase;
 import tify.server.api.user.service.RetrieveUserListUseCase;
 import tify.server.api.user.service.RetrieveUserOpinionUseCase;
 import tify.server.api.user.service.RetrieveUserReportUseCase;
+import tify.server.api.user.service.UpdateAlarmReceiveUseCase;
 import tify.server.api.user.service.UpdateNeighborUseCase;
 import tify.server.api.user.service.UpdateUserExpoTokenUseCase;
 import tify.server.api.user.service.UpdateUserFavorUseCase;
@@ -104,6 +105,7 @@ public class UserController {
     private final RetrieveUserOpinionUseCase retrieveUserOpinionUseCase;
     private final RetrieveNeighborFavorBoxUseCase retrieveNeighborFavorBoxUseCase;
     private final UpdateUserExpoTokenUseCase updateUserExpoTokenUseCase;
+    private final UpdateAlarmReceiveUseCase updateAlarmReceiveUseCase;
 
     @Operation(summary = "유저 정보 조회")
     @GetMapping("/{userId}")
@@ -338,5 +340,11 @@ public class UserController {
     public void patchExpoToken(
             @RequestParam Long userId, @RequestBody @Valid PatchExpoTokenRequest request) {
         updateUserExpoTokenUseCase.execute(userId, request);
+    }
+
+    @Operation(summary = "유저의 알림 수신 여부를 변경합니다.")
+    @PatchMapping("/alarm/receive")
+    public void patchAlarmReceive() {
+        updateAlarmReceiveUseCase.execute();
     }
 }

@@ -85,6 +85,7 @@ public class User extends AbstractTimeStamp {
         this.oauthInfo = oauthInfo;
     }
 
+    // TODO : 온보딩 시 푸시알림 true / false 선택 가능하도록
     public void onBoarding(
             String username,
             String userId,
@@ -124,5 +125,9 @@ public class User extends AbstractTimeStamp {
 
     public void updateUserExpoToken(String expoToken) {
         this.expoToken = expoToken;
+    }
+
+    public void updateUserReceiveAlarm() {
+        this.receiveAlarm = !this.receiveAlarm;
     }
 }
